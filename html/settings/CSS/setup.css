@@ -1,0 +1,66 @@
+
+.main_container{
+    
+    width: auto;
+    background-color: rgb(255, 255, 255);
+    box-sizing: border-box;
+}
+.top_bar{
+    width: auto;
+    height: 4em;
+    background-color: rgb(0, 0, 0);
+}
+.central_container{
+    margin-left: 13em;
+    margin-right: 15em;
+    padding-top: 0.1em;
+    width: auto 5%;
+    height: auto;
+    background-color: rgb(255, 255, 255);
+}
+.rules_container{
+    margin: 2em;
+    width: auto;
+    height: auto;
+    background-color: rgb(255, 255, 255);
+}
+.rules_text{
+    margin: 1em;
+    height: auto;
+    width: auto;
+    background-color: rgb(255, 255, 255);
+    font-size: large;
+}
+.text_conteiner{
+    margin: 2em;
+    width: auto;
+    height: auto;
+    background-color: rgb(255, 255, 255);
+}
+.file_content{
+    margin: 1em;
+    height: auto;
+    width: auto;
+    background-color: rgb(255, 255, 255);
+    font-size: large;
+}
+.file_text{
+    margin: 1em;
+    height: 100%;
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    font-size: large;
+}
+.voice_conteiner{
+    margin: 1em;
+    height: auto;
+    width: auto;
+    background-color: rgb(255, 255, 255);
+    font-size: large;
+}
+button{
+    margin-left: auto;
+    height: auto;
+    width: auto;
+    font-size: x-large;    
+}
