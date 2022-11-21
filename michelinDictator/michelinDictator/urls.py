@@ -17,12 +17,20 @@ from django.contrib import admin
 from django.urls import path
 from rest_framework.routers import SimpleRouter
 
-from card.views import CardViewSet
+from card.models import home_page
+from card.views import CardViewSet, AudioViewSet
+from users.views import RegisterUser, LoginUser, logout_user
 
 router = SimpleRouter()
 
-router.register(r'card', CardViewSet)
+router.register(r'api/card', CardViewSet)
+router.register(r'api/audio', AudioViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("register/", RegisterUser.as_view(), name="register"),
+    path("login/", LoginUser.as_view(), name="login"),
+    path("logout/", logout_user, name="logout"),
+    path("",home_page, name='home')
+
 ]
 urlpatterns += router.urls
