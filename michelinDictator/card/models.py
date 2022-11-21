@@ -30,4 +30,4 @@ class Audio(models.Model):
         return "Card:{0} Dictator id:{1}".format(self.card.id, self.user.id)
 
 def home_page(request):
-    return render(request, "home.html",{"cards": Card.objects.all()})
+    return render(request, "index.html",{"cards": Card.objects.all()})

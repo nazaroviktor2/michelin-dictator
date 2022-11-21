@@ -21,6 +21,9 @@ from card.models import home_page
 from card.views import CardViewSet, AudioViewSet
 from users.views import RegisterUser, LoginUser, logout_user
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 router = SimpleRouter()
 
 router.register(r'api/card', CardViewSet)
@@ -30,7 +33,8 @@ urlpatterns = [
     path("register/", RegisterUser.as_view(), name="register"),
     path("login/", LoginUser.as_view(), name="login"),
     path("logout/", logout_user, name="logout"),
-    path("",home_page, name='home')
+    path("", home_page, name='home')
 
 ]
 urlpatterns += router.urls
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
