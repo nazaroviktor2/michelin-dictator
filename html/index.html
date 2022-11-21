@@ -1,72 +1,64 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Michelin</title>
-        <link rel="stylesheet" href="settings/CSS/setup.css">
-        <script src="/settings/scripts/record_voice.js"></script>
-    </head>
-    <body>
-        <div class="main_container">
-            <div class="top_bar"></div>
-            <div class="central_container">
-                <div class="rules_container">
-                    <h2>В поле ниже записаны правила, которых Вам следует придерживаться при записи</h2>
-                    <div class="rules_text">
-                        <iframe src="rules.txt" class="file_text"></iframe>
-                    </div>
+
+<head>
+    <meta charset="utf-8">
+    <title>Michelin</title>
+    <link rel="stylesheet" href="settings/CSS/setup.css">
+</head>
+
+<body>
+    <div class="main_container">
+        <div class="top_bar"></div>
+        <div class="central_container">
+            <div class="rules_container">
+                <h2>В поле ниже записаны правила, которых Вам следует придерживаться при записи</h2>
+                <div class="rules_text">
+                    <iframe src="rules.txt" class="file_text"></iframe>
                 </div>
-                <div class="text_conteiner">
-                    <h2>Ниже написано содержимое файла, который надо прочитать</h2>
-                    <div class="file_content">
-                        <iframe src="text.txt" class="file_text"></iframe>                        
-                    </div>
+            </div>
+            <div class="text_conteiner">
+                <h2>Ниже написано содержимое файла, который надо прочитать</h2>
+                <div class="file_content">
+                    <iframe src="text.txt" class="file_text"></iframe>
                 </div>
-                <div class="voice_conteiner">
-                    <div id="audio"></div>
-                    <button id="start">record</button>
-                    <button id="stop">stop</button>
-                    <script>
-                        navigator.mediaDevices.getUserMedia({ audio: true})
-                            .then(stream => {
+            </div>
+            <div class="voice_conteiner">
+                <div id="audio"></div>
+                <button id="start">record</button>
+                <button id="stop">stop</button>
+                <script>
+                    navigator.mediaDevices.getUserMedia({ audio: true })
+                        .then(stream => {
                             const mediaRecorder = new MediaRecorder(stream);
-                        
-                            document.querySelector('#start').addEventListener('click', function(){
+                            document.querySelector('#start').addEventListener('click', function () {
                                 mediaRecorder.start();
                             });
                             var audioChunks = [];
-                            mediaRecorder.addEventListener("dataavailable",function(event) {
+                            mediaRecorder.addEventListener("dataavailable", function (event) {
                                 audioChunks.push(event.data);
                             });
-                        
-                            mediaRecorder.addEventListener("stop", function() {
+
+                            mediaRecorder.addEventListener("stop", function () {
                                 const audioBlob = new Blob(audioChunks, {
                                     type: 'audio/wav'
                                 });
-                            const audioUrl = URL.createObjectURL(audioBlob);
-                            var audio = document.createElement('audio');
-                            audio.src = audioUrl;
-                            audio.controls = true;
-                            audio.autoplay = true;
-                            if (document.querySelector('#audio').querySelector('audio')){
-                                document.querySelector('#audio').replaceChildren(second_audio, audio);
-                            }
-                            document.querySelector('#audio').appendChild(audio);
-                            audioChunks = [];
-                            var second_audio = audio
-                            
-                        });
-                            document.querySelector('#stop').addEventListener('click', function(){
+                                const audioUrl = URL.createObjectURL(audioBlob);
+                                var audio = document.createElement('audio');
+                                audio.src = audioUrl;
+                                audio.controls = true;
+                                audio.autoplay = true;
+                                document.querySelector('#audio').appendChild(audio);
+                                audioChunks = [];
+                            });
+                            document.querySelector('#stop').addEventListener('click', function () {
                                 mediaRecorder.stop();
-                            
                             });
                         });
-                        </script>
-                </div>
-                
+                </script>
             </div>
         </div>
-    </body>
+    </div>
+</body>
+
 </html>
-
-
