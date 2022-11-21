@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>DictatorMiche</title>
+</head>
+
+<body>
+
+    <button onclick="document.getElementById('id02').style.display='block'" style="width:auto;">Регистрация</button>
+
+    <div id="id02" class="modal">
+
+        <form class="modal-content animate" action="../action_page.php" method="post">
+            <div class="imgcontainer">
+                <span onclick="document.getElementById('id02').style.display='none'" class="close"
+                    title="Закрыть Modal">&times;</span>
+                <img src="./images/img_avatar.png" alt="Аватар" width="10%" class="avatar">
+            </div>
+
+            <div class="container">
+                <label for="uname"><b>Имя пользователя</b></label>
+                <input type="text" placeholder="Введите имя пользователя" name="uname" required>
+
+                <label for="psw"><b>Пароль</b></label>
+                <input type="password" placeholder=" Ведите пароль" name="psw" required>
+
+                <label for="psw"><b>Пароль ещё раз</b></label>
+                <input type="password" placeholder=" Ведите пароль" name="psw" required>
+
+                <button type="submit">Зарегистрироваться</button>
+                <label>
+                    <input type="checkbox" checked="checked" name="remember"> Запомнить меня
+                </label>
+            </div>
+        </form>
+    </div>
+
+    <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Войти</button>
+
+    <div id="id01" class="modal">
+
+        <form class="modal-content animate" action="../action_page.php" method="post">
+            <div class="imgcontainer">
+                <span onclick="document.getElementById('id01').style.display='none'" class="close"
+                    title="Закрыть Modal">&times;</span>
+                <img src="./images/img_avatar.png" alt="Аватар" width="25%" class="avatar">
+            </div>
+
+            <div class="container">
+                <label for="uname"><b>Имя пользователя</b></label>
+                <input type="text" placeholder="Введите имя пользователя" name="uname" required>
+
+                <label for="psw"><b>Пароль</b></label>
+                <input type="password" placeholder=" Ведите пароль" name="psw" required>
+
+                <button type="submit">Войти</button>
+                <label>
+                    <input type="checkbox" checked="checked" name="remember"> Запомнить меня
+                </label>
+            </div>
+        </form>
+    </div>
+    <button onclick="document.getElementById('id03').style.display='block'" style="width:auto;float:left;">Карточки</button>
+
+
+    <script>
+        // Get the modal
+        var modal = document.getElementById('id01');
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        // Get the modal
+        var modal = document.getElementById('id02');
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+
+</html>
