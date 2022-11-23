@@ -31,3 +31,9 @@ class Audio(models.Model):
 
 def home_page(request):
     return render(request, "index.html",{"cards": Card.objects.all()})
+
+def card_page(request):
+    id = (request.GET.get("id"))
+    all = (Card.objects.get(id=id))
+    print("text = ",all.text)
+    return render(request,"card.html", {"card":Card.objects.get(id=id)})
