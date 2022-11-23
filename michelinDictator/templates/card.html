@@ -1,0 +1,60 @@
+
+ {% extends 'base.html' %}
+ {% block content %}
+ <br><br><br>
+ <h2 style="text-align: center;">{{ card.name }} </h2>
+    <h2 style="text-align: center;">{{ card.text }} </h2>
+    <div class="main_container">
+        <div class="top_bar"></div>
+        <div class="central_container">
+            <div class="rules_container">
+                <h2 style="text-align: center;"> В поле ниже записаны правила, которых Вам следует придерживаться при записи</h2>
+                <div class="rules_text">
+                    <h3 style="text-align: center; color: #3f7320;">{{ card.instruction }}</h3>
+                </div>
+            </div>
+            <div class="text_conteiner">
+                <h2 style="text-align: center;"> Ниже написано содержимое файла, который надо прочитать!</h2>
+                <div class="file_content">
+                    <h3 style="text-align: center; color: #3f7320;">{{ card.text }}</h3>
+                </div>
+            </div>
+            <div class="voice_conteiner">
+                <div id="audio"></div>
+                <div class="button-wrapper">
+                    <button id="start">record</button>
+                    <button id="stop">stop</button>
+                </div>
+                <script>
+                    navigator.mediaDevices.getUserMedia({ audio: true })
+                        .then(stream => {
+                            const mediaRecorder = new MediaRecorder(stream);
+                            document.querySelector('#start').addEventListener('click', function () {
+                                mediaRecorder.start();
+                            });
+                            var audioChunks = [];
+                            mediaRecorder.addEventListener("dataavailable", function (event) {
+                                audioChunks.push(event.data);
+                            });
+
+                            mediaRecorder.addEventListener("stop", function () {
+                                const audioBlob = new Blob(audioChunks, {
+                                    type: 'audio/wav'
+                                });
+                                const audioUrl = URL.createObjectURL(audioBlob);
+                                var audio = document.createElement('audio');
+                                audio.src = audioUrl;
+                                audio.controls = true;
+                                audio.autoplay = true;
+                                document.querySelector('#audio').appendChild(audio);
+                                audioChunks = [];
+                            });
+                            document.querySelector('#stop').addEventListener('click', function () {
+                                mediaRecorder.stop();
+                            });
+                        });
+                </script>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
