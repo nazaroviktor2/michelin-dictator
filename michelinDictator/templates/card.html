@@ -1,62 +1,82 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+   .central_container {
+    text-align:  center;
+   }
+   textarea {
+       overflow-y: scroll;
+       width: 50%; /* Ширина поля в процентах */
+       height: 200px; /* Высота поля в пикселах */
+       resize: none; /* Запрещаем изменять размер */
+      }
+  </style>
+<br><br><br>
+<h2 style="text-align: center;">{{ card.name }} </h2>
+   <div class="main_container">
+       <div class="top_bar"></div>
+       <div class="central_container">
+           <div class="rules_container">
+               <h2 style="text-align: center;"> В поле ниже записаны правила, которых Вам следует придерживаться при записи</h2>
+               <div class="rules_text">
+                   <textarea name="comment" cols="100" rows="10" disabled id="output_client_rules">{{ card.instruction }}</textarea>
+               </div>
+           </div>
+           <div class="text_conteiner">
+               <h2 style="text-align: center;"> Ниже написано содержимое файла, который надо прочитать!</h2>
+               <div class="file_content">
+                   <textarea name="comment" cols="100" rows="10" disabled id="output_client_text">{{ card.text }}</textarea>
+               </div>
+           </div>
+              <input id="seek" type="range" name="seekbar" step="1" min="8" max="50">
+                 {% if request.user.is_authenticated %}
+           <div class="voice_conteiner">
+               <div id="audio"></div>
+               <div class="button-wrapper">
+                   <button id="start">record</button>
+                   <button id="stop">stop</button>
+               </div>
+        {% endif %}
 
- {% extends 'base.html' %}
- {% block content %}
- <br><br><br>
- <h2 style="text-align: center;">{{ card.name }} </h2>
-    <h2 style="text-align: center;">{{ card.text }} </h2>
-    <div class="main_container">
-        <div class="top_bar"></div>
-        <div class="central_container">
-            <div class="rules_container">
-                <h2 style="text-align: center;"> В поле ниже записаны правила, которых Вам следует придерживаться при записи</h2>
-                <div class="rules_text">
-                    <h3 style="text-align: center; color: #3f7320;">{{ card.instruction }}</h3>
-                </div>
-            </div>
-            <div class="text_conteiner">
-                <h2 style="text-align: center;"> Ниже написано содержимое файла, который надо прочитать!</h2>
-                <div class="file_content">
-                    <h3 style="text-align: center; color: #3f7320;">{{ card.text }}</h3>
-                </div>
-            </div>
-            {% if request.user.is_authenticated %}
-            <div class="voice_conteiner">
-                <div id="audio"></div>
-                <div class="button-wrapper">
-                    <button id="start">record</button>
-                    <button id="stop">stop</button>
-                </div>
-                {% endif %}
-                <script>
-                    navigator.mediaDevices.getUserMedia({ audio: true })
-                        .then(stream => {
-                            const mediaRecorder = new MediaRecorder(stream);
-                            document.querySelector('#start').addEventListener('click', function () {
-                                mediaRecorder.start();
-                            });
-                            var audioChunks = [];
-                            mediaRecorder.addEventListener("dataavailable", function (event) {
-                                audioChunks.push(event.data);
-                            });
+               <script>
+                   navigator.mediaDevices.getUserMedia({ audio: true })
+                       .then(stream => {
+                           const mediaRecorder = new MediaRecorder(stream);
+                           document.querySelector('#start').addEventListener('click', function () {
+                               mediaRecorder.start();
+                           });
+                           var audioChunks = [];
+                           mediaRecorder.addEventListener("dataavailable", function (event) {
+                               audioChunks.push(event.data);
+                           });
 
-                            mediaRecorder.addEventListener("stop", function () {
-                                const audioBlob = new Blob(audioChunks, {
-                                    type: 'audio/wav'
-                                });
-                                const audioUrl = URL.createObjectURL(audioBlob);
-                                var audio = document.createElement('audio');
-                                audio.src = audioUrl;
-                                audio.controls = true;
-                                audio.autoplay = true;
-                                document.querySelector('#audio').appendChild(audio);
-                                audioChunks = [];
-                            });
-                            document.querySelector('#stop').addEventListener('click', function () {
-                                mediaRecorder.stop();
-                            });
-                        });
-                </script>
-            </div>
-        </div>
-    </div>
-    {% endblock %}
+                           mediaRecorder.addEventListener("stop", function () {
+                               const audioBlob = new Blob(audioChunks, {
+                                   type: 'audio/wav'
+                               });
+                               const audioUrl = URL.createObjectURL(audioBlob);
+                               var audio = document.createElement('audio');
+                               audio.src = audioUrl;
+                               audio.controls = true;
+                               audio.autoplay = true;
+                               document.querySelector('#audio').appendChild(audio);
+                               audioChunks = [];
+                           });
+                           document.querySelector('#stop').addEventListener('click', function () {
+                               mediaRecorder.stop();
+                           });
+                       });
+                       var rng = document.getElementById('seek');
+                   var text = document.getElementById('output_client_text');
+                   var text_rules = document.getElementById('output_client_rules');
+                   rng.addEventListener("input",
+                       function () {
+                           text.style.fontSize = rng.value + 'px'
+                           text_rules.style.fontSize = rng.value + 'px'
+                       });
+               </script>
+
+           </div>
+       </div>
+   </div>
+   {% endblock %}

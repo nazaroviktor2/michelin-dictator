@@ -18,8 +18,8 @@ from django.urls import path
 from rest_framework.routers import SimpleRouter
 
 
-from card.views import CardViewSet, AudioViewSet, home_page, card_page
-from users.views import RegisterUser, LoginUser, logout_user
+from card.views import CardViewSet, AudioViewSet, home_page, card_page, add_card, my_cards
+from users.views import RegisterUser, LoginUser, logout_user, user_profile
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -34,7 +34,10 @@ urlpatterns = [
     path("login/", LoginUser.as_view(), name="login"),
     path("logout/", logout_user, name="logout"),
     path("", home_page, name='home'),
-    path("card/",card_page)
+    path("add_card/", add_card, name='add_card'),
+    path("my_cards/", my_cards, name='my_cards'),
+    path("card/", card_page,name = "card"),
+    path("profile/", user_profile, name="profile"),
 
 ]
 urlpatterns += router.urls

@@ -77,7 +77,17 @@ button:hover {
     margin: 24px 0 12px 0;
     position: relative;
 }
-
+.fig {
+    text-align: center;
+}
+img.profile_av {
+    width: 20%;
+    border-radius: 0%;
+}
+.container-buttons {
+    display: flex;
+    justify-content: space-around;
+  }
 img.avatar {
     width: 40%;
     border-radius: 0%;
@@ -124,6 +134,7 @@ span.psw {
     width: 30%;
     /* Может быть больше или меньше, в зависимости от размера экрана */
 }
+
 
 /* Кнопка закрытия (x) */
 .close {

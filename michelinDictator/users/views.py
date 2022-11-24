@@ -1,7 +1,7 @@
 from django.contrib.auth import logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 
 from django.views.generic import CreateView
@@ -27,3 +27,7 @@ class LoginUser(LoginView):
 def logout_user(request):
     logout(request)
     return redirect('home')
+
+def user_profile(request):
+    return render(request,"profile.html")
+

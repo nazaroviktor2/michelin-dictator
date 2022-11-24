@@ -65,3 +65,11 @@ def card_page(request):
     all = (Card.objects.get(id=id))
     print("text = ",all.text)
     return render(request,"card.html", {"card":Card.objects.get(id=id)})
+
+def add_card(request):
+
+    return render(request,"add_card.html")
+
+def my_cards(request):
+
+    return render(request,"my_cards.html")

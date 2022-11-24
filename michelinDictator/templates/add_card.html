@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+
+
+	<title>Add card</title>
+	<style>
+		.dobavka {
+		 text-align:  center;
+		}
+		textarea {
+			width: 90%; /* Ширина поля в процентах */
+			height: 200px; /* Высота поля в пикселах */
+			resize: none; /* Запрещаем изменять размер */
+		   } 
+	   </style>
+
+{% block content %}
+	<div class="dobavka">
+		<form name="add_card" method="post" >
+			<p><b>Введите правила:</b><br>
+				<textarea name="comment" cols="100" rows="10"></textarea>
+			</p>
+			</p>
+			<p><b>Введите текст: </b><Br>
+				<textarea name="comment" cols="100" rows="10"></textarea>
+			</p>
+			<p><input type="submit" value="Отправить">
+				<input type="reset" value="Очистить">
+			</p>
+			
+		</form>
+	</div>
+	{% endblock %}
