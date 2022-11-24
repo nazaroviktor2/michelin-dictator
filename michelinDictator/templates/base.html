@@ -13,7 +13,11 @@
     <button onclick="document.location='{% url 'home' %}'" style="width:auto;float:left;" class="buttonhome">Карточки</button>
       {% if request.user.is_authenticated %}
 
+<<<<<<< HEAD
   <a href="{% url 'logout' %}" style="float:right;width:auto;" class="buttonhome">Выйти</a>
+=======
+  <a href="{% url 'logout' %}" style="float:right;" >Выйти</a>
+>>>>>>> b526357 (back)
     <h1 style="float:right;">{{user.username}}</h1>
 
 
@@ -27,9 +31,13 @@
 
     <div id="id02" class="modal">
 
+<<<<<<< HEAD
           <form class="modal-content animate" method="post">
                 {% csrf_token %}
                         <input type="hidden" name="action" value="registration">
+=======
+        <form class="modal-content animate" action="../action_page.php" method="post">
+>>>>>>> b526357 (back)
             <div class="imgcontainer">
                 <span onclick="document.getElementById('id02').style.display='none'" class="close"
                     title="Закрыть Modal">&times;</span>
@@ -38,6 +46,7 @@
 
             <div class="container">
                 <label for="uname"><b>Имя пользователя</b></label>
+<<<<<<< HEAD
                 <input type="text" placeholder="Введите имя пользователя" name="username" id="uname" required>
 
                 <label for="psw1"><b>Пароль</b></label>
@@ -47,6 +56,17 @@
                 <input type="password" placeholder=" Ведите пароль" name="password2" id="psw2"required>
 
                 <button type="submit" class="buttonhome">Зарегистрироваться</button>
+=======
+                <input type="text" placeholder="Введите имя пользователя" name="uname" required>
+
+                <label for="psw"><b>Пароль</b></label>
+                <input type="password" placeholder=" Ведите пароль" name="psw" required>
+
+                <label for="psw"><b>Пароль ещё раз</b></label>
+                <input type="password" placeholder=" Ведите пароль" name="psw" required>
+
+                <button type="submit" class="buttonhome">Зарегистрироваться </button>
+>>>>>>> b526357 (back)
                 <label>
                     <input type="checkbox" checked="checked" name="remember"> Запомнить меня
                 </label>
@@ -58,17 +78,22 @@
 
     <div id="id01" class="modal">
 
+<<<<<<< HEAD
 
         <form class="modal-content animate" method="post">
                 {% csrf_token %}
 
             <input type="hidden" name="action" value="login">
 
+=======
+        <form class="modal-content animate" action="../action_page.php" method="post">
+>>>>>>> b526357 (back)
             <div class="imgcontainer">
                 <span onclick="document.getElementById('id01').style.display='none'" class="close"
                     title="Закрыть Modal">&times;</span>
                 <img src="{% static 'home/images/img_avatar.png' %}" alt="Аватар" width="25%" class="avatar">
             </div>
+<<<<<<< HEAD
 <!--            {{ form1.as_p }}-->
 
             <div class="container">
@@ -80,6 +105,17 @@
 
 
                 <button type="submit "class="buttonhome">Войти</button>
+=======
+
+            <div class="container">
+                <label for="uname"><b>Имя пользователя</b></label>
+                <input type="text" placeholder="Введите имя пользователя" name="uname" required>
+
+                <label for="psw"><b>Пароль</b></label>
+                <input type="password" placeholder=" Ведите пароль" name="psw" required>
+
+                <button type="submit" class="buttonhome">Войти</button>
+>>>>>>> b526357 (back)
                 <label>
                     <input type="checkbox" checked="checked" name="remember"> Запомнить меня
                 </label>

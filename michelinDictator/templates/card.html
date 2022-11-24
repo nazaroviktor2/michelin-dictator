@@ -19,14 +19,20 @@
                     <h3 style="text-align: center; color: #3f7320;">{{ card.text }}</h3>
                 </div>
             </div>
+<<<<<<< HEAD
             {% if request.user.is_authenticated %}
+=======
+>>>>>>> b526357 (back)
             <div class="voice_conteiner">
                 <div id="audio"></div>
                 <div class="button-wrapper">
                     <button id="start">record</button>
                     <button id="stop">stop</button>
                 </div>
+<<<<<<< HEAD
                 {% endif %}
+=======
+>>>>>>> b526357 (back)
                 <script>
                     navigator.mediaDevices.getUserMedia({ audio: true })
                         .then(stream => {

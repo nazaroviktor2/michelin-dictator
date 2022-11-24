@@ -17,8 +17,13 @@ from django.contrib import admin
 from django.urls import path
 from rest_framework.routers import SimpleRouter
 
+<<<<<<< HEAD
 
 from card.views import CardViewSet, AudioViewSet, home_page, card_page
+=======
+from card.models import home_page, card_page
+from card.views import CardViewSet, AudioViewSet
+>>>>>>> b526357 (back)
 from users.views import RegisterUser, LoginUser, logout_user
 
 from django.conf import settings

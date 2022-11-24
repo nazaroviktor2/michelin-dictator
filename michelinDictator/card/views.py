@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
+=======
+from django.shortcuts import render
+>>>>>>> b526357 (back)
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
@@ -7,7 +11,10 @@ from rest_framework.viewsets import ModelViewSet
 from card.models import Card, Audio
 from card.permissions import IsEditorOrStaffAndAuth, IsOwnerOrStaff
 from card.serializers import CardSerializer, AudioSerializer
+<<<<<<< HEAD
 from users.forms import RegisterUserForm
+=======
+>>>>>>> b526357 (back)
 
 
 # Create your views here.
@@ -35,6 +42,7 @@ class AudioViewSet(ModelViewSet):
     def perform_create(self, serializer):
         serializer.validated_data["user"] = self.request.user
         serializer.save()
+<<<<<<< HEAD
 
 def home_page(request):
     if request.method == "POST":
@@ -65,3 +73,5 @@ def card_page(request):
     all = (Card.objects.get(id=id))
     print("text = ",all.text)
     return render(request,"card.html", {"card":Card.objects.get(id=id)})
+=======
+>>>>>>> b526357 (back)

@@ -29,3 +29,14 @@ class Audio(models.Model):
     def __str__(self):
         return "Card:{0} Dictator id:{1}".format(self.card.id, self.user.id)
 
+<<<<<<< HEAD
+=======
+def home_page(request):
+    return render(request, "index.html",{"cards": Card.objects.all()})
+
+def card_page(request):
+    id = (request.GET.get("id"))
+    all = (Card.objects.get(id=id))
+    print("text = ",all.text)
+    return render(request,"card.html", {"card":Card.objects.get(id=id)})
+>>>>>>> b526357 (back)
