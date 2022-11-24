@@ -13,8 +13,8 @@
     <button onclick="document.location='{% url 'home' %}'" style="width:auto;float:left;" class="buttonhome">Карточки</button>
       {% if request.user.is_authenticated %}
 
-  <button onclick="document.location='{% url 'logout' %}'"  style="width:auto;" class="buttonhome">Выйти</button>
-    <button onclick="document.location='{% url 'profile' %}'"  style="width:auto;" class="buttonhome">{{user.username}}</button>
+      <button onclick="document.location='{% url 'logout' %}'"  style="width:auto;" class="buttonhome">Выйти</button>
+      <button onclick="document.location='{% url 'profile' %}'"  style="width:auto;" class="buttonhome">{{user.username}}</button>
 
 
 
@@ -22,20 +22,21 @@
     <a href="{% url 'login' %}">Войти</a>
   <a href="{% url 'register' %}">Регистрация</a>
 
-
     <button onclick="document.getElementById('id02').style.display='block'" style="width:auto;" class="buttonhome">Регистрация</button>
 
     <div id="id02" class="modal">
 
-          <form class="modal-content animate" method="post">
-                {% csrf_token %}
-                        <input type="hidden" name="action" value="registration">
+
+        <form class="modal-content animate" action="./profile.html" method="post">
+            
+
             <div class="imgcontainer">
                 <span onclick="document.getElementById('id02').style.display='none'" class="close"
                     title="Закрыть Modal">&times;</span>
                 <img src="{% static 'home/images/img_avatar.png' %}" alt="Аватар" width="10%" class="avatar">
             </div>
-
+            {% csrf_token %}
+            {{ form.as_p }}
             <div class="container">
                 <label for="uname"><b>Имя пользователя</b></label>
                 <input type="text" placeholder="Введите имя пользователя" name="username" id="uname" required>
@@ -53,42 +54,37 @@
             </div>
         </form>
     </div>
+        <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="buttonhome">Войти</button>
 
-    <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="buttonhome">Войти</button>
+        <div id="id01" class="modal">
 
-    <div id="id01" class="modal">
-
-
-        <form class="modal-content animate" method="post">
-                {% csrf_token %}
-
-            <input type="hidden" name="action" value="login">
-
-            <div class="imgcontainer">
-                <span onclick="document.getElementById('id01').style.display='none'" class="close"
-                    title="Закрыть Modal">&times;</span>
-                <img src="{% static 'home/images/img_avatar.png' %}" alt="Аватар" width="25%" class="avatar">
-            </div>
-<!--            {{ form1.as_p }}-->
-
-            <div class="container">
-                <label for="id_username"><b>Имя пользователя</b></label>
-      <input type="text" name="username" autofocus autocapitalize="none" autocomplete="username" maxlength="150" required id="id_username">
-
-                <label for="id_password"><b>Пароль</b></label>
-                <input type="password" name="password" autocomplete="current-password" required id="id_password">
+            <form class="modal-content animate" action="./profile.html" method="post">
+                <div class="imgcontainer">
+                    <span onclick="document.getElementById('id01').style.display='none'" class="close"
+                        title="Закрыть Modal">&times;</span>
+                    <img src="{% static 'home/images/img_avatar.png' %}" alt="Аватар" width="25%" class="avatar">
+                </div>
 
 
-                <button type="submit "class="buttonhome">Войти</button>
-                <label>
-                    <input type="checkbox" checked="checked" name="remember"> Запомнить меня
-                </label>
-            </div>
-        </form>
-    </div>
-    {% endif %}
-    {% block content %}
-    {% endblock content %}
+                <div class="container">
+                    <label for="uname"><b>Имя пользователя</b></label>
+                    <input type="text" placeholder="Введите имя пользователя" name="uname" required>
+
+                    <label for="psw"><b>Пароль</b></label>
+                    <input type="password" placeholder=" Ведите пароль" name="psw" required>
+                    <button type="submit" class="buttonhome">Войти</button>
+                    <label>
+                        <input type="checkbox" checked="checked" name="remember"> Запомнить меня
+                    </label>
+                </div>
+            </form>
+        </div>
+        {% endif %}
+    {% block content %}  
+    {% endblock %}  
+
+
+
 
        <script>
 

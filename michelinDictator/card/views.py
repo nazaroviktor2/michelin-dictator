@@ -36,6 +36,7 @@ class AudioViewSet(ModelViewSet):
         serializer.validated_data["user"] = self.request.user
         serializer.save()
 
+
 def home_page(request):
     if request.method == "POST":
         print("post zapros")
@@ -60,16 +61,26 @@ def home_page(request):
                 return redirect("home")
 
     return render(request, "index.html", {"cards": Card.objects.all()})
+
+
 def card_page(request):
     id = (request.GET.get("id"))
     all = (Card.objects.get(id=id))
-    print("text = ",all.text)
-    return render(request,"card.html", {"card":Card.objects.get(id=id)})
+    print("text = ", all.text)
+    return render(request, "card.html", {"card": Card.objects.get(id=id)})
+
 
 def add_card(request):
+    return render(request, "add_card.html")
 
-    return render(request,"add_card.html")
 
 def my_cards(request):
+    user = request.user
+    print(user.id)
+    return render(request, "my_cards.html", {"cards": Card.objects.filter(user=user)})
 
-    return render(request,"my_cards.html")
+
+def user_card(request):
+    id = (request.GET.get("id"))
+
+    return render(request, "user_card.html", {"card": Card.objects.get(id=id)})

@@ -1,28 +1,20 @@
 {% extends 'base.html' %}
-
-
-
 	<title>Add card</title>
-	<style>
-		.dobavka {
-		 text-align:  center;
-		}
-		textarea {
-			width: 90%; /* Ширина поля в процентах */
-			height: 200px; /* Высота поля в пикселах */
-			resize: none; /* Запрещаем изменять размер */
-		   } 
-	   </style>
-
-{% block content %}
-	<div class="dobavka">
+	   {% load static %}
+	   {% block content %}
+	   <link rel="stylesheet" href="{% static 'home/css/style.css' %}">
+	<div class="dob">
 		<form name="add_card" method="post" >
+			<br><br><br>
+			<p><b>Введите название:</b><br>
+				<textarea class="name_card_t" name="name_card" cols="10" rows="1"></textarea>
+			</p>
 			<p><b>Введите правила:</b><br>
-				<textarea name="comment" cols="100" rows="10"></textarea>
+				<textarea name="rules_card" cols="100" rows="10"></textarea>
 			</p>
 			</p>
 			<p><b>Введите текст: </b><Br>
-				<textarea name="comment" cols="100" rows="10"></textarea>
+				<textarea name="text_card" cols="100" rows="10"></textarea>
 			</p>
 			<p><input type="submit" value="Отправить">
 				<input type="reset" value="Очистить">

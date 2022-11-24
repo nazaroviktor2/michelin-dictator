@@ -151,6 +151,20 @@ span.psw {
     color: red;
     cursor: pointer;
 }
+.dob {
+    text-align:  center;
+   }
+   textarea.name_card_t {
+        width: 50%;
+        height: 20px;
+        resize: none;
+    }
+   textarea {
+       width: 50%; /* Ширина поля в процентах */
+       height: 200px; /* Высота поля в пикселах */
+       resize: vertical; /* Запрещаем изменять размер */
+      } 
+    
 
 /* Добавить анимацию масштабирования */
 .animate {
