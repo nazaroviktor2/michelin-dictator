@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+   .central_container {
+    text-align:  center;
+   }
+   textarea {
+       overflow-y: scroll;
+       width: 50%; /* Ширина поля в процентах */
+       height: 200px; /* Высота поля в пикселах */
+       resize: vertical; /* Запрещаем изменять размер */
+      }
+  </style>
+<br><br><br>
+ {% if request.user.is_authenticated and card.user == request.user %}
+<h2 style="text-align: center;">{{ card.name }} </h2>
+   <div class="main_container">
+       <div class="top_bar"></div>
+       <div class="central_container">
+           <div class="rules_container">
+               <h2 style="text-align: center;"> В поле ниже записаны правила, которых Вам следует придерживаться при записи</h2>
+               <div class="rules_text">
+                   <textarea name="comment" cols="100" rows="10" disabled id="output_client_rules">{{ card.instruction }}</textarea>
+               </div>
+           </div>
+           <div class="text_conteiner">
+               <h2 style="text-align: center;"> Ниже написано содержимое файла, который надо прочитать!</h2>
+               <div class="file_content">
+                   <textarea name="comment" cols="100" rows="10" disabled id="output_client_text">{{ card.text }}</textarea>
+               </div>
+           </div>
+
+
+           </div>
+       </div>
+   </div>
+
+<h1> ЗДЕСЬ ДОЛЖЕН БЫТЬ СПИСОК АУДИО ЗАПИСЕЙ И КНОПКА СКАЧАТЬ ВСЕ АУДИО </h1>
+
+
+{% else %}
+<h1>Это не ваша карта</h1>
+{% endif %}
+   {% endblock %}
