@@ -38,8 +38,9 @@
 
            <div class="voice_conteiner">
 
+
                <div id="audio"></div>
-               
+
                <div class="button-wrapper">
                 <div class="button-wrapper">
                     <button id="start">record</button>
@@ -51,7 +52,12 @@
 
 
 
+
            </div>
+                    <form method="post">
+                {% csrf_token %}
+            <button type="submit">Сохранить</button>
+        </form>
 
        </div>
                        {% endif %}

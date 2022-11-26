@@ -35,8 +35,17 @@
            </div>
        </div>
    </div>
-
+<form method="post" name="delete">
+        {% csrf_token %}
+<input type="hidden" name="name" value="delete">
+        <button type="submit">Удалить</button>
+</form>
 <h1> ЗДЕСЬ ДОЛЖЕН БЫТЬ СПИСОК АУДИО ЗАПИСЕЙ И КНОПКА СКАЧАТЬ ВСЕ АУДИО </h1>
+<form method="post" name="download">
+        {% csrf_token %}
+<input type="hidden" name="name" value="download">
+        <button type="submit">Скачать все</button>
+</form>
         {% for audio in audios %}
         <audio
                 src ="{{ audio.file_path.url }}" controls></audio>
