@@ -8,17 +8,14 @@
         text-align: center;
     }
     #layer1 {
-        width: 40%; /* Ширина первого слоя */
+        width: 730px; /* Ширина первого слоя */
         padding: 10px; /* Поля вокруг текста */
         background-color: #fff; /* Цвет фона */
         margin: auto;
         border-radius: 8px;
         
        }
-    .main_w {
-        text-align: center;
-        
-    }
+
     .btn{
         background-color: #ffffff; 
         color: #333;
@@ -47,16 +44,19 @@
         {% for card in cards %}
         <br>
         
-    <div class="main_w">
+
     <div id="layer1" >
      <div class="container">
          <label for="uname"><b>{{ card.name }}</b></label>
          <p class="cardtxt">{{ card.text|truncatechars:50 }}</p>
-         <label><b>{{ card.user  }} &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp</b> <button onclick="document.location='{% url 'home' %}card/?id={{ card.id }}'" class="btn">Перейти</button></label>
+         <label>
+            <p style="float: left;">{{ card.user  }}</p> 
+            <button onclick="document.location='{% url 'home' %}card/?id={{ card.id }}'" class="btn" style="float: right;">Перейти</button>
+        </label>
 
      </div>
     </div>
- </div>
+
 
         
 
