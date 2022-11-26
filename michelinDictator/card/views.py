@@ -82,5 +82,4 @@ def my_cards(request):
 
 def user_card(request):
     id = (request.GET.get("id"))
-
     return render(request, "user_card.html", {"card": Card.objects.get(id=id)})
