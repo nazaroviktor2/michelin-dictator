@@ -35,6 +35,7 @@
               <input id="seek" type="range" name="seekbar" step="1" min="8" max="50">
                  {% if request.user.is_authenticated %}
            <div class="voice_conteiner">
+
                <div id="audio"></div>
                
                <div class="button-wrapper">
@@ -43,8 +44,25 @@
                     <button id="pause">pause</button>
                     <button id="resume">resume</button>
                     <button id="stop">stop</button>
+
                </div>
         {% endif %}
+        <script>
+            document.getElementById('pause').hidden = true;
+            document.getElementById('resume').hidden = true;
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => {
+                    const mediaRecorder = new MediaRecorder(stream);
+                    document.querySelector('#start').addEventListener('click', function () {
+                        mediaRecorder.start();
+                        document.getElementById('start').hidden = true;
+                        document.getElementById('pause').hidden = false;
+                    });
+                    var audioChunks = [];
+                    mediaRecorder.addEventListener("dataavailable", function (event) {
+                        audioChunks.push(event.data);
+                    });
+
 
                <script>
                 document.getElementById('pause').hidden = true;
@@ -102,6 +120,7 @@
                        });
                     
                </script>
+
 
            </div>
        </div>

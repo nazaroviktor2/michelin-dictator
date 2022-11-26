@@ -24,21 +24,21 @@
                 </div>
             </div>
             <div class="voice_conteiner">
-                <div id="audio"></div>
+                <div id="audio"><audio></audio></div>
                 <button id="start">record</button>
                 <button id="pause">pause</button>
                 <button id="resume">resume</button>
                 <button id="stop">stop</button>
                 <script>
-                    document.getElementById('pause').hidden = true
-                    document.getElementById('resume').hidden = true
+                    document.getElementById('pause').hidden = true;
+                    document.getElementById('resume').hidden = true;
                     navigator.mediaDevices.getUserMedia({ audio: true })
                         .then(stream => {
                             const mediaRecorder = new MediaRecorder(stream);
-                            document.querySelector('#start').addEventListener('click', function () {
+                            document.querySelector('#start').addEventListener('click', function () {    
                                 mediaRecorder.start();
-                                document.getElementById('start').hidden = true
-                                document.getElementById('pause').hidden = false
+                                document.getElementById('start').hidden = true;
+                                document.getElementById('pause').hidden = false;
                             });
                             var audioChunks = [];
                             mediaRecorder.addEventListener("dataavailable", function (event) {
@@ -54,24 +54,24 @@
                                 audio.src = audioUrl;
                                 audio.controls = true;
                                 audio.autoplay = true;
-                                document.querySelector('#audio').appendChild(audio);
+                                document.querySelector('#audio').replaceChildren(audio);
                                 audioChunks = [];
                             });
                             document.querySelector('#pause').addEventListener('click', function () {
                                 mediaRecorder.pause();
-                                document.getElementById('pause').hidden = true
-                                document.getElementById('resume').hidden = false
+                                document.getElementById('pause').hidden = true;
+                                document.getElementById('resume').hidden = false;
                             });
                             document.querySelector('#resume').addEventListener('click', function () {
                                 mediaRecorder.resume();
-                                document.getElementById('pause').hidden = false
-                                document.getElementById('resume').hidden = true
+                                document.getElementById('pause').hidden = false;
+                                document.getElementById('resume').hidden = true;
                             });
                             document.querySelector('#stop').addEventListener('click', function () {
                                 mediaRecorder.stop();
-                                document.getElementById('pause').hidden = true
-                                document.getElementById('resume').hidden = true
-                                document.getElementById('start').hidden = false
+                                document.getElementById('pause').hidden = true;
+                                document.getElementById('resume').hidden = true;
+                                document.getElementById('start').hidden = false;
                             });
                         });
                 </script>
