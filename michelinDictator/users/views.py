@@ -6,7 +6,6 @@ from django.urls import reverse_lazy
 
 from django.views.generic import CreateView
 
-
 from users.forms import RegisterUserForm
 
 
@@ -28,6 +27,10 @@ def logout_user(request):
     logout(request)
     return redirect('home')
 
-def user_profile(request):
-    return render(request,"profile.html")
 
+def user_profile(request):
+    return render(request, "profile.html")
+
+
+def successful(request):
+    return render(request, "successful.html")

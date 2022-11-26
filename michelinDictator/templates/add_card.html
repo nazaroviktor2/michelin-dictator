@@ -5,18 +5,27 @@
 	   <link rel="stylesheet" href="{% static 'home/css/style.css' %}">
 	<div class="dob">
 		<form name="add_card" method="post" >
+			    {% csrf_token %}
 			<br><br><br><br>
 			<p><b>Введите название:</b><br>
-				<textarea class="name_card_t" name="name_card" cols="10" rows="1"></textarea>
+				<textarea class="name_card_t" name="name" cols="10" rows="1" required></textarea>
 			</p>
 			<p><b>Введите правила:</b><br>
-				<textarea name="rules_card" cols="100" rows="10"></textarea>
+				<textarea name="instruction" cols="100" rows="10" spellcheck="true" ></textarea>
 			</p>
 			</p>
 			<p><b>Введите текст: </b><Br>
-				<textarea name="text_card" cols="100" rows="10"></textarea>
+				<textarea name="text" cols="100" rows="10" spellcheck="true" required></textarea>
 			</p>
-			<p><input type="submit" value="Отправить">
+			<div>
+      <input type="checkbox" id="accent" name="accent" checked>
+      <label for="accent">Раставить ударение</label>
+				<br>
+		<input type="checkbox" id="highlight" name="highlight" checked>
+      <label for="highlight">Раставить выделение</label>
+    </div>
+
+			<p><input type="submit" value="Создать">
 				<input type="reset" value="Очистить">
 			</p>
 			

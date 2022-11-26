@@ -32,12 +32,15 @@
                    <textarea name="comment" cols="100" rows="10" disabled id="output_client_text">{{ card.text }}</textarea>
                </div>
            </div>
-              <input id="seek" type="range" name="seekbar" step="1" min="8" max="50">
-                 {% if request.user.is_authenticated %}
+
+            {% if request.user.is_authenticated %}
+           <input id="seek" type="range" name="seekbar" step="1" min="8" max="50">
+
            <div class="voice_conteiner">
 
+
                <div id="audio"></div>
-               
+
                <div class="button-wrapper">
                 <div class="button-wrapper">
                     <button id="start">record</button>
@@ -46,8 +49,21 @@
                     <button id="stop">stop</button>
 
                </div>
-        {% endif %}
-                 <script>
+
+
+
+
+           </div>
+                    <form method="post">
+                {% csrf_token %}
+            <button type="submit">Сохранить</button>
+        </form>
+
+       </div>
+                       {% endif %}
+   </div>
+
+                        <script>
             document.getElementById('pause').hidden = true;
             document.getElementById('resume').hidden = true;
             navigator.mediaDevices.getUserMedia({ audio: true })
@@ -100,11 +116,7 @@
                            text.style.fontSize = rng.value + 'px'
                            text_rules.style.fontSize = rng.value + 'px'
                        });
-                    
+
                </script>
 
-
-           </div>
-       </div>
-   </div>
    {% endblock %}

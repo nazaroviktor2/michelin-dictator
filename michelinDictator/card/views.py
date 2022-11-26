@@ -1,12 +1,18 @@
+from zipfile import ZipFile
+
 from django.contrib.auth import authenticate, login
+from django.http import FileResponse
 from django.shortcuts import render, redirect
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
+from card.scripts.add_accent import plus_to_accent
+from card.forms import AddCardForm
 from card.models import Card, Audio
 from card.permissions import IsEditorOrStaffAndAuth, IsOwnerOrStaff
+from card.scripts.bold_func import stars_to_highlight
 from card.serializers import CardSerializer, AudioSerializer
+from michelinDictator.settings import MEDIA_ROOT
 from users.forms import RegisterUserForm
 
 
@@ -67,10 +73,35 @@ def card_page(request):
     id = (request.GET.get("id"))
     all = (Card.objects.get(id=id))
     print("text = ", all.text)
+    if request.method == "POST":
+        print(request.POST)
     return render(request, "card.html", {"card": Card.objects.get(id=id)})
 
 
 def add_card(request):
+    if request.method == "POST":
+        print(request.POST)
+        form = AddCardForm(request.POST)
+
+        card = form.save(commit=False)
+        card.user = request.user
+        text = request.POST.get("text")
+        instruction = request.POST.get("instruction")
+
+        if request.POST.get("accent"):
+            text = plus_to_accent(text)
+            instruction = plus_to_accent(instruction)
+
+        if request.POST.get("highlight"):
+            text = stars_to_highlight(text)
+            instruction = stars_to_highlight(instruction)
+
+        card.text = text
+        card.instruction = instruction
+
+        if form.is_valid():
+            card.save()
+            return render(request, "successful.html", {"text": "карта для озвучивания создана"})
     return render(request, "add_card.html")
 
 
@@ -82,4 +113,20 @@ def my_cards(request):
 
 def user_card(request):
     id = (request.GET.get("id"))
-    return render(request, "user_card.html", {"card": Card.objects.get(id=id)})
+    if request.method == "POST":
+        if request.POST.get("name") == "delete":
+            card = Card.objects.get(id=id)
+            card.delete()
+            return redirect("my_cards")
+        elif request.POST.get("name") == "download":
+            print(request.user)
+            file_name = "all_audio_{0}.zip".format(id)
+            zip_file = ZipFile(file_name, 'w')
+            for audio in Audio.objects.filter(card=Card.objects.get(id=id)):
+                path = MEDIA_ROOT + "/" + str(audio.file_path)
+                zip_file.write(path, "{0}.mp3".format(audio.id))
+            print(zip_file.namelist())
+            #zip_file.close()
+            return FileResponse(zip_file.read())
+    return render(request, "user_card.html", {"card": Card.objects.get(id=id),
+                                              "audios": Audio.objects.filter(card=Card.objects.get(id=id))})
