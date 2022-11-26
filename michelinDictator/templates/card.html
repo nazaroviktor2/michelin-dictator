@@ -31,60 +31,60 @@
               <input id="seek" type="range" name="seekbar" step="1" min="8" max="50">
                  {% if request.user.is_authenticated %}
            <div class="voice_conteiner">
-               <div id="audio"></div>
+               <div id="audio"><audio></audio></div>
                <div class="button-wrapper">
-                   <button id="start">record</button>
-                   <button id="stop">stop</button>
+                <button id="start">record</button>
+                <button id="pause">pause</button>
+                <button id="resume">resume</button>
+                <button id="stop">stop</button>
                </div>
         {% endif %}
+        <script>
+            document.getElementById('pause').hidden = true;
+            document.getElementById('resume').hidden = true;
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => {
+                    const mediaRecorder = new MediaRecorder(stream);
+                    document.querySelector('#start').addEventListener('click', function () {
+                        mediaRecorder.start();
+                        document.getElementById('start').hidden = true;
+                        document.getElementById('pause').hidden = false;
+                    });
+                    var audioChunks = [];
+                    mediaRecorder.addEventListener("dataavailable", function (event) {
+                        audioChunks.push(event.data);
+                    });
 
-               <script>
-                    document.getElementById('pause').hidden = true
-                    document.getElementById('resume').hidden = true
-                    navigator.mediaDevices.getUserMedia({ audio: true })
-                        .then(stream => {
-                            const mediaRecorder = new MediaRecorder(stream);
-                            document.querySelector('#start').addEventListener('click', function () {
-                                mediaRecorder.start();
-                                document.getElementById('start').hidden = true
-                                document.getElementById('pause').hidden = false
-                            });
-                            var audioChunks = [];
-                            mediaRecorder.addEventListener("dataavailable", function (event) {
-                                audioChunks.push(event.data);
-                            });
-
-                            mediaRecorder.addEventListener("stop", function () {
-                                const audioBlob = new Blob(audioChunks, {
-                                    type: 'audio/wav'
-                                });
-                                const audioUrl = URL.createObjectURL(audioBlob);
-                                var audio = document.createElement('audio');
-                                audio.src = audioUrl;
-                                audio.controls = true;
-                                audio.autoplay = true;
-                                document.querySelector('#audio').appendChild(audio);
-                                audioChunks = [];
-                            });
-                            document.querySelector('#pause').addEventListener('click', function () {
-                                mediaRecorder.pause();
-                                document.getElementById('pause').hidden = true
-                                document.getElementById('resume').hidden = false
-                            });
-                            document.querySelector('#resume').addEventListener('click', function () {
-                                mediaRecorder.resume();
-                                document.getElementById('pause').hidden = false
-                                document.getElementById('resume').hidden = true
-                            });
-                            document.querySelector('#stop').addEventListener('click', function () {
-                                mediaRecorder.stop();
-                                document.getElementById('pause').hidden = true
-                                document.getElementById('resume').hidden = true
-                                document.getElementById('start').hidden = false
-                            });
+                    mediaRecorder.addEventListener("stop", function () {
+                        const audioBlob = new Blob(audioChunks, {
+                            type: 'audio/wav'
                         });
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        var audio = document.createElement('audio');
+                        audio.src = audioUrl;
+                        audio.controls = true;
+                        audio.autoplay = true;
+                        document.querySelector('#audio').replaceChildren(audio);
+                        audioChunks = [];
+                    });
+                    document.querySelector('#pause').addEventListener('click', function () {
+                        mediaRecorder.pause();
+                        document.getElementById('pause').hidden = true;
+                        document.getElementById('resume').hidden = false;
+                    });
+                    document.querySelector('#resume').addEventListener('click', function () {
+                        mediaRecorder.resume();
+                        document.getElementById('pause').hidden = false;
+                        document.getElementById('resume').hidden = true;
+                    });
+                    document.querySelector('#stop').addEventListener('click', function () {
+                        mediaRecorder.stop();
+                        document.getElementById('pause').hidden = true;
+                        document.getElementById('resume').hidden = true;
+                        document.getElementById('start').hidden = false;
+                    });
+                });
                 </script>
-
            </div>
        </div>
    </div>
