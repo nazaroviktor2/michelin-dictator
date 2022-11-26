@@ -82,4 +82,5 @@ def my_cards(request):
 
 def user_card(request):
     id = (request.GET.get("id"))
-    return render(request, "user_card.html", {"card": Card.objects.get(id=id)})
+    return render(request, "user_card.html", {"card": Card.objects.get(id=id),
+                                              "audios": Audio.objects.filter(card=Card.objects.get(id=id))})

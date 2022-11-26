@@ -37,6 +37,13 @@
    </div>
 
 <h1> ЗДЕСЬ ДОЛЖЕН БЫТЬ СПИСОК АУДИО ЗАПИСЕЙ И КНОПКА СКАЧАТЬ ВСЕ АУДИО </h1>
+        {% for audio in audios %}
+        <audio
+                src ="{{ audio.file_path.url }}" controls></audio>
+
+   {{ audio.user }}
+<br>
+        {% endfor %}
 
 
 {% else %}

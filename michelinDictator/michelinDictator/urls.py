@@ -40,6 +40,6 @@ urlpatterns = [
     path("card/", card_page,name = "card"),
     path("profile/", user_profile, name="profile"),
 
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += router.urls
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
