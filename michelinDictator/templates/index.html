@@ -50,7 +50,7 @@
          <label for="uname"><b>{{ card.name }}</b></label>
          <p class="cardtxt">{{ card.text|truncatechars:50 }}</p>
          <label>
-            <p style="float: left;">{{ card.user  }}</p> 
+            <p style="float: left;">{{ card.user }}</p> 
             <button onclick="document.location='{% url 'home' %}card/?id={{ card.id }}'" class="btn" style="float: right;">Перейти</button>
         </label>
 
