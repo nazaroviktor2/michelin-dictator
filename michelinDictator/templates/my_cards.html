@@ -2,10 +2,21 @@
 
  {% block content %}
  <br><br><br><br><br>
+ <style>
+    .centered {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: black;
+    }
+ </style>
         {% for card in cards %}
         <br>
         <div class="button-wrapper">
-                <button onclick="document.location='{% url 'user_card' %}?id={{ card.id }}'" class="btn1"  >{{ card.name }}</button>
+            <div class="container">
+                <button onclick="document.location='{% url 'user_card' %}?id={{ card.id }}'" class="btn1">{{ card.name }}</button>
+            </div>
         </div>        
     {% endfor %}
 {% endblock %}
