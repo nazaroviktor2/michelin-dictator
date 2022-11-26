@@ -8,8 +8,12 @@
 	<div class="fig"> 
 	<img src="{% static 'home/images/img_avatar.png' %}" alt="Аватар" class="avatar_profile_osrv">
 	</div>
+      {% if request.user.is_authenticated %}
+
 	<div class="container-buttons">
 	<button onclick="document.location='{% url 'add_card' %}'"  style="width:auto;" class="buttonhome">Добавить карточку</button>
 	<button  onclick="document.location='{% url 'my_cards' %}'"  style="width:auto;" class="buttonhome">Мои карточки</button>
 	</div>
+
+    {% endif %}
 	{% endblock %}
