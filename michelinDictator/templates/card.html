@@ -47,7 +47,7 @@
 
                </div>
         {% endif %}
-        <script>
+                 <script>
             document.getElementById('pause').hidden = true;
             document.getElementById('resume').hidden = true;
             navigator.mediaDevices.getUserMedia({ audio: true })
@@ -63,53 +63,35 @@
                         audioChunks.push(event.data);
                     });
 
-
-               <script>
-                document.getElementById('pause').hidden = true;
-                document.getElementById('resume').hidden = true;
-                navigator.mediaDevices.getUserMedia({ audio: true })
-                    .then(stream => {
-                        const mediaRecorder = new MediaRecorder(stream);
-                        document.querySelector('#start').addEventListener('click', function () {
-                            mediaRecorder.start();
-                            document.getElementById('start').hidden = true;
-                            document.getElementById('pause').hidden = false;
+                    mediaRecorder.addEventListener("stop", function () {
+                        const audioBlob = new Blob(audioChunks, {
+                            type: 'audio/wav'
                         });
-                        var audioChunks = [];
-                        mediaRecorder.addEventListener("dataavailable", function (event) {
-                            audioChunks.push(event.data);
-                        });
-    
-                        mediaRecorder.addEventListener("stop", function () {
-                            const audioBlob = new Blob(audioChunks, {
-                                type: 'audio/wav'
-                            });
-                            const audioUrl = URL.createObjectURL(audioBlob);
-                            var audio = document.createElement('audio');
-                            audio.src = audioUrl;
-                            audio.controls = true;
-                            audio.autoplay = true;
-                            audio.muted = true;
-                            document.querySelector('#audio').appendChild(audio);
-                            audioChunks = [];
-                        });
-                        document.querySelector('#pause').addEventListener('click', function () {
-                            mediaRecorder.pause();
-                            document.getElementById('pause').hidden = true;
-                            document.getElementById('resume').hidden = false;
-                        });
-                        document.querySelector('#resume').addEventListener('click', function () {
-                            mediaRecorder.resume();
-                            document.getElementById('pause').hidden = false;
-                            document.getElementById('resume').hidden = true;
-                        });
-                        document.querySelector('#stop').addEventListener('click', function () {
-                            mediaRecorder.stop();
-                            document.getElementById('pause').hidden = true;
-                            document.getElementById('resume').hidden = true;
-                            document.getElementById('start').hidden = false;
-                        });
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        var audio = document.createElement('audio');
+                        audio.src = audioUrl;
+                        audio.controls = true;
+                        audio.autoplay = true;
+                        document.querySelector('#audio').replaceChildren(audio);
+                        audioChunks = [];
                     });
+                    document.querySelector('#pause').addEventListener('click', function () {
+                        mediaRecorder.pause();
+                        document.getElementById('pause').hidden = true;
+                        document.getElementById('resume').hidden = false;
+                    });
+                    document.querySelector('#resume').addEventListener('click', function () {
+                        mediaRecorder.resume();
+                        document.getElementById('pause').hidden = false;
+                        document.getElementById('resume').hidden = true;
+                    });
+                    document.querySelector('#stop').addEventListener('click', function () {
+                        mediaRecorder.stop();
+                        document.getElementById('pause').hidden = true;
+                        document.getElementById('resume').hidden = true;
+                        document.getElementById('start').hidden = false;
+                    });
+                });
                        var rng = document.getElementById('seek');
                    var text = document.getElementById('output_client_text');
                    var text_rules = document.getElementById('output_client_rules');
