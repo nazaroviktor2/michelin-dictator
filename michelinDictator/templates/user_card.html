@@ -11,6 +11,29 @@
        height: 200px; /* Высота поля в пикселах */
        resize: vertical; /* Запрещаем изменять размер */
       }
+    TD {
+        border: 1px solid #333; /* Граница вокруг ячеек */
+        padding: 5px;
+    }
+
+    .btn{
+        background-color: #ffffff; 
+        color: #333;
+        
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        border-radius: 8px;
+        border: 1px solid #d9d9d9;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+      }
+    .btn:hover {
+        background-color: #fd0202;
+        color: #fff;
+    }
   </style>
 <br><br><br>
  {% if request.user.is_authenticated and card.user == request.user %}
@@ -35,27 +58,45 @@
            </div>
        </div>
    </div>
-<form method="post" name="delete">
-        {% csrf_token %}
-<input type="hidden" name="name" value="delete">
-        <button type="submit">Удалить</button>
-</form>
-<h1> ЗДЕСЬ ДОЛЖЕН БЫТЬ СПИСОК АУДИО ЗАПИСЕЙ И КНОПКА СКАЧАТЬ ВСЕ АУДИО </h1>
-<form method="post" name="download">
-        {% csrf_token %}
-<input type="hidden" name="name" value="download">
-        <button type="submit">Скачать все</button>
-</form>
-        {% for audio in audios %}
-        <audio
-                src ="{{ audio.file_path.url }}" controls></audio>
 
-   {{ audio.user }}
-<br>
-        {% endfor %}
+</form>
+<div style="padding: 10px;">
+<table style="margin: auto; border: 1px solid black " >
+    <tr>
+        <td>Check</td>
+        <td>ID</td>
+        <td>Имя пользователя</td>
+        <td>Аудио файл</td>
+    </tr>
+    {% for audio in audios %}
+    <tr>
+        <td style="text-align: center;"><input type="checkbox" name="aaa" id="aaa"></td>
+        <td style="text-align: center;">{{ audio.id }}</td>
+        <td style="text-align: center;"> {{ audio.user }}</td>
+        <td> <audio src ="{{ audio.file_path.url }}" controls></audio> </td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
 
+<div style="padding: 10px; margin: auto; width: 310px;">
+    <div style="padding: 5px; float: left;">
+    <form method="post" name="delete">
+        {% csrf_token %}
+    <input type="hidden" name="name" value="delete">
+        <button type="submit"  class="btn">Удалить</button>
+    </div>
+    <div style="padding: 5px; float: right;">
+    </form>
+    <form method="post" name="download">
+        {% csrf_token %}
+    <input type="hidden" name="name" value="download">
+        <button type="submit"  class="btn">Скачать все</button>
+    </div>
+</div>
 
 {% else %}
 <h1>Это не ваша карта</h1>
 {% endif %}
    {% endblock %}
+

@@ -122,12 +122,13 @@ def user_card(request):
             return redirect("my_cards")
         elif request.POST.get("name") == "download":
             print(request.user)
-            zip_file = ZipFile("all_audio_{0}.zip".format(request.user), 'w')
+            file_name = "all_audio_{0}.zip".format(id)
+            zip_file = ZipFile(file_name, 'w')
             for audio in Audio.objects.filter(card=Card.objects.get(id=id)):
                 path = MEDIA_ROOT + "/" + str(audio.file_path)
                 zip_file.write(path, "{0}.mp3".format(audio.id))
             print(zip_file.namelist())
-
-            return FileResponse(zip_file.seek())
+            #zip_file.close()
+            return FileResponse(zip_file.read())
     return render(request, "user_card.html", {"card": Card.objects.get(id=id),
                                               "audios": Audio.objects.filter(card=Card.objects.get(id=id))})
