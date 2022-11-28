@@ -43,6 +43,8 @@ class AudioViewSet(ModelViewSet):
         serializer.save()
 
 
+
+
 def home_page(request):
     if request.method == "POST":
         print("post zapros")

@@ -24,14 +24,16 @@
                 </div>
             </div>
             <div class="voice_conteiner">
-                <div id="audio"><audio></audio></div>
+                <form method="post" name="audio_post"><div id="audio"><audio></audio></div></form>
                 <button id="start">record</button>
                 <button id="pause">pause</button>
                 <button id="resume">resume</button>
                 <button id="stop">stop</button>
+                <button id="send">send</button>
                 <script>
                     document.getElementById('pause').hidden = true;
                     document.getElementById('resume').hidden = true;
+                    document.getElementById('send').hidden = true;
                     navigator.mediaDevices.getUserMedia({ audio: true })
                         .then(stream => {
                             const mediaRecorder = new MediaRecorder(stream);
@@ -72,7 +74,9 @@
                                 document.getElementById('pause').hidden = true;
                                 document.getElementById('resume').hidden = true;
                                 document.getElementById('start').hidden = false;
+                                document.getElementById('send').hidden = false;
                             });
+                            
                         });
                 </script>
             </div>

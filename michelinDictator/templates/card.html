@@ -13,7 +13,6 @@
     .audio {
         src ="{{ card.id }}";
     }
-
   </style>
 <br><br><br>
 <h2 style="text-align: center;">{{ card.name }} </h2>
@@ -32,38 +31,37 @@
                    <textarea name="comment" cols="100" rows="10" disabled id="output_client_text">{{ card.text }}</textarea>
                </div>
            </div>
-
             {% if request.user.is_authenticated %}
            <input id="seek" type="range" name="seekbar" step="1" min="8" max="50">
-
            <div class="voice_conteiner">
-
-
-               <div id="audio"></div>
-
-               <div class="button-wrapper">
+                <div class="button-wrapper">
                 <div class="button-wrapper">
                     <button id="start">record</button>
                     <button id="pause">pause</button>
                     <button id="resume">resume</button>
                     <button id="stop">stop</button>
-
                </div>
-
-
-
-
            </div>
-                    <form method="post">
+            <form method="post" enctype="multipart/form-data" action="">
+                <div id="audio"></div>
                 {% csrf_token %}
-            <button type="submit">Сохранить</button>
-        </form>
-
+                <button type="submit" id="send">Сохранить</button>
+            </form>
+            <script>
+                document.querySelector('#send').addEventListener('click', function () {
+                        const req = new XMLHttpRequest();
+                        req.open("POST", "{{ reques.get_full_path }}", true);
+                        req.onload = (event) => {
+                        // Uploaded
+                        };
+                        const blob = new Blob(["abc123"], { type: "text/plain" });
+                        req.send(blob);
+                    });
+            </script>
        </div>
-                       {% endif %}
+    {% endif %}
    </div>
-
-                        <script>
+        <script>
             document.getElementById('pause').hidden = true;
             document.getElementById('resume').hidden = true;
             navigator.mediaDevices.getUserMedia({ audio: true })
@@ -108,15 +106,14 @@
                         document.getElementById('start').hidden = false;
                     });
                 });
-                       var rng = document.getElementById('seek');
-                   var text = document.getElementById('output_client_text');
-                   var text_rules = document.getElementById('output_client_rules');
-                   rng.addEventListener("input",
-                       function () {
-                           text.style.fontSize = rng.value + 'px'
-                           text_rules.style.fontSize = rng.value + 'px'
-                       });
-
+                var rng = document.getElementById('seek');
+                var text = document.getElementById('output_client_text');
+                var text_rules = document.getElementById('output_client_rules');
+                rng.addEventListener("input",
+                    function () {
+                        text.style.fontSize = rng.value + 'px'
+                        text_rules.style.fontSize = rng.value + 'px'
+                    });
                </script>
 
    {% endblock %}
