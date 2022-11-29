@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 {% block content %}
 <style>
@@ -14,6 +13,9 @@
     .audio {
         src ="{{ card.id }}";
     }
+    span.bold {
+        font-weight: bold;
+      }
   </style>
 <br><br><br>
 <h2 style="text-align: center;">{{ card.name }} </h2>
@@ -25,34 +27,45 @@
                <div class="rules_text">
                    <textarea name="comment" cols="100" rows="10" disabled id="output_client_rules">{{ card.instruction }}</textarea>
                </div>
-           </div>
+           </div> 
            <div class="text_conteiner">
                <h2 style="text-align: center;"> Ниже написано содержимое файла, который надо прочитать!</h2>
-
                <div class="file_content">
-                   <textarea name="comment" cols="100" rows="10" disabled id="output_client_text">{{ card.text }}</textarea>
+                   <textarea name="comment" cols="100" rows="10" disabled id="output_client_text" > {{ card.text }}</textarea>
                </div>
            </div>
+
             {% if request.user.is_authenticated %}
            <input id="seek" type="range" name="seekbar" step="1" min="8" max="50">
+
            <div class="voice_conteiner">
-                   <div id="audio"></div>
 
-           </div>
-           <div class="button-wrapper">
 
+               <div id="audio"></div>
+
+               <div class="button-wrapper">
+                <div class="button-wrapper">
                     <button id="start">record</button>
                     <button id="pause">pause</button>
                     <button id="resume">resume</button>
                     <button id="stop">stop</button>
+
                </div>
-                <button id="sub" onclick="uploadBlob()">отправить</button>
+
+
+
+
+           </div>
+                    <form method="post">
+                {% csrf_token %}
+            <button type="submit">Сохранить</button>
+        </form>
 
        </div>
-    {% endif %}
+                       {% endif %}
    </div>
-        <script>
-var audioChunks = [];
+
+                        <script>
             document.getElementById('pause').hidden = true;
             document.getElementById('resume').hidden = true;
             navigator.mediaDevices.getUserMedia({ audio: true })
@@ -68,8 +81,7 @@ var audioChunks = [];
                         audioChunks.push(event.data);
                     });
 
-
-mediaRecorder.addEventListener("stop", function () {
+                    mediaRecorder.addEventListener("stop", function () {
                         const audioBlob = new Blob(audioChunks, {
                             type: 'audio/wav'
                         });
@@ -80,14 +92,7 @@ mediaRecorder.addEventListener("stop", function () {
                         audio.autoplay = true;
                         document.querySelector('#audio').replaceChildren(audio);
                         audioChunks = [];
-                        document.querySelector('#send').addEventListener('click', function () {
-                            fetch('{{ request.get_full_path }}', {
-                                method: "POST",
-                                body: audioUrl
-                            })
-                            .then(response => alert('Blob Uploaded'));
-                            });
-                        });
+                    });
                     document.querySelector('#pause').addEventListener('click', function () {
                         mediaRecorder.pause();
                         document.getElementById('pause').hidden = true;
@@ -105,44 +110,14 @@ mediaRecorder.addEventListener("stop", function () {
                         document.getElementById('start').hidden = false;
                     });
                 });
-                var rng = document.getElementById('seek');
-                var text = document.getElementById('output_client_text');
-                var text_rules = document.getElementById('output_client_rules');
-                rng.addEventListener("input",
-                    function () {
-                        text.style.fontSize = rng.value + 'px'
-                        text_rules.style.fontSize = rng.value + 'px'
-                    });
-
-function uploadBlob() {
- myAudio = document.getElementById('audio').firstElementChild;
-
-<!--                  const blob =-->
-<!--            new Blob(-->
-<!--                [myAudio.src],-->
-<!--                { type: "text/plan" }-->
-<!--            );-->
-
-
-fetch(myAudio.src)
-  .then(res => res.blob()) // Gets the response and returns it as a blob
-  .then(blob => {
-var result = blob
-        fetch('{{ request.get_full_path }}', {
-
-            // HTTP request type
-            method: "POST",
-
-            // Sending our blob with our request
-            body:result ,
-            headers: { "X-CSRFToken": '{{ csrf_token }}' },
-        })
-        .then(response => alert("Запись добавлена"))
-        .catch(err => alert(err));
-});
-
-
-    };
+                       var rng = document.getElementById('seek');
+                   var text = document.getElementById('output_client_text');
+                   var text_rules = document.getElementById('output_client_rules');
+                   rng.addEventListener("input",
+                       function () {
+                           text.style.fontSize = rng.value + 'px'
+                           text_rules.style.fontSize = rng.value + 'px'
+                       });
 
                </script>
 
