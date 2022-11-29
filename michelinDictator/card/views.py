@@ -49,7 +49,6 @@ class AudioViewSet(ModelViewSet):
 
 def home_page(request):
     if request.method == "POST":
-        print("post zapros")
         print(request.POST)
         action = request.POST.get("action")
         if action == "login":
@@ -76,17 +75,28 @@ def home_page(request):
 def card_page(request):
     id = (request.GET.get("id"))
     if request.method == "POST":
-        print("POST")
-        #print(request.body)
-        audio_file = ContentFile(request.body,name="{0}.wav".format(datetime.date.today()))
-        Audio.objects.create(file_path=audio_file, card=Card.objects.get(id=id),user=request.user)
+        # print(request.body)
+        audios = Audio.objects.filter(card=Card.objects.get(id=id),user=request.user)
+        print(audios)
+        if audios.first() is not None:
+            audios.first().delete()
+        audio_file = ContentFile(request.body, name="{0}.wav".format(datetime.date.today()))
+        Audio.objects.create(file_path=audio_file, card=Card.objects.get(id=id), user=request.user)
 
-    return render(request, "card.html", {"card": Card.objects.get(id=id)})
+
+    if request.user.is_authenticated:
+        return render(request, "card.html", {"card": Card.objects.get(id=id),
+                                             "audios": Audio.objects.filter(card=Card.objects.get(id=id),
+                                                                            user=request.user)
+                                             })
+    else:
+        return render(request, "card.html", {"card": Card.objects.get(id=id),
+                                             "audios": None
+                                             })
 
 
 def add_card(request):
     if request.method == "POST":
-        print(request.POST)
         form = AddCardForm(request.POST)
 
         card = form.save(commit=False)
@@ -113,7 +123,6 @@ def add_card(request):
 
 def my_cards(request):
     user = request.user
-    print(user.id)
     return render(request, "my_cards.html", {"cards": Card.objects.filter(user=user)})
 
 
