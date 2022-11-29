@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 {% block content %}
 <style>
@@ -10,6 +11,9 @@
        height: 200px; /* Высота поля в пикселах */
        resize: vertical; /* Запрещаем изменять размер */
       }
+    .audio {
+        src ="{{ card.id }}";
+    }
 
   </style>
 <br><br><br>
@@ -25,29 +29,43 @@
            </div>
            <div class="text_conteiner">
                <h2 style="text-align: center;"> Ниже написано содержимое файла, который надо прочитать!</h2>
+
                <div class="file_content">
                    <textarea name="comment" cols="100" rows="10" disabled id="output_client_text">{{ card.text }}</textarea>
                </div>
            </div>
+
             {% if request.user.is_authenticated %}
            <input id="seek" type="range" name="seekbar" step="1" min="8" max="50">
+
            <div class="voice_conteiner">
-                    <div id="audio"></div>
+
+
+               <div id="audio"></div>
+
+               <div class="button-wrapper">
                 <div class="button-wrapper">
                     <button id="start">record</button>
                     <button id="pause">pause</button>
                     <button id="resume">resume</button>
                     <button id="stop">stop</button>
+
                </div>
+
+
+
+
            </div>
-            <!-- <form method="post" enctype="multipart/form-data" action=""> -->
+                    <form method="post">
                 {% csrf_token %}
-                <button type="submit" id="send">Сохранить</button>
-            <!-- </form> -->
+            <button type="submit">Сохранить</button>
+        </form>
+
        </div>
-    {% endif %}
+                       {% endif %}
    </div>
-        <script>
+
+                        <script>
             document.getElementById('pause').hidden = true;
             document.getElementById('resume').hidden = true;
             var blob
@@ -64,7 +82,8 @@
                         audioChunks.push(event.data);
                     });
 
-                    mediaRecorder.addEventListener("stop", function () {
+
+mediaRecorder.addEventListener("stop", function () {
                         const audioBlob = new Blob(audioChunks, {
                             type: 'audio/wav'
                         });
@@ -76,7 +95,7 @@
                         blob = audioBlob
                         document.querySelector('#audio').replaceChildren(audio);
                         audioChunks = [];
-                        });
+                    });
                     document.querySelector('#pause').addEventListener('click', function () {
                         mediaRecorder.pause();
                         document.getElementById('pause').hidden = true;
@@ -94,24 +113,15 @@
                         document.getElementById('start').hidden = false;
                     });
                 });
-                var rng = document.getElementById('seek');
-                var text = document.getElementById('output_client_text');
-                var text_rules = document.getElementById('output_client_rules');
-                rng.addEventListener("input",
-                    function () {
-                        text.style.fontSize = rng.value + 'px'
-                        text_rules.style.fontSize = rng.value + 'px'
-                    });
-                document.querySelector('#send').addEventListener('click', function () {
-                    let reader = new FileReader();
-                    reader.readAsDataURL(blob);
-                    fetch('{{ request.get_full_path }}', {
-                    method: "POST",
-                    body: reader.result,
-                    headers: { "X-CSRFToken": '{{ csrf_token }}' },
-                    })
-                    .then(response => alert(reader.result));
-                });
+                       var rng = document.getElementById('seek');
+                   var text = document.getElementById('output_client_text');
+                   var text_rules = document.getElementById('output_client_rules');
+                   rng.addEventListener("input",
+                       function () {
+                           text.style.fontSize = rng.value + 'px'
+                           text_rules.style.fontSize = rng.value + 'px'
+                       });
+
                </script>
 
    {% endblock %}   

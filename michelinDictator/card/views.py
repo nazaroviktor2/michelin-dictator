@@ -1,5 +1,9 @@
+import datetime
+import io
+import json
+import time
 from zipfile import ZipFile
-
+from django.core.files.base import ContentFile
 from django.contrib.auth import authenticate, login
 from django.http import FileResponse
 from django.shortcuts import render, redirect
@@ -73,12 +77,8 @@ def home_page(request):
 
 def card_page(request):
     id = (request.GET.get("id"))
-    all = (Card.objects.get(id=id))
-    print("text = ", all.text)
     if request.method == "POST":
-        print(request.body)
-
-
+        print(request.POST)
     return render(request, "card.html", {"card": Card.objects.get(id=id)})
 
 
@@ -126,12 +126,15 @@ def user_card(request):
             print(request.user)
             file_name = "all_audio_{0}.zip".format(id)
             zip_file = ZipFile(file_name, 'w')
-            for audio in Audio.objects.filter(card=Card.objects.get(id=id)):
-                path = MEDIA_ROOT + "/" + str(audio.file_path)
-                zip_file.write(path, "{0}.mp3".format(audio.id))
-            print(zip_file.namelist())
-            #zip_file.close()
-            return FileResponse(zip_file.read())
+            audios = Audio.objects.filter(card=Card.objects.get(id=id))
+            if audios:
+                for audio in audios:
+                    path = MEDIA_ROOT + "/" + str(audio.file_path)
+                    zip_file.write(path, "{0}.wav".format(audio.id))
+                print(zip_file.namelist())
+                zip_file.close()
+                return FileResponse(open(file_name, "rb"))
+
     return render(request, "user_card.html", {"card": Card.objects.get(id=id),
                                               "audios": Audio.objects.filter(card=Card.objects.get(id=id))})
 
