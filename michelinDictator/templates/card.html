@@ -7,28 +7,45 @@
    }
    textarea {
        overflow-y: scroll;
-       width: 50%; /* Ширина поля в процентах */
-       height: 200px; /* Высота поля в пикселах */
+       width: 80%; /* Ширина поля в процентах */
+       height: 170px; /* Высота поля в пикселах */
        resize: vertical; /* Запрещаем изменять размер */
       }
+<<<<<<< HEAD
     .audio {
         src ="{{ card.id }}";
     }
+=======
+          #layer1 {
+        width: 70%; /* Ширина первого слоя */
+     overflow: auto;
+         align-items: center;
+    align-content: center;
+        padding: 10px; /* Поля вокруг текста */
+        background-color: #fff; /* Цвет фона */
+        margin: auto;
+        border-radius: 8px;
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, .1);
+
+       }
+>>>>>>> 7546327192b2c681c34678816462560f214f56ef
 
   </style>
-<br><br><br>
+<br><br><br><br><br>
+<br>
+<div id="layer1">
 <h2 style="text-align: center;">{{ card.name }} </h2>
    <div class="main_container">
        <div class="top_bar"></div>
        <div class="central_container">
            <div class="rules_container">
-               <h2 style="text-align: center;"> В поле ниже записаны правила, которых Вам следует придерживаться при записи</h2>
+               <h2 style="text-align: center;"> Инструкция к прочтению</h2>
                <div class="rules_text">
                    <textarea name="comment" cols="100" rows="10" disabled id="output_client_rules">{{ card.instruction }}</textarea>
                </div>
            </div>
            <div class="text_conteiner">
-               <h2 style="text-align: center;"> Ниже написано содержимое файла, который надо прочитать!</h2>
+               <h2 style="text-align: center;"> Текс для прочтения</h2>
 
                <div class="file_content">
                    <textarea name="comment" cols="100" rows="10" disabled id="output_client_text">{{ card.text }}</textarea>
@@ -36,10 +53,22 @@
            </div>
 
             {% if request.user.is_authenticated %}
+<!--           <label for="seek"><b>Размер:</b></label>-->
            <input id="seek" type="range" name="seekbar" step="1" min="8" max="50">
 
            <div class="voice_conteiner">
+<<<<<<< HEAD
 
+=======
+                    <div id="audio">
+                            {% for audio in audios %}
+                        <audio src ="{{ audio.file_path.url }}" controls></audio>
+                        {% endfor %}
+                    </div>
+
+           </div>
+                           <div class="button-wrapper">
+>>>>>>> 7546327192b2c681c34678816462560f214f56ef
 
                <div id="audio"></div>
 
@@ -49,6 +78,7 @@
                     <button id="pause">pause</button>
                     <button id="resume">resume</button>
                     <button id="stop">stop</button>
+<<<<<<< HEAD
 
                </div>
 
@@ -60,12 +90,23 @@
                 {% csrf_token %}
             <button type="submit">Сохранить</button>
         </form>
+=======
+                               <button id="sub" onclick="uploadBlob()">отправить</button>
+
+               </div>
+>>>>>>> 7546327192b2c681c34678816462560f214f56ef
 
        </div>
                        {% endif %}
    </div>
+<<<<<<< HEAD
 
                         <script>
+=======
+    </div>
+        <script>
+var audioChunks = [];
+>>>>>>> 7546327192b2c681c34678816462560f214f56ef
             document.getElementById('pause').hidden = true;
             document.getElementById('resume').hidden = true;
             var blob

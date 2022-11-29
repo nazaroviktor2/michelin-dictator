@@ -13,6 +13,7 @@
         background-color: #fff; /* Цвет фона */
         margin: auto;
         border-radius: 8px;
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, .1);
         
        }
 
@@ -43,11 +44,9 @@
  <br><br><br><br><br>
         {% for card in cards %}
         <br>
-        
-
     <div id="layer1" >
      <div class="container">
-         <label for="uname"><b>{{ card.name }}</b></label>
+         <label ><b>{{ card.name }}</b></label>
          <p class="cardtxt">{{ card.text|truncatechars:50 }}</p>
          <div>
             <p style="float: left;">{{ card.user }}</p>
