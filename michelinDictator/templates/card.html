@@ -13,7 +13,9 @@
     .audio {
         src ="{{ card.id }}";
     }
-
+    span.bold {
+        font-weight: bold;
+      }
   </style>
 <br><br><br>
 <h2 style="text-align: center;">{{ card.name }} </h2>
@@ -25,11 +27,11 @@
                <div class="rules_text">
                    <textarea name="comment" cols="100" rows="10" disabled id="output_client_rules">{{ card.instruction }}</textarea>
                </div>
-           </div>
+           </div> 
            <div class="text_conteiner">
                <h2 style="text-align: center;"> Ниже написано содержимое файла, который надо прочитать!</h2>
                <div class="file_content">
-                   <textarea name="comment" cols="100" rows="10" disabled id="output_client_text">{{ card.text }}</textarea>
+                   <textarea name="comment" cols="100" rows="10" disabled id="output_client_text" ><div id='Kirill'style="font-weight: bold;" >Kirill</div> {{ card.text }}</textarea>
                </div>
            </div>
 
