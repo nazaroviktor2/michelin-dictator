@@ -76,7 +76,9 @@ def card_page(request):
     all = (Card.objects.get(id=id))
     print("text = ", all.text)
     if request.method == "POST":
-        print(request.POST)
+        print(request.body)
+
+
     return render(request, "card.html", {"card": Card.objects.get(id=id)})
 
 
@@ -132,3 +134,5 @@ def user_card(request):
             return FileResponse(zip_file.read())
     return render(request, "user_card.html", {"card": Card.objects.get(id=id),
                                               "audios": Audio.objects.filter(card=Card.objects.get(id=id))})
+
+

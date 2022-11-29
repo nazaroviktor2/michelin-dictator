@@ -10,9 +10,7 @@
        height: 200px; /* Высота поля в пикселах */
        resize: vertical; /* Запрещаем изменять размер */
       }
-    .audio {
-        src ="{{ card.id }}";
-    }
+
   </style>
 <br><br><br>
 <h2 style="text-align: center;">{{ card.name }} </h2>
@@ -34,7 +32,7 @@
             {% if request.user.is_authenticated %}
            <input id="seek" type="range" name="seekbar" step="1" min="8" max="50">
            <div class="voice_conteiner">
-                <div class="button-wrapper">
+                    <div id="audio"></div>
                 <div class="button-wrapper">
                     <button id="start">record</button>
                     <button id="pause">pause</button>
@@ -42,28 +40,17 @@
                     <button id="stop">stop</button>
                </div>
            </div>
-            <form method="post" enctype="multipart/form-data" action="">
-                <div id="audio"></div>
+            <!-- <form method="post" enctype="multipart/form-data" action=""> -->
                 {% csrf_token %}
                 <button type="submit" id="send">Сохранить</button>
-            </form>
-            <script>
-                document.querySelector('#send').addEventListener('click', function () {
-                        const req = new XMLHttpRequest();
-                        req.open("POST", "{{ reques.get_full_path }}", true);
-                        req.onload = (event) => {
-                        // Uploaded
-                        };
-                        const blob = new Blob(["abc123"], { type: "text/plain" });
-                        req.send(blob);
-                    });
-            </script>
+            <!-- </form> -->
        </div>
     {% endif %}
    </div>
         <script>
             document.getElementById('pause').hidden = true;
             document.getElementById('resume').hidden = true;
+            var blob
             navigator.mediaDevices.getUserMedia({ audio: true })
                 .then(stream => {
                     const mediaRecorder = new MediaRecorder(stream);
@@ -86,9 +73,10 @@
                         audio.src = audioUrl;
                         audio.controls = true;
                         audio.autoplay = true;
+                        blob = audioBlob
                         document.querySelector('#audio').replaceChildren(audio);
                         audioChunks = [];
-                    });
+                        });
                     document.querySelector('#pause').addEventListener('click', function () {
                         mediaRecorder.pause();
                         document.getElementById('pause').hidden = true;
@@ -114,6 +102,16 @@
                         text.style.fontSize = rng.value + 'px'
                         text_rules.style.fontSize = rng.value + 'px'
                     });
+                document.querySelector('#send').addEventListener('click', function () {
+                    let reader = new FileReader();
+                    reader.readAsDataURL(blob);
+                    fetch('{{ request.get_full_path }}', {
+                    method: "POST",
+                    body: reader.result,
+                    headers: { "X-CSRFToken": '{{ csrf_token }}' },
+                    })
+                    .then(response => alert(reader.result));
+                });
                </script>
 
-   {% endblock %}
+   {% endblock %}   
