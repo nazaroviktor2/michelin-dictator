@@ -19,4 +19,5 @@ def bold(string):
             string = string.replace(sym, '<b>', 1)
             cnt += 1
     return string
-# print(bold('CGHBJ*DNK B*HJB KJBKN* JKNJK'))
+
+

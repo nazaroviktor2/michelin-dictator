@@ -1,7 +1,7 @@
-"""File with funcion plus_to_stress."""
+"""File with functions adding accent to text."""
 
 
-def plus_to_stress(string):
+def plus_to_accent(string):
     """Function which turns letters with + to letters with stress.
 
     Args:
@@ -19,11 +19,11 @@ def plus_to_stress(string):
                'A': 'Á', 'E': 'É', 'O': 'Ó', 'U': 'Ú', 'I': 'Í', 'Y': 'Ý',
                'a': 'á', 'e': 'é', 'o': 'ó', 'u': 'ú', 'i': 'í', 'y': 'ý'
                }
-    while '+' in string:
-        ind = string.index('+')
-        if ind + 1 < len(string) and string[ind + 1] in letters:
-            string = string.replace(string[ind] + string[ind + 1], letters[string[ind + 1]], 1)
-        else:
-            string = string.replace(string[ind], '', 1)
+    ind = 0
+    while ind < len(string):
+        if string[ind] == "+":
+            if ind + 1 < len(string) and string[ind + 1] in letters:
+                string = string.replace(string[ind] + string[ind + 1], letters[string[ind + 1]], 1)
+
+        ind += 1
     return string
-# print(plus_to_stress('+м+Yо+и+ктлоьдл+о+\n +Оьлуотлоку+'))
