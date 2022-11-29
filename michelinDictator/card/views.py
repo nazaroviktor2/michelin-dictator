@@ -76,13 +76,12 @@ def card_page(request):
     id = (request.GET.get("id"))
     if request.method == "POST":
         # print(request.body)
-        audios = Audio.objects.filter(card=Card.objects.get(id=id),user=request.user)
+        audios = Audio.objects.filter(card=Card.objects.get(id=id), user=request.user)
         print(audios)
         if audios.first() is not None:
             audios.first().delete()
         audio_file = ContentFile(request.body, name="{0}.wav".format(datetime.date.today()))
         Audio.objects.create(file_path=audio_file, card=Card.objects.get(id=id), user=request.user)
-
 
     if request.user.is_authenticated:
         return render(request, "card.html", {"card": Card.objects.get(id=id),
@@ -124,6 +123,17 @@ def add_card(request):
 def my_cards(request):
     user = request.user
     return render(request, "my_cards.html", {"cards": Card.objects.filter(user=user)})
+
+
+def my_audios(request):
+    user = request.user
+    card_id = [audio.card.id for audio in Audio.objects.filter(user=user)]
+
+    res = []
+    for id in card_id:
+        res.append(Card.objects.get(id=id))
+
+    return render(request, "my_audios.html", {"cards": res})
 
 
 def user_card(request):

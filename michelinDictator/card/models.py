@@ -60,3 +60,12 @@ def auto_delete_audio_on_delete(sender, instance, **kwargs):
     if instance.file_path:
         if os.path.isfile(instance.file_path.path):
             os.remove(instance.file_path.path)
+
+
+class Report(models.Model):
+    text = models.TextField()
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    card = models.ForeignKey(Card, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "id {0}: {1}".format(self.id, self.text[:-50])

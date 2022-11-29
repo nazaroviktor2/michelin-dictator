@@ -3,8 +3,10 @@
 	<title>Add card</title>
 	   {% load static %}
 	   {% block content %}
-<br>
 
+<br>
+{% if request.user.is_authenticated %}
+{% if request.user.is_editor or request.user.is_staff %}
 	   <link rel="stylesheet" href="{% static 'home/css/style.css' %}">
 	<div class="dob">
 		<form name="add_card" method="post" >
@@ -34,4 +36,6 @@
 			
 		</form>
 	</div>
+{% endif %}
+{% endif %}
 	{% endblock %}
