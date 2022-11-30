@@ -136,85 +136,81 @@
     </div>
     <div class="video_translator">
         <style>video{width: 488.1px;}</style>
-        <div id="video" style=""><video></video></div>
-        <div id="stream"><video id="vid" autoplay ></video></div>
+        <div id="video"><video></video></div>
+        <div id="stream"><video id="vid" autoplay></video></div>
     </div>
 </div>
 <script>
     document.getElementById("stream").hidden = true;
-    var vidElement=null;
-    var audioChunks = [];
-    document.getElementById('pause').hidden = true;
-    document.getElementById('resume').hidden = true;
-    navigator.mediaDevices.getUserMedia({ audio: true, video: true  })
-        .then(stream => {
-            const mediaRecorder = new MediaRecorder(stream);
-            document.querySelector('#start').addEventListener('click', function () {
-                mediaRecorder.start();
-                document.getElementById('start').hidden = true;
-                document.getElementById('pause').hidden = false;
-                vidElement=document.getElementById("vid");
-                vidElement.srcObject=stream;
-                vidElement.play();
-                document.getElementById('start').hidden = true;
-                document.getElementById('pause').hidden = false;
-            });
-            var audioChunks = [];
-            mediaRecorder.addEventListener("dataavailable", function (event) {
-                audioChunks.push(event.data);
-            });
+                    var vidElement=null;
+                    document.getElementById('pause').hidden = true;
+                    document.getElementById('resume').hidden = true;
+                    navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+                        .then(stream => {
+                            const mediaRecorder = new MediaRecorder(stream);
+                            document.querySelector('#start').addEventListener('click', function () {    
+                                mediaRecorder.start();
+                                document.getElementById("stream").hidden = false;
+                                document.getElementById("video").hidden = true;
+                                vidElement=document.getElementById("vid");
+                                    vidElement.srcObject=stream;
+                                    vidElement.play();
+                                document.getElementById('start').hidden = true;
+                                document.getElementById('pause').hidden = false;
+                            });
+                            var videoChunks = [];
+                            mediaRecorder.addEventListener("dataavailable", function (event) {
+                                videoChunks.push(event.data);
+                            });
 
-
-    mediaRecorder.addEventListener("stop", function () {
-                const audioBlob = new Blob(audioChunks, {
-                    type: 'audio/wav'
-                });
-                const videoBlob = new Blob(videoChunks, {
-                type: 'video/mp4'
-                });
-                const audioUrl = URL.createObjectURL(audioBlob);
-                const videoUrl = URL.createObjectURL(videoBlob);
-                var audio = document.createElement('audio');
-                var video = document.createElement('video');
-                audio.src = audioUrl;
-                video.src = videoUrl;
-                audio.controls = true;
-                audio.autoplay = true;
-                video.controls = true;
-                video.autoplay = true;
-                vidElement.pause();
-                document.getElementById("stream").hidden = true;
-                document.getElementById("video").hidden = false;
-                document.querySelector('#audio').replaceChildren(audio);
-                document.querySelector('#video').replaceChildren(video);
-                document.querySelector('#audio').replaceChildren(audio);
-                audioChunks = [];
-                document.querySelector('#send').addEventListener('click', function () {
-                    fetch('{{ request.get_full_path }}', {
-                        method: "POST",
-                        body: audioUrl
-                    })
-                    .then(response => alert('Blob Uploaded'));
-                    });
-                });
-            document.querySelector('#pause').addEventListener('click', function () {
-                mediaRecorder.pause();
-                vidElement.pause();
-                document.getElementById('pause').hidden = true;
-                document.getElementById('resume').hidden = false;
-            });
-            document.querySelector('#resume').addEventListener('click', function () {
-                mediaRecorder.resume();
-                document.getElementById('pause').hidden = false;
-                document.getElementById('resume').hidden = true;
-            });
-            document.querySelector('#stop').addEventListener('click', function () {
-                mediaRecorder.stop();
-                document.getElementById('pause').hidden = true;
-                document.getElementById('resume').hidden = true;
-                document.getElementById('start').hidden = false;
-            });
-        });
+                            mediaRecorder.addEventListener("stop", function () {
+                                const audioBlob = new Blob(videoChunks, {
+                                    type: 'audio/wav'
+                                });
+                                const videoBlob = new Blob(videoChunks, {
+                                    type: 'video/mp4'
+                                });
+                                const audioUrl = URL.createObjectURL(audioBlob);
+                                const videoUrl = URL.createObjectURL(videoBlob);
+                                var audio = document.createElement('audio');
+                                var video = document.createElement('video');
+                                audio.src = audioUrl;
+                                video.src = videoUrl;
+                                audio.controls = true;
+                                audio.autoplay = true;
+                                video.controls = true;
+                                video.autoplay = true;
+                                vidElement.pause();
+                                document.getElementById("stream").hidden = true;
+                                document.getElementById("video").hidden = false;
+                                document.querySelector('#audio').replaceChildren(audio);
+                                document.querySelector('#video').replaceChildren(video);
+                                videoChunks = [];
+                                document.querySelector('#send').addEventListener('click', function () {
+                                    fetch('{{ request.get_full_path }}', {
+                                        method: "POST",
+                                        body: audioUrl
+                                    })
+                                    .then(response => alert('Blob Uploaded'));
+                                });
+                            });
+                            document.querySelector('#pause').addEventListener('click', function () {
+                                mediaRecorder.pause();
+                                document.getElementById('pause').hidden = true;
+                                document.getElementById('resume').hidden = false;
+                            });
+                            document.querySelector('#resume').addEventListener('click', function () {
+                                mediaRecorder.resume();
+                                document.getElementById('pause').hidden = false;
+                                document.getElementById('resume').hidden = true;
+                            });
+                            document.querySelector('#stop').addEventListener('click', function () {
+                                mediaRecorder.stop();
+                                document.getElementById('pause').hidden = true;
+                                document.getElementById('resume').hidden = true;
+                                document.getElementById('start').hidden = false;
+                            });
+                        });
         var rng = document.getElementById('seek');
         var text = document.getElementById('output_client_text');
         var text_rules = document.getElementById('output_client_rules');
@@ -237,7 +233,7 @@
                 .then(response => alert("Запись добавлена"))
                 .catch(err => alert(err));
         });
-            };
+        };
 </script>
 
    {% endblock %}
