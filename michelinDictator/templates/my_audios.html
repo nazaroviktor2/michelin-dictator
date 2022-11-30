@@ -1,7 +1,7 @@
  {% extends 'base.html' %}
 
  {% block content %}
- <br><br><br><br><br>
+
  <style>
     .centered {
         position: absolute;
@@ -11,18 +11,21 @@
         color: black;
     }
     .container {
-        height: 150px;
-        width: 700px;
+        margin: auto;
+        width: 98%;
         text-align: center;
     }
     #layer1 {
-        width: 730px; /* Ширина первого слоя */
+        width: 70%; /* Ширина первого слоя */
         padding: 10px; /* Поля вокруг текста */
+        padding-bottom: 60px;
         background-color: #fff; /* Цвет фона */
         margin: auto;
+       margin-top: 2%;
         border-radius: 8px;
         box-shadow: 4px 4px 10px rgba(0, 0, 0, .1);
        }
+
 
     .btn{
         background-color: #ffffff; 
@@ -46,9 +49,8 @@
       font-size: 15pt;
     }
  </style>
- <br>
         {% for card in cards %}
-        <br>
+
         <div id="layer1" >
             <div class="container">
                 <label ><b>{{ card.name }}</b></label>
@@ -61,6 +63,6 @@
                </div>
        
             </div>
-           </div>        
+           </div>
     {% endfor %}
 {% endblock %}

@@ -3,19 +3,21 @@
  {% block content %}
  <style>
     .container {
-        height: 150px;
-        width: 700px;
+        margin: auto;
+        width: 98%;
         text-align: center;
     }
     #layer1 {
-        width: 730px; /* Ширина первого слоя */
+        width: 70%; /* Ширина первого слоя */
         padding: 10px; /* Поля вокруг текста */
+        padding-bottom: 60px;
         background-color: #fff; /* Цвет фона */
         margin: auto;
+       margin-top: 2%;
         border-radius: 8px;
         box-shadow: 4px 4px 10px rgba(0, 0, 0, .1);
-        
        }
+
 
     .btn{
         background-color: #ffffff; 
@@ -41,10 +43,8 @@
 
  </style>
 
- <br><br><br><br><br>
         {% for card in cards %}
-        <br>
-    <div id="layer1" >
+    <div id="layer1" style="margin-top:2% "  >
      <div class="container">
          <label ><b>{{ card.name }}</b></label>
          <p class="cardtxt">{{ card.text|truncatechars:50 }}</p>
@@ -63,4 +63,17 @@
 
                
     {% endfor %}
+ <div>
+  <span>
+    {% if cards.has_previous %}
+      <a href="?page={{ cards.previous_page_number }}">Previous</a>
+    {% endif %}
+    <span>
+      Page {{ cards.number }} of {{cards.paginator.num_pages }}.
+    </span>
+    {% if cards.has_next %}
+      <a href="?page={{ cards.next_page_number }}">Next</a>
+    {% endif %}
+  </span>
+</div>
 {% endblock %}
