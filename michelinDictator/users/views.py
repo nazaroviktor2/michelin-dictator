@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 
 from django.views.generic import CreateView
 
-
+from card.models import Audio, Card, Report
 from users.forms import RegisterUserForm
 
 
@@ -28,6 +28,17 @@ def logout_user(request):
     logout(request)
     return redirect('home')
 
-def user_profile(request):
-    return render(request,"profile.html")
 
+def user_profile(request):
+    count_audio = len(Audio.objects.filter(user=request.user))
+    print(count_audio)
+    cards_id = [card.id for card in Card.objects.filter(user=request.user)]
+    count_report = 0
+    for card_id in cards_id:
+        count_report += len(Report.objects.filter(card=card_id))
+    return render(request, "profile.html", {"count_audio": count_audio, "count_card": len(cards_id),
+                                            "count_report": count_report})
+
+
+def successful(request):
+    return render(request, "successful.html")

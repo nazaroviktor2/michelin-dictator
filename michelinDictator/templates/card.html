@@ -3,89 +3,213 @@
 <style>
    .central_container {
     text-align:  center;
-   }
-   textarea {
-       overflow-y: scroll;
-       width: 50%; /* Ширина поля в процентах */
-       height: 200px; /* Высота поля в пикселах */
-       resize: vertical; /* Запрещаем изменять размер */
-      }
-  </style>
-<br><br><br>
-<h2 style="text-align: center;">{{ card.name }} </h2>
-   <div class="main_container">
-       <div class="top_bar"></div>
-       <div class="central_container">
-           <div class="rules_container">
-               <h2 style="text-align: center;"> В поле ниже записаны правила, которых Вам следует придерживаться при записи</h2>
-               <div class="rules_text">
-                   <textarea name="comment" cols="100" rows="10" disabled id="output_client_rules">{{ card.instruction }}</textarea>
-               </div>
-           </div>
-           <div class="text_conteiner">
-               <h2 style="text-align: center;"> Ниже написано содержимое файла, который надо прочитать!</h2>
-               <div class="file_content">
-                   <textarea name="comment" cols="100" rows="10" disabled id="output_client_text">{{ card.text }}</textarea>
-               </div>
-           </div>
-              <input id="seek" type="range" name="seekbar" step="1" min="8" max="50">
-                 {% if request.user.is_authenticated %}
-           <div class="voice_conteiner">
-               <div id="audio"><audio></audio></div>
-               <div class="button-wrapper">
-                <button id="start">record</button>
-                <button id="pause">pause</button>
-                <button id="resume">resume</button>
-                <button id="stop">stop</button>
-               </div>
-        {% endif %}
-        <script>
-            document.getElementById('pause').hidden = true;
-            document.getElementById('resume').hidden = true;
-            navigator.mediaDevices.getUserMedia({ audio: true })
-                .then(stream => {
-                    const mediaRecorder = new MediaRecorder(stream);
-                    document.querySelector('#start').addEventListener('click', function () {
-                        mediaRecorder.start();
-                        document.getElementById('start').hidden = true;
-                        document.getElementById('pause').hidden = false;
-                    });
-                    var audioChunks = [];
-                    mediaRecorder.addEventListener("dataavailable", function (event) {
-                        audioChunks.push(event.data);
-                    });
+    }
+    .content {
+        grid-area: sd;
+    }
+    .content_text{
+        grid-area: main;
+    }
+    .header {
+        grid-area: hd;
+    }
+    .footer {
+        grid-area: ft;
+        text-align: center;
+    }
+    .wrapper {
+        display: grid;
+        overflow: auto;
+        align-items: center;
+        align-content: center;
+        padding: 10px; /* Поля вокруг текста */
+        background-color: #fff;
+        margin: auto;
+        border-radius: 8px;
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, .1);
+        grid-template-columns: repeat(5, 1fr);
+        grid-auto-rows: minmax(100px, auto);
+        grid-template-areas:
+        "hd hd hd   hd   hd   hd"
+        "sd sd main main main main"
+        "sd sd ft   ft   ft   ft";
+    }
+    .left_side {
+        grid-area: ls;
+        font-weight: bold;
+    }
+    .center_side {
+        grid-area: cs;
+        display: flex;
+        align-items: center;
+    }
+    #seek {
+        width: 100%;
+    }
+    .right_side {
+        grid-area: rs;
+        font-weight: bold;
+    }
+    .wrapper_seek {
+        display: grid;
+        grid-template-columns: 0.5fr 2fr 0.5fr;
+        grid-auto-rows: 45px;
+        grid-template-areas:
+        "ls cs rs"
+    }
+    .output_client_rules{
+        font-size: 15px;
+        width: 150%;
+        resize: vertical;
+        overflow-y: scroll;
+    }
+    .output_client_text{
+        font-size: 15px;
+        width: 99%;
+        resize: vertical;
+        overflow-y: scroll;
+    }
+    .btn{
+        background-color: #ffffff; 
+        color: #333;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        border-radius: 8px;
+        border: 1px solid #d9d9d9;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+    .btn:hover {
+        background-color: #fd0202;
+        color: #fff;
+    }
 
-                    mediaRecorder.addEventListener("stop", function () {
-                        const audioBlob = new Blob(audioChunks, {
-                            type: 'audio/wav'
-                        });
-                        const audioUrl = URL.createObjectURL(audioBlob);
-                        var audio = document.createElement('audio');
-                        audio.src = audioUrl;
-                        audio.controls = true;
-                        audio.autoplay = true;
-                        document.querySelector('#audio').replaceChildren(audio);
-                        audioChunks = [];
-                    });
-                    document.querySelector('#pause').addEventListener('click', function () {
-                        mediaRecorder.pause();
-                        document.getElementById('pause').hidden = true;
-                        document.getElementById('resume').hidden = false;
-                    });
-                    document.querySelector('#resume').addEventListener('click', function () {
-                        mediaRecorder.resume();
-                        document.getElementById('pause').hidden = false;
-                        document.getElementById('resume').hidden = true;
-                    });
-                    document.querySelector('#stop').addEventListener('click', function () {
-                        mediaRecorder.stop();
-                        document.getElementById('pause').hidden = true;
-                        document.getElementById('resume').hidden = true;
-                        document.getElementById('start').hidden = false;
+
+</style>
+<br><br><br><br><br><br>
+ 
+<div class="wrapper">
+    <div class="header">
+        <h2 style="text-align: center;" >{{ card.name }} </h2>
+    </div>
+    <div class="content_rules">
+        <h2 style="text-align: right;">Инструкция</h2>
+        <div class="rules_text">
+            <textarea class="output_client_rules" name="rules_for_reader" cols="100" rows="10" disabled id="output_client_rules">{{ card.instruction }}</textarea>
+        </div>
+    </div>
+    <div class="content_text">
+        <h2 style="text-align: center;">Текст</h2>
+        <div class="file_content">
+            <textarea class="output_client_text" name="text_for_reader" cols="100" rows="10" disabled id="output_client_text">{{ card.text }}</textarea>
+        </div>
+    </div>
+    <div class="footer">
+        {% if request.user.is_authenticated %}
+        <div class="wrapper_seek">
+            <div class="left_side"><p>A-<p></div>
+            <div class="center_side"><input id="seek" type="range" name="seekbar" step="1" min="15" max="75"></div>
+            <div class="right_side"><p>A+<p></div>
+        </div>
+        <div class="voice_conteiner">
+            <div id="audio">
+                {% for audio in audios %}
+                <audio src ="{{ audio.file_path.url }}" controls></audio>
+                {% endfor %}
+            </div>
+            <div class="button-grid">
+                <table style="margin: auto;">
+                    <td><div id="start"><button class="btn">record</button></div></td>
+                    <td><div id="pause"><button class="btn">pause</button></div></td>
+                    <td><div id="resume"><button class="btn">resume</button></div></td>
+                    <td><div id="stop"><button class="btn">stop</button></div></td>
+                    <td><div id="sub"><button onclick="uploadBlob()" class="btn">отправить</button></div></td>
+                </table>
+        </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+<script>
+    var audioChunks = [];
+    document.getElementById('pause').hidden = true;
+    document.getElementById('resume').hidden = true;
+    navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+            const mediaRecorder = new MediaRecorder(stream);
+            document.querySelector('#start').addEventListener('click', function () {
+                mediaRecorder.start();
+                document.getElementById('start').hidden = true;
+                document.getElementById('pause').hidden = false;
+            });
+            var audioChunks = [];
+            mediaRecorder.addEventListener("dataavailable", function (event) {
+                audioChunks.push(event.data);
+            });
+
+
+    mediaRecorder.addEventListener("stop", function () {
+                const audioBlob = new Blob(audioChunks, {
+                    type: 'audio/wav'
+                });
+                const audioUrl = URL.createObjectURL(audioBlob);
+                var audio = document.createElement('audio');
+                audio.src = audioUrl;
+                audio.controls = true;
+                audio.autoplay = true;
+                document.querySelector('#audio').replaceChildren(audio);
+                audioChunks = [];
+                document.querySelector('#send').addEventListener('click', function () {
+                    fetch('{{ request.get_full_path }}', {
+                        method: "POST",
+                        body: audioUrl
+                    })
+                    .then(response => alert('Blob Uploaded'));
                     });
                 });
-                </script>
-           </div>
-       </div>
-   </div>
+            document.querySelector('#pause').addEventListener('click', function () {
+                mediaRecorder.pause();
+                document.getElementById('pause').hidden = true;
+                document.getElementById('resume').hidden = false;
+            });
+            document.querySelector('#resume').addEventListener('click', function () {
+                mediaRecorder.resume();
+                document.getElementById('pause').hidden = false;
+                document.getElementById('resume').hidden = true;
+            });
+            document.querySelector('#stop').addEventListener('click', function () {
+                mediaRecorder.stop();
+                document.getElementById('pause').hidden = true;
+                document.getElementById('resume').hidden = true;
+                document.getElementById('start').hidden = false;
+            });
+        });
+        var rng = document.getElementById('seek');
+        var text = document.getElementById('output_client_text');
+        var text_rules = document.getElementById('output_client_rules');
+        rng.addEventListener("input",
+            function () {
+                text.style.fontSize = rng.value + 'px'
+                text_rules.style.fontSize = rng.value + 'px'
+            });
+        function uploadBlob() {
+        myAudio = document.getElementById('audio').firstElementChild;
+        fetch(myAudio.src)
+        .then(res => res.blob())
+        .then(blob => {
+        var result = blob
+                fetch('{{ request.get_full_path }}', {
+                    method: "POST",
+                    body:result ,
+                    headers: { "X-CSRFToken": '{{ csrf_token }}' },
+                })
+                .then(response => alert("Запись добавлена"))
+                .catch(err => alert(err));
+        });
+            };
+</script>
+
    {% endblock %}

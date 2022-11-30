@@ -1,0 +1,14 @@
+{
+    "card1":{
+        "rules_text": "read clearly",
+        "file_text": "start"
+    },
+    "card2":{
+        "rules_text": "read clearly",
+        "file_text": "continue"
+    },
+    "card3":{
+        "rules_text": "read clearly",
+        "file_text": "end"
+    }
+}

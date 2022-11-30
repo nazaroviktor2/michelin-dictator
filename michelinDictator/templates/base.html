@@ -6,37 +6,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'home/css/style.css' %}">
     <title>DictatorMiche</title>
+    <style>
+        body {
+            background-color: #f6f6f6;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .parent {
+  background-color: #fff;
+  width: 90%;
+  height: 70px;
+
+  border-radius: 8px;
+  margin: auto;
+     padding: 10px 10px 20px ;
+   box-shadow: 4px 4px 10px rgba(0, 0, 0, .1);
+}
+    </style>
 </head>
 
 <body>
-
+<div class="parent">
+        <div>
     <button onclick="document.location='{% url 'home' %}'" style="width:auto;float:left;" class="buttonhome">Карточки</button>
       {% if request.user.is_authenticated %}
 
+		<button onclick="document.location='{% url 'my_audio' %}'"  style="width:auto;float:left;" class="buttonhome">Мои озвучки</button>
+		{% if request.user.is_editor or request.user.is_staff  %}
+
+		<button  onclick="document.location='{% url 'my_cards' %}'"  style="width:auto;float:left;" class="buttonhome">Мои карточки</button>
+		            <button onclick="document.location='{% url 'add_card' %}'"  style="width:auto;float:left;" class="buttonhome">Добавить карточку</button>
+        </div>
+		{% endif %}
       <button onclick="document.location='{% url 'logout' %}'"  style="width:auto;" class="buttonhome">Выйти</button>
       <button onclick="document.location='{% url 'profile' %}'"  style="width:auto;" class="buttonhome">{{user.username}}</button>
-
+</div>
 
 
     {% else %}
-    <a href="{% url 'login' %}">Войти</a>
-  <a href="{% url 'register' %}">Регистрация</a>
+<!--    <a href="{% url 'login' %}">Войти</a>-->
+<!--  <a href="{% url 'register' %}">Регистрация</a>-->
 
-    <button onclick="document.getElementById('id02').style.display='block'" style="width:auto;" class="buttonhome">Регистрация</button>
+     <button onclick="document.location='{% url 'register' %}'" style="width:auto;" class="buttonhome">Регистрация</button>
 
+   <!-- <button onclick="document.getElementById('id02').style.display='block'" style="width:auto;" class="buttonhome">Регистрация</button>
+-->
     <div id="id02" class="modal">
 
 
-        <form class="modal-content animate" action="./profile.html" method="post">
-            
+        <form class="modal-content animate"   method="post">
+                        {% csrf_token %}
+            <input type="hidden" name="action" value="registration">
 
             <div class="imgcontainer">
                 <span onclick="document.getElementById('id02').style.display='none'" class="close"
                     title="Закрыть Modal">&times;</span>
                 <img src="{% static 'home/images/img_avatar.png' %}" alt="Аватар" width="10%" class="avatar">
             </div>
-            {% csrf_token %}
-            {{ form.as_p }}
+
             <div class="container">
                 <label for="uname"><b>Имя пользователя</b></label>
                 <input type="text" placeholder="Введите имя пользователя" name="username" id="uname" required>
@@ -54,11 +80,14 @@
             </div>
         </form>
     </div>
-        <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="buttonhome">Войти</button>
-
+        <button onclick="document.location='{% url 'login' %}'" style="width:auto;" class="buttonhome">Войти</button>
+       <!-- <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;" class="buttonhome">Войти</button>
+-->
         <div id="id01" class="modal">
 
-            <form class="modal-content animate" action="./profile.html" method="post">
+            <form class="modal-content animate" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="login">
                 <div class="imgcontainer">
                     <span onclick="document.getElementById('id01').style.display='none'" class="close"
                         title="Закрыть Modal">&times;</span>
@@ -79,6 +108,7 @@
                 </div>
             </form>
         </div>
+           </div>
         {% endif %}
     {% block content %}  
     {% endblock %}  

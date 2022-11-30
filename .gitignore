@@ -1,4 +1,6 @@
 config/.env
 __pycache__
 *__pycache__*
-/.idea/
+.idea
+michelinDictator/media/*
+*.zip
