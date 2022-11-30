@@ -4,7 +4,7 @@
    .central_container {
     text-align:  center;
     }
-    .content {
+    .content_rules {
         grid-area: sd;
     }
     .content_text{
@@ -16,6 +16,9 @@
     .footer {
         grid-area: ft;
         text-align: center;
+    }
+    .video_translator {
+        grid-area: vt;
     }
     .wrapper {
         display: grid;
@@ -32,7 +35,7 @@
         grid-template-areas:
         "hd hd hd   hd   hd   hd"
         "sd sd main main main main"
-        "sd sd ft   ft   ft   ft";
+        "vt vt ft   ft   ft   ft";
     }
     .left_side {
         grid-area: ls;
@@ -59,7 +62,7 @@
     }
     .output_client_rules{
         font-size: 15px;
-        width: 150%;
+        width: 95%;
         resize: vertical;
         overflow-y: scroll;
     }
@@ -95,7 +98,7 @@
         <h2 style="text-align: center;" >{{ card.name }} </h2>
     </div>
     <div class="content_rules">
-        <h2 style="text-align: right;">Инструкция</h2>
+        <h2 style="text-align: center;">Инструкция</h2>
         <div class="rules_text">
             <textarea class="output_client_rules" name="rules_for_reader" cols="100" rows="10" disabled id="output_client_rules">{{ card.instruction }}</textarea>
         </div>
@@ -131,16 +134,28 @@
         </div>
         {% endif %}
     </div>
+    <div class="video_translator">
+        <style>video{width: 488.1px;}</style>
+        <div id="video" style=""><video></video></div>
+        <div id="stream"><video id="vid" autoplay ></video></div>
+    </div>
 </div>
 <script>
+    document.getElementById("stream").hidden = true;
+    var vidElement=null;
     var audioChunks = [];
     document.getElementById('pause').hidden = true;
     document.getElementById('resume').hidden = true;
-    navigator.mediaDevices.getUserMedia({ audio: true })
+    navigator.mediaDevices.getUserMedia({ audio: true, video: true  })
         .then(stream => {
             const mediaRecorder = new MediaRecorder(stream);
             document.querySelector('#start').addEventListener('click', function () {
                 mediaRecorder.start();
+                document.getElementById('start').hidden = true;
+                document.getElementById('pause').hidden = false;
+                vidElement=document.getElementById("vid");
+                vidElement.srcObject=stream;
+                vidElement.play();
                 document.getElementById('start').hidden = true;
                 document.getElementById('pause').hidden = false;
             });
@@ -154,11 +169,24 @@
                 const audioBlob = new Blob(audioChunks, {
                     type: 'audio/wav'
                 });
+                const videoBlob = new Blob(videoChunks, {
+                type: 'video/mp4'
+                });
                 const audioUrl = URL.createObjectURL(audioBlob);
+                const videoUrl = URL.createObjectURL(videoBlob);
                 var audio = document.createElement('audio');
+                var video = document.createElement('video');
                 audio.src = audioUrl;
+                video.src = videoUrl;
                 audio.controls = true;
                 audio.autoplay = true;
+                video.controls = true;
+                video.autoplay = true;
+                vidElement.pause();
+                document.getElementById("stream").hidden = true;
+                document.getElementById("video").hidden = false;
+                document.querySelector('#audio').replaceChildren(audio);
+                document.querySelector('#video').replaceChildren(video);
                 document.querySelector('#audio').replaceChildren(audio);
                 audioChunks = [];
                 document.querySelector('#send').addEventListener('click', function () {
@@ -171,6 +199,7 @@
                 });
             document.querySelector('#pause').addEventListener('click', function () {
                 mediaRecorder.pause();
+                vidElement.pause();
                 document.getElementById('pause').hidden = true;
                 document.getElementById('resume').hidden = false;
             });
