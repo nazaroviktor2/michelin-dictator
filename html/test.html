@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head><script>
+        var vidElement=null;
+        function start(){
+            var camAvailable=navigator.mediaDevices && navigator.mediaDevices.getUserMedia;
+            if(camAvailable){
+                vidElement=document.getElementById("vid");
+                navigator.mediaDevices.getUserMedia({video: true}).then(function(stream){
+                    vidElement.srcObject=stream;
+                    vidElement.play();
+                });
+            }
+        }
+    </script></head>
+    <body>
+        <video id="vid" autoplay style="width: 300px; height:250px; border: 1px solid black; "></video>
+        <div>
+            <button onclick="start();">start</button>
+            <button onclick="stop();">stop</button>
+            
+        </div>
+    </body>
+</html>

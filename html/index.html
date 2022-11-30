@@ -15,47 +15,7 @@
                 <h2>В поле ниже записаны правила, которых Вам следует придерживаться при записи</h2>
                 <div class="rules_text">
                     <iframe src="rules.txt" class="file_text"></iframe>
-                    <div><script>
-                        let div = document.createElement('div');
-                        div.id = 'messages';
-                        let start = document.createElement('button');
-                        start.id = 'start';
-                        start.innerHTML = 'Start';
-                        let stop = document.createElement('button');
-                        stop.id = 'stop';
-                        stop.innerHTML = 'Stop';
-                        document.body.appendChild(div);
-                        document.body.appendChild(start);
-                        document.body.appendChild(stop);
-                        navigator.mediaDevices.getUserMedia({ audio: true, video: true})
-                            .then(stream => {
-                                const mediaRecorder = new MediaRecorder(stream);
-                        
-                                document.querySelector('#start').addEventListener('click', function(){
-                                    mediaRecorder.start();
-                                });
-                                let audioChunks = [];
-                                mediaRecorder.addEventListener("dataavailable",function(event) {
-                                    audioChunks.push(event.data);
-                                });
-                        
-                                document.querySelector('#stop').addEventListener('click', function(){
-                                    mediaRecorder.stop();
-                                });
-                        
-                                mediaRecorder.addEventListener("stop", function() {
-                                    const audioBlob = new Blob(audioChunks, {
-                                        type: "video/webm"
-                                    });
-                        
-                                    let fd = new FormData();
-                                    fd.append('voice', audioBlob);
-                                    sendVoice(fd);
-                                    audioChunks = [];
-                                });
-                            });
-                            </script>
-                        </div>
+                    <div></div>
                 </div>
             </div>
             <div class="text_conteiner">
@@ -65,41 +25,64 @@
                 </div>
             </div>
             <div class="voice_conteiner">
-                <div id="audio"><audio></audio></div>
+                <!-- <div id="audio"><audio></audio></div>
+                <style>video{width: 488.1px;}</style>
+                <div id="video" style=""><video></video></div>
+                <div id="stream"><video id="vid" autoplay ></video></div> -->
                 <button id="start">record</button>
                 <button id="pause">pause</button>
                 <button id="resume">resume</button>
                 <button id="stop">stop</button>
                 <script>
+                    // document.getElementById("stream").hidden = true;
+                    // var vidElement=null;
                     document.getElementById('pause').hidden = true;
                     document.getElementById('resume').hidden = true;
-                    navigator.mediaDevices.getUserMedia({ audio: true })
+                    // navigator.mediaDevices.getUserMedia({ audio: true, video: true })
                         .then(stream => {
-                            const mediaRecorder = new MediaRecorder(stream);
+                            // const mediaRecorder = new MediaRecorder(stream);
                             document.querySelector('#start').addEventListener('click', function () {    
                                 mediaRecorder.start();
-                                document.getElementById('start').hidden = true;
-                                document.getElementById('pause').hidden = false;
+                                document.getElementById("stream").hidden = false;
+                                document.getElementById("video").hidden = true;
+                                // vidElement=document.getElementById("vid");
+                                // vidElement.srcObject=stream;
+                                // vidElement.play();
+                                // document.getElementById('start').hidden = true;
+                                // document.getElementById('pause').hidden = false;
                             });
-                            var audioChunks = [];
+                            var videoChunks = [];
                             mediaRecorder.addEventListener("dataavailable", function (event) {
-                                audioChunks.push(event.data);
+                                videoChunks.push(event.data);
                             });
 
                             mediaRecorder.addEventListener("stop", function () {
-                                const audioBlob = new Blob(audioChunks, {
+                                const audioBlob = new Blob(videoChunks, {
                                     type: 'audio/wav'
                                 });
+                                // const videoBlob = new Blob(videoChunks, {
+                                //     type: 'video/mp4'
+                                // });
                                 const audioUrl = URL.createObjectURL(audioBlob);
+                                // const videoUrl = URL.createObjectURL(videoBlob);
                                 var audio = document.createElement('audio');
+                                // var video = document.createElement('video');
                                 audio.src = audioUrl;
+                                // video.src = videoUrl;
                                 audio.controls = true;
                                 audio.autoplay = true;
-                                document.querySelector('#audio').replaceChildren(audio);
-                                audioChunks = [];
+                                // video.controls = true;
+                                // video.autoplay = true;
+                                // vidElement.pause();
+                                // document.getElementById("stream").hidden = true;
+                                // document.getElementById("video").hidden = false;
+                                // document.querySelector('#audio').replaceChildren(audio);
+                                // document.querySelector('#video').replaceChildren(video);
+                                videoChunks = [];
                             });
                             document.querySelector('#pause').addEventListener('click', function () {
                                 mediaRecorder.pause();
+                                // vidElement.pause();
                                 document.getElementById('pause').hidden = true;
                                 document.getElementById('resume').hidden = false;
                             });
