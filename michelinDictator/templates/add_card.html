@@ -3,13 +3,32 @@
 	<title>Add card</title>
 	   {% load static %}
 	   {% block content %}
-<br>
 
-	   <link rel="stylesheet" href="{% static 'home/css/style.css' %}">
-	<div class="dob">
+<style>
+	    .container {
+
+        width: 98%;
+        text-align: center;
+    }
+    #layer1 {
+        width: 70%; /* Ширина первого слоя */
+        padding: 10px; /* Поля вокруг текста */
+
+        background-color: #fff; /* Цвет фона */
+        margin: auto;
+       margin-top: 2%;
+        border-radius: 8px;
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, .1);
+       }
+
+</style>
+{% if request.user.is_authenticated %}
+{% if request.user.is_editor or request.user.is_staff %}
+	        <div id="layer1" >
+            <div class="container">
+
 		<form name="add_card" method="post" >
 			    {% csrf_token %}
-			<br><br><br><br>
 			<p><b>Введите название:</b><br>
 				<textarea class="name_card_t" name="name" cols="10" rows="1" required></textarea>
 			</p>
@@ -33,5 +52,9 @@
 			</p>
 			
 		</form>
-	</div>
+
+{% endif %}
+{% endif %}
+			</div>
+			</div>
 	{% endblock %}

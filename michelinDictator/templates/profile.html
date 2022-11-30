@@ -9,11 +9,14 @@
 <!--	<img width="150" height="80" src="{% static 'home/images/img_avatar.png' %}" alt="Аватар" class="avatar_profile_osrv">-->
 	</div>
       {% if request.user.is_authenticated %}
+<div>
+	<h1>{{ request.user.username }}</h1>
+	<h1>{{ request.user.voicing_time }}</h1>
 
-	<div class="container-buttons">
-	<button onclick="document.location='{% url 'add_card' %}'"  style="width:auto;" class="buttonhome">Добавить карточку</button>
-	<button  onclick="document.location='{% url 'my_cards' %}'"  style="width:auto;" class="buttonhome">Мои карточки</button>
-	</div>
+		<h1>{{ count_audio }}</h1>
+		<h1>{{ count_card }}</h1>
+		<h1>{{ count_report }}</h1>
+		</div>
 
     {% endif %}
 	{% endblock %}

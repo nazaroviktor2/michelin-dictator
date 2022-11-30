@@ -30,9 +30,16 @@
     <button onclick="document.location='{% url 'home' %}'" style="width:auto;float:left;" class="buttonhome">Карточки</button>
       {% if request.user.is_authenticated %}
 
+		<button onclick="document.location='{% url 'my_audio' %}'"  style="width:auto;float:left;" class="buttonhome">Мои озвучки</button>
+		{% if request.user.is_editor or request.user.is_staff  %}
+
+		<button  onclick="document.location='{% url 'my_cards' %}'"  style="width:auto;float:left;" class="buttonhome">Мои карточки</button>
+		            <button onclick="document.location='{% url 'add_card' %}'"  style="width:auto;float:left;" class="buttonhome">Добавить карточку</button>
+
+		{% endif %}
       <button onclick="document.location='{% url 'logout' %}'"  style="width:auto;" class="buttonhome">Выйти</button>
       <button onclick="document.location='{% url 'profile' %}'"  style="width:auto;" class="buttonhome">{{user.username}}</button>
-</div>
+
 
 
     {% else %}
@@ -101,13 +108,16 @@
                 </div>
             </form>
         </div>
-           </div>
+
         {% endif %}
-    {% block content %}  
-    {% endblock %}  
+</div>
+<div style="margin-top: 8%">
 
+    {% block content %}
+    {% endblock %}
+</div>
 
-
+          </div>
 
        <script>
 

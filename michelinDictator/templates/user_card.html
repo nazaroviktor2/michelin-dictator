@@ -126,9 +126,7 @@
     }
 
   </style>
-<br><br><br>
-<br>
-<br>
+
  {% if request.user.is_authenticated and card.user == request.user %}
 <h2 style="text-align: center;">{{ card.name }} </h2>
    <div class="main_container">
@@ -152,6 +150,29 @@
        </div>
 
 <div style="padding: 10px;">
+    <div style="padding: 10px; margin: auto; width: 552px;">
+    <div style="padding: 5px; float: left;">
+    <form method="post" name="delete">
+        {% csrf_token %}
+    <input type="hidden" name="name" value="delete">
+        <button type="submit"  class="btn">Удалить карточку</button>
+
+    <div style="padding: 5px; float: right;">
+
+    <form method="post" name="download">
+        {% csrf_token %}
+    <input type="hidden" name="name" value="download">
+        <button type="submit"  class="btn">Скачать все</button>
+
+    <div style="padding: 5px; float: right;">
+
+    <form method="post" name="download">
+        {% csrf_token %}
+    <input type="hidden" name="name" value="download">
+        <button type="submit"  class="btn">Удалить все</button>
+    </form>
+    </div>
+
 <table style="margin: auto; border: 1px solid black">
     <tr>
         <td>
@@ -187,30 +208,8 @@
     {% endfor %}
 
 
-<div style="padding: 10px; margin: auto; width: 552px;">
-    <div style="padding: 5px; float: left;">
-    <form method="post" name="delete">
-        {% csrf_token %}
-    <input type="hidden" name="name" value="delete">
-        <button type="submit"  class="btn">Удалить карточку</button>
-    </div>
-    <div style="padding: 5px; float: right;">
-    </form>
-    <form method="post" name="download">
-        {% csrf_token %}
-    <input type="hidden" name="name" value="download">
-        <button type="submit"  class="btn">Скачать все</button>
-    </div>
-    <div style="padding: 5px; float: right;">
-    </form>
-    <form method="post" name="download">
-        {% csrf_token %}
-    <input type="hidden" name="name" value="download">
-        <button type="submit"  class="btn">Удалить все</button>
-    </form>
-    </div>
 
-</div>
+
 {% else %}
 <h1>Это не ваша карта</h1>
 {% endif %}
