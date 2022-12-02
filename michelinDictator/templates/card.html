@@ -73,6 +73,7 @@
                     var vidElement=null;
                     document.getElementById('pause').hidden = true;
                     document.getElementById('resume').hidden = true;
+<<<<<<< HEAD
                     navigator.mediaDevices.getUserMedia({ audio: true, video: true })
                         .then(stream => {
                             const mediaRecorder = new MediaRecorder(stream);
@@ -94,53 +95,74 @@
                             mediaRecorder.addEventListener("dataavailable", function (event) {
                                 videoChunks.push(event.data);
                             });
+=======
+                    document.querySelector('#start').addEventListener('click', function () {
+                        navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+                            .then(stream => {
+                                const mediaRecorder = new MediaRecorder(stream);
+                                    
+                                    mediaRecorder.start();
+                                    document.getElementById("stream").hidden = false;
+                                    document.getElementById("video").hidden = true;
+                                    vidElement=document.getElementById("vid");
+                                        vidElement.srcObject=stream;
+                                        vidElement.play();
+                                    document.getElementById('start').hidden = true;
+                                    document.getElementById('pause').hidden = false;
+                                
+                                var videoChunks = [];
+                                mediaRecorder.addEventListener("dataavailable", function (event) {
+                                    videoChunks.push(event.data);
+                                });
+>>>>>>> 529690d (try)
 
-                            mediaRecorder.addEventListener("stop", function () {
-                                const audioBlob = new Blob(videoChunks, {
-                                    type: 'audio/wav'
+                                mediaRecorder.addEventListener("stop", function () {
+                                    const audioBlob = new Blob(videoChunks, {
+                                        type: 'audio/wav'
+                                    });
+                                    const videoBlob = new Blob(videoChunks, {
+                                        type: 'video/mp4'
+                                    });
+                                    const audioUrl = URL.createObjectURL(audioBlob);
+                                    const videoUrl = URL.createObjectURL(videoBlob);
+                                    var audio = document.createElement('audio');
+                                    var video = document.createElement('video');
+                                    audio.src = audioUrl;
+                                    video.src = videoUrl;
+                                    audio.controls = true;
+                                    audio.autoplay = true;
+                                    video.controls = true;
+                                    video.autoplay = true;
+                                    document.getElementById("stream").hidden = true;
+                                    document.getElementById("video").hidden = false;
+                                    document.querySelector('#audio').replaceChildren(audio);
+                                    document.querySelector('#video').replaceChildren(video);
+                                    videoChunks = [];
+                                    document.querySelector('#send').addEventListener('click', function () {
+                                        fetch('{{ request.get_full_path }}', {
+                                            method: "POST",
+                                            body: audioUrl
+                                        })
+                                        .then(response => alert('Blob Uploaded'));
+                                    });
                                 });
-                                const videoBlob = new Blob(videoChunks, {
-                                    type: 'video/mp4'
+                                document.querySelector('#pause').addEventListener('click', function () {
+                                    mediaRecorder.pause();
+                                    document.getElementById('pause').hidden = true;
+                                    document.getElementById('resume').hidden = false;
                                 });
-                                const audioUrl = URL.createObjectURL(audioBlob);
-                                const videoUrl = URL.createObjectURL(videoBlob);
-                                var audio = document.createElement('audio');
-                                var video = document.createElement('video');
-                                audio.src = audioUrl;
-                                video.src = videoUrl;
-                                audio.controls = true;
-                                audio.autoplay = true;
-                                video.controls = true;
-                                video.autoplay = true;
-                                vidElement.pause();
-                                document.getElementById("stream").hidden = true;
-                                document.getElementById("video").hidden = false;
-                                document.querySelector('#audio').replaceChildren(audio);
-                                document.querySelector('#video').replaceChildren(video);
-                                videoChunks = [];
-                                document.querySelector('#send').addEventListener('click', function () {
-                                    fetch('{{ request.get_full_path }}', {
-                                        method: "POST",
-                                        body: audioUrl
-                                    })
-                                    .then(response => alert('Blob Uploaded'));
+                                document.querySelector('#resume').addEventListener('click', function () {
+                                    mediaRecorder.resume();
+                                    document.getElementById('pause').hidden = false;
+                                    document.getElementById('resume').hidden = true;
                                 });
-                            });
-                            document.querySelector('#pause').addEventListener('click', function () {
-                                mediaRecorder.pause();
-                                document.getElementById('pause').hidden = true;
-                                document.getElementById('resume').hidden = false;
-                            });
-                            document.querySelector('#resume').addEventListener('click', function () {
-                                mediaRecorder.resume();
-                                document.getElementById('pause').hidden = false;
-                                document.getElementById('resume').hidden = true;
-                            });
-                            document.querySelector('#stop').addEventListener('click', function () {
-                                mediaRecorder.stop();
-                                document.getElementById('pause').hidden = true;
-                                document.getElementById('resume').hidden = true;
-                                document.getElementById('start').hidden = false;
+                                document.querySelector('#stop').addEventListener('click', function () {
+                                    mediaRecorder.stop();
+                                    document.getElementById('pause').hidden = true;
+                                    document.getElementById('resume').hidden = true;
+                                    document.getElementById('start').hidden = false;
+                                    return
+                                });
                             });
                         });
         var rng = document.getElementById('seek');
