@@ -76,7 +76,11 @@
                     navigator.mediaDevices.getUserMedia({ audio: true, video: true })
                         .then(stream => {
                             const mediaRecorder = new MediaRecorder(stream);
+<<<<<<< HEAD
                             document.querySelector('#start').addEventListener('click', function () {
+=======
+                            document.querySelector('#start').addEventListener('click', function () {    
+>>>>>>> 4c09a52 (try)
                                 mediaRecorder.start();
                                 document.getElementById("stream").hidden = false;
                                 document.getElementById("video").hidden = true;
