@@ -1,29 +1,23 @@
 import datetime
-import json
-import os
 
-import mutagen
 from zipfile import ZipFile
 from django.core.files.base import ContentFile
-from django.contrib.auth import authenticate, login
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import FileResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.viewsets import ModelViewSet
 
 from card.scripts.add_accent import plus_to_accent
 from card.forms import AddCardForm
-from card.models import Card, Audio
+from card.models import Card, Audio, Video
 from card.permissions import IsEditorOrStaffAndAuth, IsOwnerOrStaff
 from card.scripts.bold_func import stars_to_highlight
 from card.serializers import CardSerializer, AudioSerializer
 from michelinDictator.settings import MEDIA_ROOT
-from users.forms import RegisterUserForm
-
 
 # Create your views here.
-
+CARD_ON_PAGE = 5
 class CardViewSet(ModelViewSet):
     queryset = Card.objects.all()
     serializer_class = CardSerializer
@@ -49,30 +43,12 @@ class AudioViewSet(ModelViewSet):
         serializer.save()
 
 
+def not_found_page(request,exception):
+    return render(request,"not_found.html",status=404)
 def home_page(request):
-    # if request.method == "POST":
-    #     print(request.POST)
-    #     action = request.POST.get("action")
-    #     if action == "login":
-    #         username = request.POST.get('username')
-    #         password = request.POST.get('password')
-    #         print(username, password)
-    #         user = authenticate(request, username=username, password=password)
-    #         print(user)
-    #         if user is not None:
-    #             print("valid")
-    #             login(request, user)
-    #             return redirect("home")
-    #
-    #     elif action == "registration":
-    #         form = RegisterUserForm(request.POST)
-    #         if form.is_valid():
-    #             print("valid")
-    #             form.save()
-    #             return redirect("home")
     cards = Card.objects.all()
     page_num = request.GET.get('page', 1)
-    paginator = Paginator(cards, 2)
+    paginator = Paginator(cards, CARD_ON_PAGE)
     try:
         page_obj = paginator.page(page_num)
     except PageNotAnInteger:
@@ -87,31 +63,43 @@ def home_page(request):
 
 def card_page(request):
     id = (request.GET.get("id"))
-
+    card =get_object_or_404(Card, id=id)
+    print(card)
+    if  card == Card.objects.none():
+        return redirect("not_found")
     if request.user.is_authenticated:
         audio = Audio.objects.filter(card=Card.objects.get(id=id), user=request.user)
+        video = Video.objects.filter(card=Card.objects.get(id=id), user=request.user)
         if request.method == "POST":
-
+            now = datetime.datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
             name = request.headers.get("Name")
             if name == "audio":
                 duration = request.headers.get("Audio-Time")
                 if audio.exists():
                     audio.delete()
-                now = datetime.datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
+
                 audio_file = ContentFile(request.body, name="{0}.wav".format(now))
                 Audio.objects.create(file_path=audio_file, card=Card.objects.get(id=id), user=request.user,
                                                  duration=duration)
-            elif name == "time":
-                print(request.POST)
+            elif name == "Video":
+                print("video")
+                if video.exists():
+                    video.delete()
+                video_file = ContentFile(request.body, name="{0}.mp4".format(now))
+                Video.objects.create(file_path = video_file,card=Card.objects.get(id=id), user=request.user)
 
 
-        return render(request, "card.html", {"card": Card.objects.get(id=id),
+
+        return render(request, "card.html", {"card": card,
                                              "audios": Audio.objects.filter(card=Card.objects.get(id=id),
+                                                                            user=request.user),
+                                             "videos": Video.objects.filter(card=Card.objects.get(id=id),
                                                                             user=request.user)
                                              })
     else:
-        return render(request, "card.html", {"card": Card.objects.get(id=id),
-                                             "audios": None
+        return render(request, "card.html", {"card": card,
+                                             "audios": None,
+                                             "videos": None,
                                              })
 
 
@@ -143,7 +131,19 @@ def add_card(request):
 
 def my_cards(request):
     user = request.user
-    return render(request, "my_cards.html", {"cards": Card.objects.filter(user=user)})
+    cards = Card.objects.filter(user=user)
+    page_num = request.GET.get('page', 1)
+    paginator = Paginator(cards, CARD_ON_PAGE)
+    try:
+        page_obj = paginator.page(page_num)
+    except PageNotAnInteger:
+        # if page is not an integer, deliver the first page
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        # if the page is out of range, deliver the last page
+        page_obj = paginator.page(paginator.num_pages)
+
+    return render(request, "my_cards.html", {"cards": page_obj})
 
 
 def my_audios(request):
@@ -153,8 +153,20 @@ def my_audios(request):
     res = []
     for id in card_id:
         res.append(Card.objects.get(id=id))
+    page_num = request.GET.get('page', 1)
+    paginator = Paginator(res, CARD_ON_PAGE)
+    try:
+        page_obj = paginator.page(page_num)
+    except PageNotAnInteger:
+        # if page is not an integer, deliver the first page
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        # if the page is out of range, deliver the last page
+        page_obj = paginator.page(paginator.num_pages)
 
-    return render(request, "my_audios.html", {"cards": res})
+    # return render(request, "index.html", {"cards": page_obj})
+
+    return render(request, "my_audios.html", {"cards": page_obj})
 
 
 def user_card(request):
