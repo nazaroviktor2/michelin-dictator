@@ -25,6 +25,8 @@ class CardViewSet(ModelViewSet):
     permission_classes = [IsEditorOrStaffAndAuth]
     filterset_fields = ['id', "user", "name"]
 
+    class Meta:
+        ordering = ['id']
     def perform_create(self, serializer):
         serializer.validated_data["user"] = self.request.user
         serializer.save()
@@ -38,6 +40,8 @@ class AudioViewSet(ModelViewSet):
 
     filterset_fields = ['id', "user", "card"]
 
+    class Meta:
+        ordering = ['id']
     def perform_create(self, serializer):
         serializer.validated_data["user"] = self.request.user
         serializer.save()
@@ -46,7 +50,7 @@ class AudioViewSet(ModelViewSet):
 def not_found_page(request,exception):
     return render(request,"not_found.html",status=404)
 def home_page(request):
-    cards = Card.objects.all()
+    cards = Card.objects.all().order_by('id')
     page_num = request.GET.get('page', 1)
     paginator = Paginator(cards, CARD_ON_PAGE)
     try:
@@ -131,7 +135,7 @@ def add_card(request):
 
 def my_cards(request):
     user = request.user
-    cards = Card.objects.filter(user=user)
+    cards = Card.objects.filter(user=user).order_by('id')
     page_num = request.GET.get('page', 1)
     paginator = Paginator(cards, CARD_ON_PAGE)
     try:
@@ -148,7 +152,7 @@ def my_cards(request):
 
 def my_audios(request):
     user = request.user
-    card_id = [audio.card.id for audio in Audio.objects.filter(user=user)]
+    card_id = [audio.card.id for audio in Audio.objects.filter(user=user).order_by('id')]
 
     res = []
     for id in card_id:
