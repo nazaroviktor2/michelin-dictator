@@ -142,3 +142,6 @@ AUTH_USER_MODEL = 'users.User'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = 'media/'
 LOGIN_REDIRECT_URL = '/'
+
+CARD_PATH = "card_{0}"
+AUDIO_PATH = CARD_PATH + '/audios/{1}_{2}'

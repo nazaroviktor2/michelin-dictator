@@ -1,4 +1,8 @@
 import datetime
+import json
+import os
+
+import mutagen
 from zipfile import ZipFile
 from django.core.files.base import ContentFile
 from django.contrib.auth import authenticate, login
@@ -87,14 +91,19 @@ def card_page(request):
     if request.user.is_authenticated:
         audio = Audio.objects.filter(card=Card.objects.get(id=id), user=request.user)
         if request.method == "POST":
-            # print(request.body)
 
-            if audio != Audio.objects.none():
-                print("not none")
-                audio.delete()
-            now = datetime.datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
-            audio_file = ContentFile(request.body, name="{0}.wav".format(now))
-            Audio.objects.create(file_path=audio_file, card=Card.objects.get(id=id), user=request.user)
+            name = request.headers.get("Name")
+            if name == "audio":
+                duration = request.headers.get("Audio-Time")
+                if audio.exists():
+                    audio.delete()
+                now = datetime.datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
+                audio_file = ContentFile(request.body, name="{0}.wav".format(now))
+                Audio.objects.create(file_path=audio_file, card=Card.objects.get(id=id), user=request.user,
+                                                 duration=duration)
+            elif name == "time":
+                print(request.POST)
+
 
         return render(request, "card.html", {"card": Card.objects.get(id=id),
                                              "audios": Audio.objects.filter(card=Card.objects.get(id=id),
