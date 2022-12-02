@@ -17,7 +17,8 @@ from django.contrib import admin
 from django.urls import path
 from rest_framework.routers import SimpleRouter
 
-from card.views import CardViewSet, AudioViewSet, home_page, card_page, add_card, my_cards, user_card, my_audios
+from card.views import CardViewSet, AudioViewSet, home_page, card_page, add_card, my_cards, user_card, my_audios, \
+    not_found_page
 from users.views import RegisterUser, LoginUser, logout_user, user_profile
 
 from django.conf import settings
@@ -39,7 +40,11 @@ urlpatterns = [
                   path("my_cards/card/", user_card, name='user_card'),
                   path("card/", card_page, name="card"),
                   path("profile/", user_profile, name="profile"),
+                  path("404/", not_found_page, name="not_found"),
+
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += router.urls
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+handler404 = not_found_page

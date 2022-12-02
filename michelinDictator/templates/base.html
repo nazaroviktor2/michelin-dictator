@@ -3,6 +3,7 @@
 
 <head>
     {% load static %}
+    {% load staticfiles %}
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'home/css/style.css' %}">
     <title>DictatorMiche</title>
@@ -35,11 +36,11 @@
 
 		<button  onclick="document.location='{% url 'my_cards' %}'"  style="width:auto;float:left;" class="buttonhome">Мои карточки</button>
 		            <button onclick="document.location='{% url 'add_card' %}'"  style="width:auto;float:left;" class="buttonhome">Добавить карточку</button>
-        </div>
+
 		{% endif %}
       <button onclick="document.location='{% url 'logout' %}'"  style="width:auto;" class="buttonhome">Выйти</button>
       <button onclick="document.location='{% url 'profile' %}'"  style="width:auto;" class="buttonhome">{{user.username}}</button>
-</div>
+
 
 
     {% else %}
@@ -108,13 +109,16 @@
                 </div>
             </form>
         </div>
-           </div>
+
         {% endif %}
-    {% block content %}  
-    {% endblock %}  
+</div>
+<div style="margin-top: 8%">
 
+    {% block content %}
+    {% endblock %}
+</div>
 
-
+          </div>
 
        <script>
 
