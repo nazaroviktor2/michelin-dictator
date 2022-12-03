@@ -80,6 +80,19 @@
     resize: vertical;
     overflow-y: scroll;
 }
+.btnhome {
+    background-color: #fd0202;
+    float:right;    
+    color: white;
+    padding: 14px 25px;
+    margin: 8px 0;
+    border-radius: 10px;
+    border: 3px solid #f6f6f6;;
+    font-family:Helvetica;
+	font-size:20px;
+    cursor: pointer;
+    width: 100%;
+}
 .btn{
     background-color: #ffffff; 
     color: #333;
@@ -97,6 +110,16 @@
     background-color: #fd0202;
     color: #fff;
 }
+.button-wrapper{
+    display: flex;	
+    justify-content: center;	
+    margin: 0 auto;
+  }
+  .container-buttons {
+    display: flex;
+    justify-content: space-around;
+  }
+
 video {
     width: 96%;
     margin-top: 10px;
@@ -164,11 +187,18 @@ video {
 }
 
 .modal-content {
-    background-color: #fefefe;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, .5);
     margin: 5% auto 15% auto;
-    border: 1px solid #888;
+    border: 1px solid #fff;
     width: 40%;
     height: 54%;
+    position: static;
+}
+.animate {
+    -webkit-animation: animatezoom 0.6s;
+    animation: animatezoom 0.6s
 }
 .close {
     position: absolute;
@@ -185,9 +215,21 @@ video {
 }
 
 .container {
+    align-items: center;
     text-align: center;
 }
 .rparea {
     font-size: 20px;
     resize: none;
+    width: 80%;
+}
+@media screen and (max-width: 300px) {
+    span.psw {
+        display: block;
+        float: none;
+    }
+
+    .cancelbtn {
+        width: 100%;
+    }
 }
