@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-0ov#*c1vckbq5rk5!!m@+ll!jc5bhk4ja(^2o44+9^nj^0j0jo'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["127.0.0.1"]
 
@@ -149,3 +149,46 @@ LOGIN_REDIRECT_URL = '/'
 CARD_PATH = "card_{0}"
 AUDIO_PATH = CARD_PATH + '/audios/{1}_{2}'
 VIDEO_PATH = CARD_PATH + '/video/{1}_{2}'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console': {
+            'format': '%(asctime)s %(levelname)s:%(message)s'
+        },
+        'file': {
+            'format': '%(asctime)s %(levelname)s:%(message)s'
+        }
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console'
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'formatter': 'file',
+            'filename': 'michelin.log'
+        }
+    },
+    'loggers': {
+        '': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': True
+        },
+        'michelin': {
+            'level': 'DEBUG',
+            'handlers': ['console', 'file'],
+        'propagate': False
+        }
+    }
+}
+
+# LOGGING_CONFIG = False
+# import logging
+#
+# file_handler = logging.FileHandler("michelin.log")
+# logging.basicConfig(level=logging.INFO, filename='michelin.log', format='%(asctime)s %(levelname)s:%(message)s')

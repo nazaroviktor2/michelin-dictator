@@ -1,5 +1,6 @@
 import datetime
 import json
+import logging
 
 from zipfile import ZipFile
 from django.core.files.base import ContentFile
@@ -19,6 +20,8 @@ from michelinDictator.settings import MEDIA_ROOT
 
 # Create your views here.
 CARD_ON_PAGE = 5
+
+my_logger = logging.getLogger("michelin")
 class CardViewSet(ModelViewSet):
     queryset = Card.objects.all()
     serializer_class = CardSerializer
@@ -68,14 +71,14 @@ def home_page(request):
 
 
 def card_page(request):
-    id = (request.GET.get("id"))
-    card =get_object_or_404(Card, id=id)
+    card_id = (request.GET.get("id"))
+    card =get_object_or_404(Card, id=card_id)
 
     if  card == Card.objects.none():
         return redirect("not_found")
     if request.user.is_authenticated:
-        audio = Audio.objects.filter(card=Card.objects.get(id=id), user=request.user)
-        video = Video.objects.filter(card=Card.objects.get(id=id), user=request.user)
+        audio = Audio.objects.filter(card=Card.objects.get(id=card_id), user=request.user)
+        video = Video.objects.filter(card=Card.objects.get(id=card_id), user=request.user)
         if request.method == "POST":
             now = datetime.datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
             name = request.headers.get("Name")
@@ -83,27 +86,37 @@ def card_page(request):
                 duration = request.headers.get("Audio-Time")
                 if audio.exists():
                     audio.delete()
-
+                overwrites = 1
                 audio_file = ContentFile(request.body, name="{0}.wav".format(now))
-                Audio.objects.create(file_path=audio_file, card=Card.objects.get(id=id), user=request.user,
+                audio = Audio.objects.create(file_path=audio_file, card=Card.objects.get(id=card_id), user=request.user,
                                                  duration=duration)
+                audio.save()
+                my_logger.info("user with id:{0} added audio for card with id:{1} number of overwrites:{2} file_path: {3}".format(
+                    request.user.id, card_id,overwrites, audio.file_path.path ))
             elif name == "Video":
-                print("video")
                 if video.exists():
                     video.delete()
+                overwrites = 0
                 video_file = ContentFile(request.body, name="{0}.mp4".format(now))
-                Video.objects.create(file_path = video_file,card=Card.objects.get(id=id), user=request.user)
-
+                video = Video.objects.create(file_path = video_file,card=Card.objects.get(id=card_id), user=request.user)
+                video.save()
+                my_logger.info(
+                        "user with id:{0} added audio for card with id:{1} number of overwrites:{2} file_path: {3}".format(
+                            request.user.id, card_id, overwrites, video.file_path.path))
             elif name == "Report":
                 text = (json.loads(request.body)).get("text")
-                Report.objects.create(text = text,card=Card.objects.get(id=id), user=request.user)
+                report = Report.objects.create(text = text,card=Card.objects.get(id=card_id), user=request.user)
+                report.save()
+                my_logger.info(
+                    "user with id: {0} complained about the card with id: {1} report id: {2}".format(request.user.id, card_id,
+                                                                                              report.id))
 
 
 
         return render(request, "card.html", {"card": card,
-                                             "audios": Audio.objects.filter(card=Card.objects.get(id=id),
+                                             "audios": Audio.objects.filter(card=Card.objects.get(id=card_id),
                                                                             user=request.user),
-                                             "videos": Video.objects.filter(card=Card.objects.get(id=id),
+                                             "videos": Video.objects.filter(card=Card.objects.get(id=card_id),
                                                                             user=request.user)
                                              })
     else:
@@ -135,6 +148,9 @@ def add_card(request):
 
         if form.is_valid():
             card.save()
+            my_logger.info(
+                "user with id: {0} create a card with id: {1}".format(request.user, card.id))
+
             return render(request, "successful.html", {"text": "карта для озвучивания создана"})
     return render(request, "add_card.html")
 
