@@ -94,4 +94,4 @@ class Report(models.Model):
     card = models.ForeignKey(Card, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "id {0}: {1}".format(self.id, self.text[:-50])
+        return "id {0}: Card {1} - {2}".format(self.id,self.card.id, self.text[:50])
