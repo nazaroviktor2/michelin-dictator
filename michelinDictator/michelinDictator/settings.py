@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-0ov#*c1vckbq5rk5!!m@+ll!jc5bhk4ja(^2o44+9^nj^0j0jo
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1"]
 
 # Application definition
 
@@ -66,6 +66,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'staticfiles': 'django.templatetags.static',
+            }
         },
     },
 ]
@@ -142,3 +145,7 @@ AUTH_USER_MODEL = 'users.User'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = 'media/'
 LOGIN_REDIRECT_URL = '/'
+
+CARD_PATH = "card_{0}"
+AUDIO_PATH = CARD_PATH + '/audios/{1}_{2}'
+VIDEO_PATH = CARD_PATH + '/video/{1}_{2}'
