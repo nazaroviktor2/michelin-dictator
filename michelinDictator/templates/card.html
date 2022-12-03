@@ -67,21 +67,24 @@
         <div id="stream"><video id="vid" autoplay></video></div>
     </div>
 </div>
-<div id="rpID" class="modal">
-    <form class="modal-content animate">
-        <div class="imgcontainer">
-            <span onclick="document.getElementById('rpID').style.display='none'" class="close"
-                title="Закрыть Modal">&times;
-            </span>
+<div class="button-wrapper">
+    <div id="rpID" class="modal">
+        <div>
+            <div class="modal-content animate">
+                <div class="imgcontainer">
+                    <span onclick="document.getElementById('rpID').style.display='none'" class="close"
+                        title="Закрыть Modal">&times;
+                    </span>
+                </div>
+                <div class="container">
+                    <h1>Что-то не так?</h1>
+                    <textarea class="rparea" name="rptxt" id="rptxt" cols="50" rows="13"></textarea>
+                </div>
+                <button class="btn" style="margin: 0 auto 10px auto; display: block;"  >Отправить</button>
+            </div>
         </div>
-        <div class="container">
-            <h1>Что-то не так?</h1>
-            <textarea class="rparea" name="rptxt" id="rptxt" cols="50" rows="13"></textarea>
-        </div>
-        <button style="float: right; margin: 10px;" class="btn">Отправить</button>
-    </form>
+    </div>
 </div>
-
 {% endif %}
 
 <script>
