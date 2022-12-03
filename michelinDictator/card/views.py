@@ -1,4 +1,5 @@
 import datetime
+import json
 
 from zipfile import ZipFile
 from django.core.files.base import ContentFile
@@ -10,7 +11,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from card.scripts.add_accent import plus_to_accent
 from card.forms import AddCardForm
-from card.models import Card, Audio, Video
+from card.models import Card, Audio, Video, Report
 from card.permissions import IsEditorOrStaffAndAuth, IsOwnerOrStaff
 from card.scripts.bold_func import stars_to_highlight
 from card.serializers import CardSerializer, AudioSerializer
@@ -49,6 +50,7 @@ class AudioViewSet(ModelViewSet):
 
 def not_found_page(request,exception):
     return render(request,"not_found.html",status=404)
+
 def home_page(request):
     cards = Card.objects.all().order_by('id')
     page_num = request.GET.get('page', 1)
@@ -68,7 +70,7 @@ def home_page(request):
 def card_page(request):
     id = (request.GET.get("id"))
     card =get_object_or_404(Card, id=id)
-    print(card)
+
     if  card == Card.objects.none():
         return redirect("not_found")
     if request.user.is_authenticated:
@@ -91,6 +93,10 @@ def card_page(request):
                     video.delete()
                 video_file = ContentFile(request.body, name="{0}.mp4".format(now))
                 Video.objects.create(file_path = video_file,card=Card.objects.get(id=id), user=request.user)
+
+            elif name == "Report":
+                text = (json.loads(request.body)).get("text")
+                Report.objects.create(text = text,card=Card.objects.get(id=id), user=request.user)
 
 
 

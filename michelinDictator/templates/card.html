@@ -67,6 +67,7 @@
         <div id="stream"><video id="vid" autoplay></video></div>
     </div>
 </div>
+<<<<<<< HEAD
 <div class="button-wrapper">
     <div id="rpID" class="modal">
         <div>
@@ -83,6 +84,20 @@
                 <button class="btn" style="margin: 0 auto 10px auto; display: block;"  >Отправить</button>
             </div>
         </div>
+=======
+<div id="rpID" class="modal">
+    <div class="modal-content animate">
+        <div class="imgcontainer">
+            <span onclick="document.getElementById('rpID').style.display='none'" class="close"
+                title="Закрыть Modal">&times;
+            </span>
+        </div>
+        <div class="container">
+            <h1>Что-то не так?</h1>
+            <textarea class="rparea" name="rptxt" id="rptxt" cols="50" rows="13"></textarea>
+        </div>
+        <button style="float: right; margin: 10px;" class="btn" onclick="sendReport()">Отправить</button>
+>>>>>>> 3cc081a070358ad7b5780c62ded702cb5ccb54aa
     </div>
 </div>
 {% endif %}
@@ -173,6 +188,22 @@
                 text.style.fontSize = rng.value + 'px'
                 text_rules.style.fontSize = rng.value + 'px'
             });
+
+         function sendReport() {
+
+         var report_text = document.getElementById('rptxt');
+         alert(report_text.value);
+         fetch('{{ request.get_full_path }}', {
+                    method: "POST",
+                    body: JSON.stringify({text: report_text.value}),
+                    headers: { "X-CSRFToken": '{{ csrf_token }}',"Name":"Report"},
+                })
+                  .then(response => {
+                  window.location.href = '{{ request.get_full_path }}'})
+                .catch(err => alert(err));
+
+
+         };
         function uploadBlob() {
                  myAudio = document.getElementById('audio').firstElementChild;
                 myVideo = document.getElementById('video').firstElementChild;
