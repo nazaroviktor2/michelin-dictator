@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             name='Audio',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('file_path', models.FileField(upload_to=card.models.card_directory_path)),
+                ('file_path', models.FileField(upload_to=card.models.card_directory_path_audio)),
             ],
         ),
         migrations.CreateModel(
