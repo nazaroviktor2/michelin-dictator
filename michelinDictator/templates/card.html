@@ -15,7 +15,7 @@
     </div>
     {% if request.user.is_authenticated %}
     <div class="rp">
-        <button class="report_button"></button>
+        <button onclick="document.getElementById('rpID').style.display='block'" class="report_button"></button>
     </div>
     {% endif %}
     <div class="rb">
@@ -26,7 +26,7 @@
         <div class="rules_text">
             <textarea class="output_client_rules" name="rules_for_reader" cols="100" rows="10" disabled id="output_client_rules">{{ card.instruction }}</textarea>
         </div>
-    </div>
+    </div>  
     <div class="content_text">
             <h2 style="text-align: center;">Текст</h2>
             <div class="file_content">
@@ -54,7 +54,7 @@
                     <td><div id="stop"><button class="btn">stop</button></div></td>
                     <td><div id="sub"><button onclick="uploadBlob()" class="btn">отправить</button></div></td>
                 </table>
-        </div>
+            </div>
         </div>
 
     </div>
@@ -67,8 +67,30 @@
         <div id="stream"><video id="vid" autoplay></video></div>
     </div>
 </div>
-        {% endif %}
+<div id="rpID" class="modal">
+    <form class="modal-content animate">
+        <div class="imgcontainer">
+            <span onclick="document.getElementById('rpID').style.display='none'" class="close"
+                title="Закрыть Modal">&times;
+            </span>
+        </div>
+        <div class="container">
+            <h1>Что-то не так?</h1>
+            <textarea class="rparea" name="rptxt" id="rptxt" cols="50" rows="13"></textarea>
+        </div>
+        <button style="float: right; margin: 10px;" class="btn">Отправить</button>
+    </form>
+</div>
+
+{% endif %}
+
 <script>
+    var modal = document.getElementById('rpID');
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
     document.getElementById("stream").hidden = true;
     var vidElement=null;
     document.getElementById('pause').hidden = true;
@@ -178,10 +200,7 @@
                   window.location.href = '{{ request.get_full_path }}'})
                 .catch(err => alert(err));
         });
-
-
-            };
-
+        };
 </script>
 
    {% endblock %}
