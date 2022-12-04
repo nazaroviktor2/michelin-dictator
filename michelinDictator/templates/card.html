@@ -104,7 +104,7 @@
                     document.getElementById("video").hidden = true;
                     vidElement=document.getElementById("vid");
                     vidElement.srcObject=stream;
-                    vidElement.muted = true;
+                    vidElement.muted = true
                     vidElement.play();
                     document.getElementById('start').hidden = true;
                     document.getElementById('pause').hidden = false;
@@ -115,7 +115,7 @@
 
                 mediaRecorder.addEventListener("stop", function () {
                     const audioBlob = new Blob(videoChunks, {
-                        type: 'audio/wav'
+                        type: 'audio/mp3'
                     });
                     const videoBlob = new Blob(videoChunks, {
                         type: 'video/mp4'
