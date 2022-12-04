@@ -15,7 +15,7 @@
     </div>
     {% if request.user.is_authenticated %}
     <div class="rp">
-        <button onclick="document.getElementById('rpID').style.display='block'" class="report_button"></button>
+        <button class="report_button"></button>
     </div>
     {% endif %}
     <div class="rb">
@@ -26,7 +26,7 @@
         <div class="rules_text">
             <textarea class="output_client_rules" name="rules_for_reader" cols="100" rows="10" disabled id="output_client_rules">{{ card.instruction }}</textarea>
         </div>
-    </div>  
+    </div>
     <div class="content_text">
             <h2 style="text-align: center;">Текст</h2>
             <div class="file_content">
@@ -48,13 +48,13 @@
             </div>
             <div class="button-grid">
                 <table style="margin: auto;">
-                    <td><div id="start"><button class="btn">record</button></div></td>
+                    <td><div id="start"><button class="btn" onclick="recording()">record</button></div></td>
                     <td><div id="pause"><button class="btn" style="background-color: #fd0202; color: #fff;">pause</button></div></td>
                     <td><div id="resume"><button class="btn">resume</button></div></td>
                     <td><div id="stop"><button class="btn">stop</button></div></td>
                     <td><div id="sub"><button onclick="uploadBlob()" class="btn">отправить</button></div></td>
                 </table>
-            </div>
+        </div>
         </div>
 
     </div>
@@ -67,101 +67,106 @@
         <div id="stream"><video id="vid" autoplay></video></div>
     </div>
 </div>
-<div id="rpID" class="modal">
-    <div class="modal-content animate">
-        <div class="imgcontainer">
-            <span onclick="document.getElementById('rpID').style.display='none'" class="close"
-                title="Закрыть Modal">&times;
-            </span>
-        </div>
-        <div class="container">
-            <h1>Что-то не так?</h1>
-            <textarea class="rparea" name="rptxt" id="rptxt" cols="50" rows="13"></textarea>
-        </div>
-        <button style="float: right; margin: 10px;" class="btn" onclick="sendReport()">Отправить</button>
-    </div>
-</div>
-
-{% endif %}
-
+        {% endif %}
 <script>
-    var modal = document.getElementById('rpID');
-    window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-    document.getElementById("stream").hidden = true;
-    var vidElement=null;
-    document.getElementById('pause').hidden = true;
-    document.getElementById('resume').hidden = true;
-    document.querySelector('#start').addEventListener('click', function () {
-        navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-            .then(stream => {
-                const mediaRecorder = new MediaRecorder(stream);
-                    mediaRecorder.start();
-                    document.getElementById("stream").hidden = false;
-                    document.getElementById("video").hidden = true;
-                    vidElement=document.getElementById("vid");
-                    vidElement.srcObject=stream;
-                    vidElement.muted = true
-                    vidElement.play();
-                    document.getElementById('start').hidden = true;
-                    document.getElementById('pause').hidden = false;
-                var videoChunks = [];
-                mediaRecorder.addEventListener("dataavailable", function (event) {
-                    videoChunks.push(event.data);
-                });
+    setTimeout(function() { recording(); }, 5000);
+        document.getElementById("stream").hidden = true;
+        var vidElement=null;
+        document.getElementById('pause').hidden = true;
+        document.getElementById('resume').hidden = true;
+        function recording() {
+            if (document.getElementById("start").hidden == false){
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(stream => {
+                        const mediaRecorder = new MediaRecorder(stream);
+                        mediaRecorder.start();
+                        document.getElementById("stream").hidden = false;
+                        document.getElementById("video").hidden = true;
+                        vidElement=document.getElementById("vid");
+                        vidElement.srcObject=stream;
+                        vidElement.muted = true;
+                        vidElement.play();
+                        document.getElementById('start').hidden = true;
+                        document.getElementById('pause').hidden = false;
+                        vidElement.muted = true;
+                        
+                        var videoChunks = [];
+                        mediaRecorder.addEventListener("dataavailable", function (event) {
+                            videoChunks.push(event.data);
+                        });
 
-                mediaRecorder.addEventListener("stop", function () {
-                    const audioBlob = new Blob(videoChunks, {
-                        type: 'audio/mp3'
-                    });
-                    const videoBlob = new Blob(videoChunks, {
-                        type: 'video/mp4'
-                    });
-                    const audioUrl = URL.createObjectURL(audioBlob);
-                    const videoUrl = URL.createObjectURL(videoBlob);
-                    var audio = document.createElement('audio');
-                    var video = document.createElement('video');
-                    audio.src = audioUrl;
-                    video.src = videoUrl;
-                    audio.controls = true;
-                    audio.autoplay = true;
-                    video.controls = true;
-                    video.autoplay = true;
-                    vidElement.pause();
-                    document.getElementById("stream").hidden = true;
-                    document.getElementById("video").hidden = false;
-                    document.querySelector('#audio').replaceChildren(audio);
-                    document.querySelector('#video').replaceChildren(video);
-                    videoChunks = [];
-                    document.querySelector('#send').addEventListener('click', function () {
-                        fetch('{{ request.get_full_path }}', {
-                            method: "POST",
-                            body: audioUrl
-                        })
-                        .then(response => alert('Blob Uploaded'));
-                    });
+                        mediaRecorder.addEventListener("stop", function () {
+                            const videoBlob = new Blob(videoChunks, {
+                                type: 'video/mp4'
+                            });
+                            const videoUrl = URL.createObjectURL(videoBlob);
+                            var video = document.createElement('video');
+                            video.src = videoUrl;
+                            video.controls = true;
+                            video.autoplay = true;
+                            vidElement.pause();
+                            document.getElementById("stream").hidden = true;
+                            document.getElementById("video").hidden = false;
+                            document.querySelector('#video').replaceChildren(video);
+                            videoChunks = [];
+                            document.querySelector('#send').addEventListener('click', function () {
+                                fetch('{{ request.get_full_path }}', {
+                                    method: "POST",
+                                    body: audioUrl
+                                })
+                                .then(response => alert('Blob Uploaded'));
+                            });
+                        });
+                        document.querySelector('#pause').addEventListener('click', function () {
+                            mediaRecorder.pause();
+                            document.getElementById('pause').hidden = true;
+                            document.getElementById('resume').hidden = false;
+                        });
+                        document.querySelector('#resume').addEventListener('click', function () {
+                            mediaRecorder.resume();
+                            document.getElementById('pause').hidden = false;
+                            document.getElementById('resume').hidden = true;
+                        });
+                        document.querySelector('#stop').addEventListener('click', function () {
+                            mediaRecorder.stop();
+                            document.getElementById('pause').hidden = true;
+                            document.getElementById('resume').hidden = true;
+                            document.getElementById('start').hidden = false;
+                        });
                 });
-                document.querySelector('#pause').addEventListener('click', function () {
-                    mediaRecorder.pause();
-                    document.getElementById('pause').hidden = true;
-                    document.getElementById('resume').hidden = false;
+                navigator.mediaDevices.getUserMedia({ audio: true })
+                    .then(stream => {
+                        const mediaRecorder = new MediaRecorder(stream);
+                        mediaRecorder.start();
+                        var audioChunks = [];
+                        mediaRecorder.addEventListener("dataavailable", function (event) {
+                            audioChunks.push(event.data);
+                        });
+
+                        mediaRecorder.addEventListener("stop", function () {
+                            const audioBlob = new Blob(audioChunks, {
+                                type: 'audio/wav'
+                            });
+                            const audioUrl = URL.createObjectURL(audioBlob);
+                            var audio = document.createElement('audio');
+                            audio.src = audioUrl;
+                            audio.controls = true;
+                            audio.autoplay = true;
+                            document.querySelector('#audio').replaceChildren(audio);
+                            videoChunks = [];
+                        });
+                        document.querySelector('#pause').addEventListener('click', function () {
+                            mediaRecorder.pause();
+                        });
+                        document.querySelector('#resume').addEventListener('click', function () {
+                            mediaRecorder.resume();
+                        });
+                        document.querySelector('#stop').addEventListener('click', function () {
+                            mediaRecorder.stop();
+                        });
                 });
-                document.querySelector('#resume').addEventListener('click', function () {
-                    mediaRecorder.resume();
-                    document.getElementById('pause').hidden = false;
-                    document.getElementById('resume').hidden = true;
-                });
-                document.querySelector('#stop').addEventListener('click', function () {
-                    mediaRecorder.stop();
-                    document.getElementById('pause').hidden = true;
-                    document.getElementById('resume').hidden = true;
-                    document.getElementById('start').hidden = false;
-                });
-            });
-        });
+            };
+        };
         var rng = document.getElementById('seek');
         var text = document.getElementById('output_client_text');
         var text_rules = document.getElementById('output_client_rules');
@@ -170,22 +175,6 @@
                 text.style.fontSize = rng.value + 'px'
                 text_rules.style.fontSize = rng.value + 'px'
             });
-
-         function sendReport() {
-
-         var report_text = document.getElementById('rptxt');
-         alert(report_text.value);
-         fetch('{{ request.get_full_path }}', {
-                    method: "POST",
-                    body: JSON.stringify({text: report_text.value}),
-                    headers: { "X-CSRFToken": '{{ csrf_token }}',"Name":"Report"},
-                })
-                  .then(response => {
-                  window.location.href = '{{ request.get_full_path }}'})
-                .catch(err => alert(err));
-
-
-         };
         function uploadBlob() {
                  myAudio = document.getElementById('audio').firstElementChild;
                 myVideo = document.getElementById('video').firstElementChild;
@@ -216,7 +205,10 @@
                   window.location.href = '{{ request.get_full_path }}'})
                 .catch(err => alert(err));
         });
-        };
+
+
+            };
+
 </script>
 
    {% endblock %}
