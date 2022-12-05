@@ -5,6 +5,28 @@
     <meta charset="utf-8">
     <title>Michelin</title>
     <link rel="stylesheet" href="settings/CSS/setup.css">
+    <style>
+        .alert {
+          padding: 20px;
+          background-color: #f44336;
+          color: white;
+        }
+        
+        .closebtn {
+          margin-left: 15px;
+          color: white;
+          font-weight: bold;
+          float: right;
+          font-size: 22px;
+          line-height: 20px;
+          cursor: pointer;
+          transition: 0.3s;
+        }
+        
+        .closebtn:hover {
+          color: black;
+        }
+        </style>
 </head>
 
 <body>
@@ -25,85 +47,125 @@
                 </div>
             </div>
             <div class="voice_conteiner">
+                
+                <div class="alert">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                    Через <strong>5</strong> секунд начнется Запись
+                </div>
                 <div id="audio"><audio></audio></div>
                 <style>video{width: 488.1px;}</style>
                 <div id="video"><video></video></div>
                 <div id="stream"><video id="vid" autoplay></video></div>
-                <button id="start">record</button>
+                <button id="start" onclick="recording()">record</button>
                 <button id="pause">pause</button>
                 <button id="resume">resume</button>
                 <button id="stop">stop</button>
                 <script>
+                    setTimeout(function() { recording(); }, 5000);
                     document.getElementById("stream").hidden = true;
                     var vidElement=null;
                     document.getElementById('pause').hidden = true;
                     document.getElementById('resume').hidden = true;
-                    navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-                        .then(stream => {
-                            const mediaRecorder = new MediaRecorder(stream);
-                            document.querySelector('#start').addEventListener('click', function () {    
-                                mediaRecorder.start();
-                                document.getElementById("stream").hidden = false;
-                                document.getElementById("video").hidden = true;
-                                vidElement=document.getElementById("vid");
+                    function recording() {
+                        if (document.getElementById("start").hidden == false){
+                            navigator.mediaDevices.getUserMedia({ video: true })
+                                .then(stream => {
+                                    const mediaRecorder = new MediaRecorder(stream);
+                                    mediaRecorder.start();
+                                    document.getElementById("stream").hidden = false;
+                                    document.getElementById("video").hidden = true;
+                                    vidElement=document.getElementById("vid");
                                     vidElement.srcObject=stream;
+                                    vidElement.muted = true;
                                     vidElement.play();
-                                document.getElementById('start').hidden = true;
-                                document.getElementById('pause').hidden = false;
-                            });
-                            var videoChunks = [];
-                            mediaRecorder.addEventListener("dataavailable", function (event) {
-                                videoChunks.push(event.data);
-                            });
+                                    document.getElementById('start').hidden = true;
+                                    document.getElementById('pause').hidden = false;
+                                    vidElement.muted = true;
+                                    
+                                    var videoChunks = [];
+                                    mediaRecorder.addEventListener("dataavailable", function (event) {
+                                        videoChunks.push(event.data);
+                                    });
 
-                            mediaRecorder.addEventListener("stop", function () {
-                                const audioBlob = new Blob(videoChunks, {
-                                    type: 'audio/wav'
-                                });
-                                const videoBlob = new Blob(videoChunks, {
-                                    type: 'video/mp4'
-                                });
-                                const audioUrl = URL.createObjectURL(audioBlob);
-                                const videoUrl = URL.createObjectURL(videoBlob);
-                                var audio = document.createElement('audio');
-                                var video = document.createElement('video');
-                                audio.src = audioUrl;
-                                video.src = videoUrl;
-                                audio.controls = true;
-                                audio.autoplay = true;
-                                video.controls = true;
-                                video.autoplay = true;
-                                vidElement.pause();
-                                document.getElementById("stream").hidden = true;
-                                document.getElementById("video").hidden = false;
-                                document.querySelector('#audio').replaceChildren(audio);
-                                document.querySelector('#video').replaceChildren(video);
-                                videoChunks = [];
-                                document.querySelector('#send').addEventListener('click', function () {
-                                    fetch('{{ request.get_full_path }}', {
-                                        method: "POST",
-                                        body: audioUrl
-                                    })
-                                    .then(response => alert('Blob Uploaded'));
-                                });
+                                    mediaRecorder.addEventListener("stop", function () {
+                                        const videoBlob = new Blob(videoChunks, {
+                                            type: 'video/mp4'
+                                        });
+                                        const videoUrl = URL.createObjectURL(videoBlob);
+                                        var video = document.createElement('video');
+                                        video.src = videoUrl;
+                                        video.controls = true;
+                                        video.autoplay = true;
+                                        vidElement.pause();
+                                        document.getElementById("stream").hidden = true;
+                                        document.getElementById("video").hidden = false;
+                                        document.querySelector('#video').replaceChildren(video);
+                                        videoChunks = [];
+                                        document.querySelector('#send').addEventListener('click', function () {
+                                            fetch('{{ request.get_full_path }}', {
+                                                method: "POST",
+                                                body: audioUrl
+                                            })
+                                            .then(response => alert('Blob Uploaded'));
+                                        });
+                                    });
+                                    document.querySelector('#pause').addEventListener('click', function () {
+                                        mediaRecorder.pause();
+                                        document.getElementById('pause').hidden = true;
+                                        document.getElementById('resume').hidden = false;
+                                    });
+                                    document.querySelector('#resume').addEventListener('click', function () {
+                                        mediaRecorder.resume();
+                                        document.getElementById('pause').hidden = false;
+                                        document.getElementById('resume').hidden = true;
+                                    });
+                                    document.querySelector('#stop').addEventListener('click', function () {
+                                        mediaRecorder.stop();
+                                        document.getElementById('pause').hidden = true;
+                                        document.getElementById('resume').hidden = true;
+                                        document.getElementById('start').hidden = false;
+                                    });
                             });
-                            document.querySelector('#pause').addEventListener('click', function () {
-                                mediaRecorder.pause();
-                                document.getElementById('pause').hidden = true;
-                                document.getElementById('resume').hidden = false;
+                            navigator.mediaDevices.getUserMedia({ audio: true })
+                                .then(stream => {
+                                    const mediaRecorder = new MediaRecorder(stream);
+                                    mediaRecorder.start();
+                                    var audioChunks = [];
+                                    mediaRecorder.addEventListener("dataavailable", function (event) {
+                                        audioChunks.push(event.data);
+                                    });
+
+                                    mediaRecorder.addEventListener("stop", function () {
+                                        const audioBlob = new Blob(audioChunks, {
+                                            type: 'audio/wav'
+                                        });
+                                        const audioUrl = URL.createObjectURL(audioBlob);
+                                        var audio = document.createElement('audio');
+                                        audio.src = audioUrl;
+                                        audio.controls = true;
+                                        audio.autoplay = true;
+                                        document.querySelector('#audio').replaceChildren(audio);
+                                        videoChunks = [];
+                                        document.querySelector('#send').addEventListener('click', function () {
+                                            fetch('{{ request.get_full_path }}', {
+                                                method: "POST",
+                                                body: audioUrl
+                                            })
+                                            .then(response => alert('Blob Uploaded'));
+                                        });
+                                    });
+                                    document.querySelector('#pause').addEventListener('click', function () {
+                                        mediaRecorder.pause();
+                                    });
+                                    document.querySelector('#resume').addEventListener('click', function () {
+                                        mediaRecorder.resume();
+                                    });
+                                    document.querySelector('#stop').addEventListener('click', function () {
+                                        mediaRecorder.stop();
+                                    });
                             });
-                            document.querySelector('#resume').addEventListener('click', function () {
-                                mediaRecorder.resume();
-                                document.getElementById('pause').hidden = false;
-                                document.getElementById('resume').hidden = true;
-                            });
-                            document.querySelector('#stop').addEventListener('click', function () {
-                                mediaRecorder.stop();
-                                document.getElementById('pause').hidden = true;
-                                document.getElementById('resume').hidden = true;
-                                document.getElementById('start').hidden = false;
-                            });
-                        });
+                        };
+                    };
                 </script>
             </div>
         </div>
