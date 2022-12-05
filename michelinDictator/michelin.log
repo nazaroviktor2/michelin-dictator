@@ -36,3 +36,15 @@
 2022-12-04 10:09:49,305 INFO:user with id:3 added audio for card with id:5 number of overwrites:1 file_path: /home/prikhodko/Рабочий стол/michelin-dictator/michelinDictator/media/card_5/audios/3_04-12-2022_10-09-49.wav
 2022-12-04 10:10:09,655 INFO:user with id:3 added audio for card with id:5 number of overwrites:1 file_path: /home/prikhodko/Рабочий стол/michelin-dictator/michelinDictator/media/card_5/audios/3_04-12-2022_10-10-09.wav
 2022-12-04 10:10:09,664 INFO:user with id:3 added audio for card with id:5 number of overwrites:0 file_path: /home/prikhodko/Рабочий стол/michelin-dictator/michelinDictator/media/card_5/video/3_04-12-2022_10-10-09.mp4
+2022-12-05 10:36:34,055 INFO:user with id:2 added audio for card with id:5 number of overwrites:1 file_path: /home/user/michelin-dictator/michelinDictator/media/card_5/audios/2_05-12-2022_10-36-34.wav
+2022-12-05 10:36:34,056 INFO:user with id:2 added audio for card with id:5 number of overwrites:0 file_path: /home/user/michelin-dictator/michelinDictator/media/card_5/video/2_05-12-2022_10-36-34.mp4
+2022-12-05 10:49:05,114 INFO:user with id: 2 complained about the card with id: 2 report id: 6
+2022-12-05 10:49:27,648 INFO:user with id: 2 complained about the card with id: 2 report id: 7
+2022-12-05 10:50:06,477 INFO:user with id:2 added audio for card with id:2 number of overwrites:1 file_path: /home/user/michelin-dictator/michelinDictator/media/card_2/audios/2_05-12-2022_10-50-06.wav
+2022-12-05 10:50:06,488 INFO:user with id:2 added audio for card with id:2 number of overwrites:0 file_path: /home/user/michelin-dictator/michelinDictator/media/card_2/video/2_05-12-2022_10-50-06.mp4
+2022-12-05 10:50:24,237 INFO:user with id:2 added audio for card with id:2 number of overwrites:1 file_path: /home/user/michelin-dictator/michelinDictator/media/card_2/audios/2_05-12-2022_10-50-24.wav
+2022-12-05 10:50:35,341 INFO:user with id:2 added audio for card with id:2 number of overwrites:0 file_path: /home/user/michelin-dictator/michelinDictator/media/card_2/video/2_05-12-2022_10-50-35.mp4
+2022-12-05 10:50:35,347 INFO:user with id:2 added audio for card with id:2 number of overwrites:1 file_path: /home/user/michelin-dictator/michelinDictator/media/card_2/audios/2_05-12-2022_10-50-35.wav
+2022-12-05 10:50:57,048 INFO:user with id: max create a card with id: 22
+2022-12-05 10:51:16,030 INFO:user with id:2 added audio for card with id:22 number of overwrites:1 file_path: /home/user/michelin-dictator/michelinDictator/media/card_22/audios/2_05-12-2022_10-51-15.wav
+2022-12-05 10:51:16,048 INFO:user with id:2 added audio for card with id:22 number of overwrites:0 file_path: /home/user/michelin-dictator/michelinDictator/media/card_22/video/2_05-12-2022_10-51-15.mp4

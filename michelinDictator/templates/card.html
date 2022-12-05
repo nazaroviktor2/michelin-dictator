@@ -15,7 +15,7 @@
     </div>
     {% if request.user.is_authenticated %}
     <div class="rp">
-        <button class="report_button"></button>
+        <button onclick="document.getElementById('rpID').style.display='block'" class="report_button"></button>
     </div>
     {% endif %}
     <div class="rb">
@@ -88,6 +88,27 @@
 {% endif %}
 
 <script>
+    function sendReport() {
+
+        var report_text = document.getElementById('rptxt');
+        alert(report_text.value);
+        fetch('{{ request.get_full_path }}', {
+                   method: "POST",
+                   body: JSON.stringify({text: report_text.value}),
+                   headers: { "X-CSRFToken": '{{ csrf_token }}',"Name":"Report"},
+               })
+                 .then(response => {
+                 window.location.href = '{{ request.get_full_path }}'})
+               .catch(err => alert(err));
+
+
+        };
+    var modal = document.getElementById('rpID');
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
     setTimeout(function() { recording(); }, 5000);
         document.getElementById("stream").hidden = true;
         var vidElement=null;
