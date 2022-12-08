@@ -61,3 +61,4 @@
 2022-12-05 12:03:56,358 INFO:user with id: max create a card with id: 23
 2022-12-07 18:06:20,525 INFO:user with id:5 added audio for card with id:2 number of overwrites:1 file_path: /home/user/michelin-dictator/michelinDictator/media/card_2/audios/5_07-12-2022_18-06-20.wav
 2022-12-07 18:06:20,526 INFO:user with id:5 added audio for card with id:2 number of overwrites:0 file_path: /home/user/michelin-dictator/michelinDictator/media/card_2/video/5_07-12-2022_18-06-20.mp4
+2022-12-08 07:29:10,504 INFO:user with id: max create a card with id: 24

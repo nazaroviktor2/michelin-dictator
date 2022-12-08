@@ -1,6 +1,8 @@
 import datetime
 import json
 import logging
+import os
+import tempfile
 
 from zipfile import ZipFile
 from django.core.files.base import ContentFile
@@ -71,8 +73,24 @@ def home_page(request):
 
 
 def card_page(request):
-    card_id = (request.GET.get("id"))
-    card =get_object_or_404(Card, id=card_id)
+    card_id = request.GET.get("id")
+    status = request.GET.get("status")
+    if status == "next":
+        ids = Card.objects.filter(id__gt=card_id).values_list('id')
+        if len(ids)!= 0:
+            card_id = ids[0][0]
+        else:
+            # если таких карт нет
+            pass
+    elif status == "last":
+        ids = Card.objects.filter(id__lt=card_id).values_list('id').order_by('-id')
+        if len(ids) != 0:
+            card_id = ids[0][0]
+
+        else:
+            # если таких карт нет
+            pass
+    card = get_object_or_404(Card, id=card_id)
 
     if  card == Card.objects.none():
         return redirect("not_found")
@@ -87,7 +105,7 @@ def card_page(request):
                 if audio.exists():
                     audio.delete()
                 overwrites = 1
-                audio_file = ContentFile(request.body, name="{0}.wav".format(now))
+                audio_file = ContentFile(request.body, name="{0}_audio.wav".format(now))
                 audio = Audio.objects.create(file_path=audio_file, card=Card.objects.get(id=card_id), user=request.user,
                                                  duration=duration)
                 audio.save()
@@ -97,7 +115,7 @@ def card_page(request):
                 if video.exists():
                     video.delete()
                 overwrites = 0
-                video_file = ContentFile(request.body, name="{0}.mp4".format(now))
+                video_file = ContentFile(request.body, name="{0}_video.mp4".format(now))
                 video = Video.objects.create(file_path = video_file,card=Card.objects.get(id=card_id), user=request.user)
                 video.save()
                 my_logger.info(
@@ -205,15 +223,18 @@ def user_card(request):
         elif request.POST.get("name") == "download":
             print(request.user)
             file_name = "all_audio_{0}.zip".format(id)
-            zip_file = ZipFile(file_name, 'w')
+            tmpdir = tempfile.mkdtemp()
+            zip_fn =os.path.join(tmpdir, file_name)
+            zip_file = ZipFile(zip_fn, 'w')
             audios = Audio.objects.filter(card=Card.objects.get(id=id))
             if audios:
                 for audio in audios:
                     path = MEDIA_ROOT + "/" + str(audio.file_path)
+                    print(path)
                     zip_file.write(path, "{0}.wav".format(audio.id))
-                print(zip_file.namelist())
+
                 zip_file.close()
-                return FileResponse(open(file_name, "rb"))
+                return FileResponse((open(zip_fn, "rb")))
 
     return render(request, "user_card.html", {"card": Card.objects.get(id=id),
                                               "audios": Audio.objects.filter(card=Card.objects.get(id=id))})

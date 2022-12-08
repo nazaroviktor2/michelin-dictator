@@ -49,18 +49,18 @@
 			{% csrf_token %}
 			<div class="content_name">
 				<h2 style="text-align: center;">Введите название: </h2>
-				<input type="text" name="user_txt" class="cnt">
+				<input type="text" name="name" class="cnt">
 			</div>
 			<div class="content_rules">
 				<h2 style="text-align: center;">Введите инструкцию: </h2>
 				<div class="rules_text">
-					<textarea class="output_client_rules" name="rules_for_reader" cols="100" rows="10" id="output_client_rules"></textarea>
+					<textarea class="output_client_rules" name="instruction" cols="100" rows="10" id="output_client_rules"></textarea>
 				</div>
 			</div>
 			<div class="content_text">
 				<h2 style="text-align: center;">Введите текст: </h2> 
 				<div class="file_content">
-					<textarea class="output_client_text" name="text_for_reader" cols="100" rows="10" id="output_client_text"></textarea>
+					<textarea class="output_client_text" name="text" cols="100" rows="10" id="output_client_text"></textarea>
 				</div>
 			</div>
 			<input type="checkbox" id="accent" name="accent" checked>

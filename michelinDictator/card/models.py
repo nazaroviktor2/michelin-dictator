@@ -5,13 +5,7 @@ import shutil
 from django.db import models
 from django.conf import settings
 from django.dispatch import receiver
-from django.shortcuts import render
-
-from michelinDictator.settings import MEDIA_ROOT, MEDIA_URL, CARD_PATH, AUDIO_PATH, VIDEO_PATH
-
-
-# Create your models here.
-
+from michelinDictator.settings import MEDIA_ROOT, CARD_PATH, AUDIO_PATH, VIDEO_PATH
 
 
 class Card(models.Model):
