@@ -1,4 +1,8 @@
 import datetime
+import json
+import logging
+import os
+import tempfile
 
 from zipfile import ZipFile
 from django.core.files.base import ContentFile
@@ -10,7 +14,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from card.scripts.add_accent import plus_to_accent
 from card.forms import AddCardForm
-from card.models import Card, Audio, Video
+from card.models import Card, Audio, Video, Report
 from card.permissions import IsEditorOrStaffAndAuth, IsOwnerOrStaff
 from card.scripts.bold_func import stars_to_highlight
 from card.serializers import CardSerializer, AudioSerializer
@@ -18,6 +22,8 @@ from michelinDictator.settings import MEDIA_ROOT
 
 # Create your views here.
 CARD_ON_PAGE = 5
+
+my_logger = logging.getLogger("michelin")
 class CardViewSet(ModelViewSet):
     queryset = Card.objects.all()
     serializer_class = CardSerializer
@@ -25,6 +31,8 @@ class CardViewSet(ModelViewSet):
     permission_classes = [IsEditorOrStaffAndAuth]
     filterset_fields = ['id', "user", "name"]
 
+    class Meta:
+        ordering = ['id']
     def perform_create(self, serializer):
         serializer.validated_data["user"] = self.request.user
         serializer.save()
@@ -38,6 +46,8 @@ class AudioViewSet(ModelViewSet):
 
     filterset_fields = ['id', "user", "card"]
 
+    class Meta:
+        ordering = ['id']
     def perform_create(self, serializer):
         serializer.validated_data["user"] = self.request.user
         serializer.save()
@@ -45,8 +55,9 @@ class AudioViewSet(ModelViewSet):
 
 def not_found_page(request,exception):
     return render(request,"not_found.html",status=404)
+
 def home_page(request):
-    cards = Card.objects.all()
+    cards = Card.objects.all().order_by('id')
     page_num = request.GET.get('page', 1)
     paginator = Paginator(cards, CARD_ON_PAGE)
     try:
@@ -62,14 +73,30 @@ def home_page(request):
 
 
 def card_page(request):
-    id = (request.GET.get("id"))
-    card =get_object_or_404(Card, id=id)
-    print(card)
+    card_id = request.GET.get("id")
+    status = request.GET.get("status")
+    if status == "next":
+        ids = Card.objects.filter(id__gt=card_id).values_list('id')
+        if len(ids)!= 0:
+            card_id = ids[0][0]
+        else:
+            # если таких карт нет
+            pass
+    elif status == "last":
+        ids = Card.objects.filter(id__lt=card_id).values_list('id').order_by('-id')
+        if len(ids) != 0:
+            card_id = ids[0][0]
+
+        else:
+            # если таких карт нет
+            pass
+    card = get_object_or_404(Card, id=card_id)
+
     if  card == Card.objects.none():
         return redirect("not_found")
     if request.user.is_authenticated:
-        audio = Audio.objects.filter(card=Card.objects.get(id=id), user=request.user)
-        video = Video.objects.filter(card=Card.objects.get(id=id), user=request.user)
+        audio = Audio.objects.filter(card=Card.objects.get(id=card_id), user=request.user)
+        video = Video.objects.filter(card=Card.objects.get(id=card_id), user=request.user)
         if request.method == "POST":
             now = datetime.datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
             name = request.headers.get("Name")
@@ -77,23 +104,37 @@ def card_page(request):
                 duration = request.headers.get("Audio-Time")
                 if audio.exists():
                     audio.delete()
-
-                audio_file = ContentFile(request.body, name="{0}.wav".format(now))
-                Audio.objects.create(file_path=audio_file, card=Card.objects.get(id=id), user=request.user,
+                overwrites = 1
+                audio_file = ContentFile(request.body, name="{0}_audio.wav".format(now))
+                audio = Audio.objects.create(file_path=audio_file, card=Card.objects.get(id=card_id), user=request.user,
                                                  duration=duration)
+                audio.save()
+                my_logger.info("user with id:{0} added audio for card with id:{1} number of overwrites:{2} file_path: {3}".format(
+                    request.user.id, card_id,overwrites, audio.file_path.path ))
             elif name == "Video":
-                print("video")
                 if video.exists():
                     video.delete()
-                video_file = ContentFile(request.body, name="{0}.mp4".format(now))
-                Video.objects.create(file_path = video_file,card=Card.objects.get(id=id), user=request.user)
+                overwrites = 0
+                video_file = ContentFile(request.body, name="{0}_video.mp4".format(now))
+                video = Video.objects.create(file_path = video_file,card=Card.objects.get(id=card_id), user=request.user)
+                video.save()
+                my_logger.info(
+                        "user with id:{0} added audio for card with id:{1} number of overwrites:{2} file_path: {3}".format(
+                            request.user.id, card_id, overwrites, video.file_path.path))
+            elif name == "Report":
+                text = (json.loads(request.body)).get("text")
+                report = Report.objects.create(text = text,card=Card.objects.get(id=card_id), user=request.user)
+                report.save()
+                my_logger.info(
+                    "user with id: {0} complained about the card with id: {1} report id: {2}".format(request.user.id, card_id,
+                                                                                              report.id))
 
 
 
         return render(request, "card.html", {"card": card,
-                                             "audios": Audio.objects.filter(card=Card.objects.get(id=id),
+                                             "audios": Audio.objects.filter(card=Card.objects.get(id=card_id),
                                                                             user=request.user),
-                                             "videos": Video.objects.filter(card=Card.objects.get(id=id),
+                                             "videos": Video.objects.filter(card=Card.objects.get(id=card_id),
                                                                             user=request.user)
                                              })
     else:
@@ -125,30 +166,42 @@ def add_card(request):
 
         if form.is_valid():
             card.save()
+            my_logger.info(
+                "user with id: {0} create a card with id: {1}".format(request.user, card.id))
+
             return render(request, "successful.html", {"text": "карта для озвучивания создана"})
     return render(request, "add_card.html")
 
 
 def my_cards(request):
-    user = request.user
-    cards = Card.objects.filter(user=user)
-    page_num = request.GET.get('page', 1)
-    paginator = Paginator(cards, CARD_ON_PAGE)
-    try:
-        page_obj = paginator.page(page_num)
-    except PageNotAnInteger:
-        # if page is not an integer, deliver the first page
-        page_obj = paginator.page(1)
-    except EmptyPage:
-        # if the page is out of range, deliver the last page
-        page_obj = paginator.page(paginator.num_pages)
+    if  request.method == "POST":
+        name = request.headers.get("Name")
+        if name == "Delete":
+            id = int(request.body)
+            print(id)
+            card = Card.objects.get(id=id)
+            card.delete()
+            return redirect("my_cards")
+    else:
+        user = request.user
+        cards = Card.objects.filter(user=user).order_by('id')
+        page_num = request.GET.get('page', 1)
+        paginator = Paginator(cards, CARD_ON_PAGE)
+        try:
+            page_obj = paginator.page(page_num)
+        except PageNotAnInteger:
+            # if page is not an integer, deliver the first page
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            # if the page is out of range, deliver the last page
+            page_obj = paginator.page(paginator.num_pages)
 
-    return render(request, "my_cards.html", {"cards": page_obj})
+        return render(request, "my_cards.html", {"cards": page_obj})
 
 
 def my_audios(request):
     user = request.user
-    card_id = [audio.card.id for audio in Audio.objects.filter(user=user)]
+    card_id = [audio.card.id for audio in Audio.objects.filter(user=user).order_by('id')]
 
     res = []
     for id in card_id:
@@ -171,23 +224,44 @@ def my_audios(request):
 
 def user_card(request):
     id = (request.GET.get("id"))
+
     if request.method == "POST":
-        if request.POST.get("name") == "delete":
+        name = request.POST.get("name")
+        if name == "delete":
             card = Card.objects.get(id=id)
             card.delete()
             return redirect("my_cards")
-        elif request.POST.get("name") == "download":
+        elif name == "download":
             print(request.user)
-            file_name = "all_audio_{0}.zip".format(id)
-            zip_file = ZipFile(file_name, 'w')
-            audios = Audio.objects.filter(card=Card.objects.get(id=id))
-            if audios:
-                for audio in audios:
-                    path = MEDIA_ROOT + "/" + str(audio.file_path)
-                    zip_file.write(path, "{0}.wav".format(audio.id))
-                print(zip_file.namelist())
-                zip_file.close()
-                return FileResponse(open(file_name, "rb"))
+
+        elif name == "doit":
+            audios_id = request.POST.getlist("audio")
+            card_adm = request.POST.get("card_adm")
+            if card_adm == "delete":
+                print("delete")
+                for audio_id in audios_id:
+                    Audio.objects.filter(id=audio_id).delete()
+
+            elif card_adm == "download":
+                if len(audios_id) != 0:
+
+                    file_name = "{0}_audio_{1}-{2}.zip".format(id,audios_id[0],audios_id[-1])
+
+                    tmpdir = tempfile.mkdtemp()
+                    zip_fn = os.path.join(tmpdir, file_name)
+                    zip_file = ZipFile(zip_fn, 'w')
+
+
+                    for audio_id in audios_id:
+                        audio = Audio.objects.get(id=audio_id)
+                        path = MEDIA_ROOT + "/" + str(audio.file_path)
+                        print(path)
+                        zip_file.write(path, "{0}.wav".format(audio.id))
+
+                    zip_file.close()
+                    return FileResponse((open(zip_fn, "rb")))
+
+
 
     return render(request, "user_card.html", {"card": Card.objects.get(id=id),
                                               "audios": Audio.objects.filter(card=Card.objects.get(id=id))})

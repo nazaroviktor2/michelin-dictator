@@ -4,3 +4,4 @@ __pycache__
 .idea
 michelinDictator/media/*
 *.zip
+*.log
