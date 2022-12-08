@@ -7,8 +7,7 @@
         width: 40%; /* Ширина первого слоя */
         padding: 20px; /* Поля вокруг текста */
         background-color: #fff; /* Цвет фона */
-         margin: auto;
-
+        margin: auto;
         border-radius: 8px;
         box-shadow: 4px 4px 10px rgba(0, 0, 0, .1);
 
@@ -17,11 +16,11 @@
 
 <div class="button-wrapper">
     <div id="layer1" class="container">
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit"class="btnhome">Login</button>
-</form>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit"class="btnhome">Login</button>
+        </form>
     </div>
 </div>
 {% endblock content %}

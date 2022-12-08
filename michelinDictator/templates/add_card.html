@@ -1,60 +1,41 @@
 {% extends 'base.html' %}
-
-	<title>Add card</title>
-	   {% load static %}
-	   {% block content %}
-
-<style>
-	    .container {
-
-        width: 98%;
-        text-align: center;
-    }
-    #layer1 {
-        width: 70%; /* Ширина первого слоя */
-        padding: 10px; /* Поля вокруг текста */
-
-        background-color: #fff; /* Цвет фона */
-        margin: auto;
-       margin-top: 2%;
-        border-radius: 8px;
-        box-shadow: 4px 4px 10px rgba(0, 0, 0, .1);
-       }
-
-</style>
+<head>
+    {% load static %}
+	{% block content %}
+    <link rel="stylesheet" href="{% static 'home/css/add_card.css' %}">
+</head>
 {% if request.user.is_authenticated %}
 {% if request.user.is_editor or request.user.is_staff %}
-	        <div id="layer1" >
-            <div class="container">
-
+<div id="layer1" >
+	<div class="container">
 		<form name="add_card" method="post" >
-			    {% csrf_token %}
-			<p><b>Введите название:</b><br>
-				<textarea class="name_card_t" name="name" cols="10" rows="1" required></textarea>
-			</p>
-			<p><b>Введите правила:</b><br>
-				<textarea name="instruction" cols="100" rows="10" spellcheck="true" ></textarea>
-			</p>
-			</p>
-			<p><b>Введите текст: </b><Br>
-				<textarea name="text" cols="100" rows="10" spellcheck="true" required></textarea>
-			</p>
-			<div>
-      <input type="checkbox" id="accent" name="accent" checked>
-      <label for="accent">Раставить ударение</label>
-				<br>
-		<input type="checkbox" id="highlight" name="highlight" checked>
-      <label for="highlight">Раставить выделение</label>
-    </div>
-
-			<p><input type="submit" value="Создать">
-				<input type="reset" value="Очистить">
-			</p>
-			
+			{% csrf_token %}
+			<div class="content_name">
+				<h2 style="text-align: center;">Введите название: </h2>
+				<input type="text" name="name" class="cnt">
+			</div>
+			<div class="content_rules">
+				<h2 style="text-align: center;">Введите инструкцию: </h2>
+				<div class="rules_text">
+					<textarea class="output_client_rules" name="instruction" cols="100" rows="10" id="output_client_rules"></textarea>
+				</div>
+			</div>
+			<div class="content_text">
+				<h2 style="text-align: center;">Введите текст: </h2> 
+				<div class="file_content">
+					<textarea class="output_client_text" name="text" cols="100" rows="10" id="output_client_text"></textarea>
+				</div>
+			</div>
+			<input type="checkbox" id="accent" name="accent" checked>
+			<label for="accent">Раставить ударение</label>
+			<input type="checkbox" id="highlight" name="highlight" checked>
+			<label for="highlight">Раставить выделение</label>
+			<br>
+			<input type="submit" value="Создать">
+			<input type="reset" value="Очистить">
 		</form>
-
+	</div>
+</div>
 {% endif %}
 {% endif %}
-			</div>
-			</div>
-	{% endblock %}
+{% endblock %}
