@@ -1,46 +1,9 @@
 {% extends 'base.html' %}
-
-	<title>Add card</title>
-	   {% load static %}
-	   {% block content %}
-
-<style>
-	.container {
-		width: 98%;
-		text-align: center;
-    }
-    #layer1 {
-        width: 70%; /* Ширина первого слоя */
-        padding: 10px; /* Поля вокруг текста */
-        background-color: #fff; /* Цвет фона */
-        margin: auto;
-        margin-top: 2%;
-        border-radius: 8px;
-        box-shadow: 4px 4px 10px rgba(0, 0, 0, .1);
-       }
-	.name_card_t {
-		width: 58%;
-	}
-	input[type=text]{
-		width: 95%;
-	}
-	.output_content_rules{
-		width: 95%;
-	}
-	.output_client_rules{
-		font-size: 15px;
-		width: 95%;
-		resize: vertical;
-		overflow-y: scroll;
-	}
-	.output_client_text{
-		font-size: 15px;
-		width: 95%;
-		resize: vertical;
-		overflow-y: scroll;
-	}
-
-</style>
+<head>
+    {% load static %}
+	{% block content %}
+    <link rel="stylesheet" href="{% static 'home/css/add_card.css' %}">
+</head>
 {% if request.user.is_authenticated %}
 {% if request.user.is_editor or request.user.is_staff %}
 <div id="layer1" >
