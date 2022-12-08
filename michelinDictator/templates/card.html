@@ -5,7 +5,6 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'home/css/card_style.css' %}">
 </head>
-
 <div class="wrapper">
     <div class="header">
         <h1 style="text-align: center;" >{{ card.name }} </h1>
@@ -86,10 +85,8 @@
     </div>
 </div>
 {% endif %}
-
 <script>
     function sendReport() {
-
         var report_text = document.getElementById('rptxt');
         alert(report_text.value);
         fetch('{{ request.get_full_path }}', {
@@ -100,8 +97,6 @@
                  .then(response => {
                  window.location.href = '{{ request.get_full_path }}'})
                .catch(err => alert(err));
-
-
         };
     var modal = document.getElementById('rpID');
     window.onclick = function (event) {
