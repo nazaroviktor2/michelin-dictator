@@ -73,8 +73,24 @@ def home_page(request):
 
 
 def card_page(request):
-    card_id = (request.GET.get("id"))
-    card =get_object_or_404(Card, id=card_id)
+    card_id = request.GET.get("id")
+    status = request.GET.get("status")
+    if status == "next":
+        ids = Card.objects.filter(id__gt=card_id).values_list('id')
+        if len(ids)!= 0:
+            card_id = ids[0][0]
+        else:
+            # если таких карт нет
+            pass
+    elif status == "last":
+        ids = Card.objects.filter(id__lt=card_id).values_list('id').order_by('-id')
+        if len(ids) != 0:
+            card_id = ids[0][0]
+
+        else:
+            # если таких карт нет
+            pass
+    card = get_object_or_404(Card, id=card_id)
 
     if  card == Card.objects.none():
         return redirect("not_found")
