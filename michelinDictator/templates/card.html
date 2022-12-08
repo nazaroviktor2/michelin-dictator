@@ -4,9 +4,39 @@
 <head>
     {% load static %}
     <link rel="stylesheet" href="{% static 'home/css/card_style.css' %}">
+    <style>
+        /* ------------------------------- */
+        .alert {
+            padding: 20px;
+            width: 80%;
+            background-color: #f44336;
+            color: white;
+        }
+        
+        .closebtn {
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .closebtn:hover {
+            color: black;
+        }
+        /* ------------------------------- */
+        </style>
 </head>
+<!------------------------------------->
+<div class="alert">
+    <span class="closebtn" onclick="this.parentElement.style.display='none'; set_t();">&times;</span> 
+    Через <span class="clock">5</span> секунд начнется Запись
+</div>
+<!------------------------------------->
 <div class="wrapper">
-    <div class="header">
+    <div class="header">    
         <h1 style="text-align: center;" >{{ card.name }} </h1>
     </div>
     <div class="lb">
@@ -86,6 +116,21 @@
 </div>
 {% endif %}
 <script>
+// -------------------------------------
+var t = 5;
+var time = document.getElementsByClassName("clock")[0];
+function set_t(){
+    t = -1
+}
+function fun() {
+    if (t > 0){
+        t--;
+        time.innerHTML = t;
+    }
+}
+var inter = setInterval("fun()", 1000);
+document.getElementsByClassName('alert').hidden = true;
+// -------------------------------------
     function sendReport() {
         var report_text = document.getElementById('rptxt');
         alert(report_text.value);
@@ -104,7 +149,7 @@
             modal.style.display = "none";
         }
     }
-    setTimeout(function() { recording(); }, 5000);
+    setTimeout(function() { if (t == 0){ recording(); }}, 5000);
         document.getElementById("stream").hidden = true;
         var vidElement=null;
         document.getElementById('pause').hidden = true;
