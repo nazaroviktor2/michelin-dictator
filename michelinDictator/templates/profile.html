@@ -5,18 +5,29 @@
 	{% load static %}
 	{% block content %}
 	<link rel="stylesheet" href="{% static 'home/css/style.css' %}">
+	<style>
+	    #layer1 {
+        width: 50%; /* Ширина первого слоя */
+        padding: 10px; /* Поля вокруг текста */
+        background-color: #fff; /* Цвет фона */
+        margin: auto;
+        margin-top: 2%;
+        border-radius: 8px;
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, .1);
+		text-align: center	;
+       }
+	</style>
 	<div class="fig"> 
 <!--	<img width="150" height="80" src="{% static 'home/images/img_avatar.png' %}" alt="Аватар" class="avatar_profile_osrv">-->
 	</div>
       {% if request.user.is_authenticated %}
-<div>
-	<h1>{{ request.user.username }}</h1>
-	<h1>{{ voicing_time}}</h1>
-
-		<h1>{{ count_audio }}</h1>
-		<h1>{{ count_card }}</h1>
-		<h1>{{ count_report }}</h1>
-		</div>
+<div id="layer1">
+	<h1>Имя пользователя: {{ request.user.username }}</h1>
+	<h1>Время озвучки: {{ voicing_time}}</h1>
+	<h1>Карточек озвучено: {{ count_audio }}</h1>
+	<h1>Карточек создано: {{ count_card }}</h1>
+	<h1>Жалоб на карточки: {{ count_report }}</h1>
+</div>
 
     {% endif %}
 	{% endblock %}
