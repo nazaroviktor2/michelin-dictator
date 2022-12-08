@@ -40,7 +40,7 @@
         <h1 style="text-align: center;" >{{ card.name }} </h1>
     </div>
     <div class="lb">
-        <button class="left_button" onclick="document.location='{% url 'card' %}?id={{ card.id|add:-1}}'"></button>
+        <button class="left_button" onclick="document.location='{% url 'card' %}?id={{ card.id }}&status=last'"></button>
     </div>
     {% if request.user.is_authenticated %}
     <div class="rp">
@@ -48,7 +48,7 @@
     </div>
     {% endif %}
     <div class="rb">
-        <button class="right_button" onclick="document.location='{% url 'card' %}?id={{ card.id|add:1}}'"></button>
+        <button class="right_button" onclick="document.location='{% url 'card' %}?id={{ card.id }}&status=next'"></button>
     </div>
     <div class="content_rules">
         <h2 style="text-align: center;">Инструкция</h2>
@@ -115,7 +115,6 @@
     </div>
 </div>
 {% endif %}
-
 <script>
 // -------------------------------------
 var t = 5;
@@ -133,7 +132,6 @@ var inter = setInterval("fun()", 1000);
 document.getElementsByClassName('alert').hidden = true;
 // -------------------------------------
     function sendReport() {
-
         var report_text = document.getElementById('rptxt');
         alert(report_text.value);
         fetch('{{ request.get_full_path }}', {
@@ -144,8 +142,6 @@ document.getElementsByClassName('alert').hidden = true;
                  .then(response => {
                  window.location.href = '{{ request.get_full_path }}'})
                .catch(err => alert(err));
-
-
         };
     var modal = document.getElementById('rpID');
     window.onclick = function (event) {

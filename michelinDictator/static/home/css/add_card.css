@@ -1,0 +1,34 @@
+.container {
+    width: 98%;
+    text-align: center;
+}
+#layer1 {
+    width: 70%;
+    padding: 10px;
+    background-color: #fff;
+    margin: auto;
+    margin-top: 2%;
+    border-radius: 8px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, .1);
+   }
+.name_card_t {
+    width: 58%;
+}
+input[type=text]{
+    width: 95%;
+}
+.output_content_rules{
+    width: 95%;
+}
+.output_client_rules{
+    font-size: 15px;
+    width: 95%;
+    resize: vertical;
+    overflow-y: scroll;
+}
+.output_client_text{
+    font-size: 15px;
+    width: 95%;
+    resize: vertical;
+    overflow-y: scroll;
+}

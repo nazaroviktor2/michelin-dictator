@@ -5,13 +5,7 @@ import shutil
 from django.db import models
 from django.conf import settings
 from django.dispatch import receiver
-from django.shortcuts import render
-
-from michelinDictator.settings import MEDIA_ROOT, MEDIA_URL, CARD_PATH, AUDIO_PATH, VIDEO_PATH
-
-
-# Create your models here.
-
+from michelinDictator.settings import MEDIA_ROOT, CARD_PATH, AUDIO_PATH, VIDEO_PATH
 
 
 class Card(models.Model):
@@ -53,7 +47,7 @@ class Audio(models.Model):
     duration = models.DurationField(default=datetime.timedelta())
 
     def __str__(self):
-        return "Card:{0} Dictator id:{1}".format(self.card.id, self.user.id)
+        return "{0}: Card:{1} Dictator id:{2}".format(self.id,self.card.id, self.user.id)
 
 @receiver(models.signals.post_delete, sender=Audio)
 def auto_delete_audio_on_delete(sender, instance, **kwargs):
@@ -73,7 +67,7 @@ class Video(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
 
     def __str__(self):
-        return "Card:{0} Dictator id:{1}".format(self.card.id, self.user.id)
+        return "{0}:Card:{1} Dictator id:{2}".format(self.id,self.card.id, self.user.id)
 
 
 @receiver(models.signals.post_delete, sender=Video)
