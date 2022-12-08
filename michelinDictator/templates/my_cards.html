@@ -57,8 +57,8 @@
                 <div>
                    <p style="float: left;">{{ card.user }}</p>
                    <button onclick="document.location='{% url 'user_card' %}?id={{ card.id }}'" class="btn" style="float: right;">Перейти</button>
-                   <button class="btn" style="float: right;">Удалить</button>
-                   
+                   <button class="btn" style="float: right;" onclick="deleteCard({{ card.id }})">Удалить</button>
+
                </div>
        
             </div>
@@ -77,4 +77,22 @@
     {% endif %}
   </span>
 </div>
+ <script>
+         function deleteCard(id) {
+
+
+        fetch('{{ request.get_full_path }}', {
+                   method: "POST",
+                   body:id,
+                   headers: { "X-CSRFToken": '{{ csrf_token }}',"Name":"Delete"},
+               })
+                 .then(response => {
+
+                 window.location.href = '{{ request.get_full_path }}'})
+               .catch(err => alert(err));
+
+
+        };
+
+ </script>
 {% endblock %}
