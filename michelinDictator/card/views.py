@@ -174,20 +174,29 @@ def add_card(request):
 
 
 def my_cards(request):
-    user = request.user
-    cards = Card.objects.filter(user=user).order_by('id')
-    page_num = request.GET.get('page', 1)
-    paginator = Paginator(cards, CARD_ON_PAGE)
-    try:
-        page_obj = paginator.page(page_num)
-    except PageNotAnInteger:
-        # if page is not an integer, deliver the first page
-        page_obj = paginator.page(1)
-    except EmptyPage:
-        # if the page is out of range, deliver the last page
-        page_obj = paginator.page(paginator.num_pages)
+    if  request.method == "POST":
+        name = request.headers.get("Name")
+        if name == "Delete":
+            id = int(request.body)
+            print(id)
+            card = Card.objects.get(id=id)
+            card.delete()
+            return redirect("my_cards")
+    else:
+        user = request.user
+        cards = Card.objects.filter(user=user).order_by('id')
+        page_num = request.GET.get('page', 1)
+        paginator = Paginator(cards, CARD_ON_PAGE)
+        try:
+            page_obj = paginator.page(page_num)
+        except PageNotAnInteger:
+            # if page is not an integer, deliver the first page
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            # if the page is out of range, deliver the last page
+            page_obj = paginator.page(paginator.num_pages)
 
-    return render(request, "my_cards.html", {"cards": page_obj})
+        return render(request, "my_cards.html", {"cards": page_obj})
 
 
 def my_audios(request):
@@ -215,26 +224,44 @@ def my_audios(request):
 
 def user_card(request):
     id = (request.GET.get("id"))
+
     if request.method == "POST":
-        if request.POST.get("name") == "delete":
+        name = request.POST.get("name")
+        if name == "delete":
             card = Card.objects.get(id=id)
             card.delete()
             return redirect("my_cards")
-        elif request.POST.get("name") == "download":
+        elif name == "download":
             print(request.user)
-            file_name = "all_audio_{0}.zip".format(id)
-            tmpdir = tempfile.mkdtemp()
-            zip_fn =os.path.join(tmpdir, file_name)
-            zip_file = ZipFile(zip_fn, 'w')
-            audios = Audio.objects.filter(card=Card.objects.get(id=id))
-            if audios:
-                for audio in audios:
-                    path = MEDIA_ROOT + "/" + str(audio.file_path)
-                    print(path)
-                    zip_file.write(path, "{0}.wav".format(audio.id))
 
-                zip_file.close()
-                return FileResponse((open(zip_fn, "rb")))
+        elif name == "doit":
+            audios_id = request.POST.getlist("audio")
+            card_adm = request.POST.get("card_adm")
+            if card_adm == "delete":
+                print("delete")
+                for audio_id in audios_id:
+                    Audio.objects.filter(id=audio_id).delete()
+
+            elif card_adm == "download":
+                if len(audios_id) != 0:
+
+                    file_name = "{0}_audio_{1}-{2}.zip".format(id,audios_id[0],audios_id[-1])
+
+                    tmpdir = tempfile.mkdtemp()
+                    zip_fn = os.path.join(tmpdir, file_name)
+                    zip_file = ZipFile(zip_fn, 'w')
+
+
+                    for audio_id in audios_id:
+                        audio = Audio.objects.get(id=audio_id)
+                        path = MEDIA_ROOT + "/" + str(audio.file_path)
+                        print(path)
+                        zip_file.write(path, "{0}.wav".format(audio.id))
+
+                    zip_file.close()
+                    return FileResponse((open(zip_fn, "rb")))
+
+
 
     return render(request, "user_card.html", {"card": Card.objects.get(id=id),
                                               "audios": Audio.objects.filter(card=Card.objects.get(id=id))})
