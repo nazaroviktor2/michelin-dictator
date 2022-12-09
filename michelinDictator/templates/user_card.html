@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{% static 'home/css/user_card_style.css' %}">
 </head>
 
-
+{% if request.user.is_authenticated %}
 <div class="wrapper">
     <div class="header">
         <h1 style="text-align: center;" >{{ card.name }} </h1>
@@ -23,7 +23,7 @@
             </div>
     </div>
     <div class="footer">
-        {% if request.user.is_authenticated %}
+
         <div class="wrapper_seek">
             <div class="left_side"><p>A-<p></div>
             <div class="center_side"><input id="seek" type="range" name="seekbar" step="1" min="15" max="75"></div>
@@ -35,20 +35,23 @@
             {% csrf_token %}
         <input type="hidden" name="name" value="delete">
             <button type="submit" class="btn">Удалить карточку</button>
+        </form>
     </div>
 </div>
 
-<form action="">
+<form method="post">
+     {% csrf_token %}
+    <input type="hidden" name="name" value="doit">
     <div class="wrapper_form">
         <div class="centered">
             <div class="done">
                 Действие: 
                 <select name="card_adm" id="cards_audios">
-                    <option value="" selected="">---------</option>
-                    <option value="">Удалить выбранные</option>
-                    <option value="">Скачать выбранные</option>
+                    <option disabled selected>---------</option>
+                    <option value="delete">Удалить выбранные</option>
+                    <option value="download">Скачать выбранные</option>
                 </select>
-                <button >Выполнить</button>
+                <button type="submit" >Выполнить</button>
             </div>
             
             <table class="styled-table">
@@ -73,18 +76,18 @@
                     {% for audio in audios %}
                     <tr>
                         <td>
-                        <div class="form-group">
-                            <input type="checkbox" id="web-developer">
-                            <label for="web-developer">
-                                <span class="checkbox">
-                                    <span class="check"></span>
-                                </span>
-                            </label>
-                        </div>
+<!--                        <div class="form-group">-->
+                            <input type="checkbox" name="audio" class="form-group" value="{{ audio.id }}">
+<!--                            <label for="web-developer-{{ audio_id }}">-->
+<!--                                <span class="checkbox">-->
+<!--                                    <span class="check"></span>-->
+<!--                                </span>-->
+<!--                            </label>-->
+<!--                        </div>-->
                         </td>
-                        <td style="text-align: center;">{{ audio.id }}</td>
-                        <td style="text-align: center;"> {{ audio.user }}</td>
-                        <td> <audio src ="{{ audio.file_path.url }}" controls></audio> </td>
+                        <th style="text-align: center;">{{ audio.id }}</th>
+                        <th style="text-align: center;"> {{ audio.user }}</th>
+                        <th> <audio src ="{{ audio.file_path.url }}" controls></audio> </th>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -93,24 +96,13 @@
         </div>
     </div>
 </form>
-<div style="text-align: center;">
-    <form method="post" name="download">
-        {% csrf_token %}
-    <input type="hidden" name="name" value="download">
-        <button type="submit"  class="btn">Скачать все</button>
-    </form>
-    <form method="post" name="download">
-        {% csrf_token %}
-    <input type="hidden" name="name" value="download">
-        <button type="submit"  class="btn">Удалить все</button>
-    </form>
-</div>
+
 {% else %}
 <h1>Это не ваша карта</h1>
 {% endif %}
 <script>
     const selectAll = document.querySelector('.form-group.select-all input');
-		const allCheckbox = document.querySelectorAll('.form-group:not(.select-all) input');
+		const allCheckbox = document.getElementsByName('audio');
 		let listBoolean = [];
 		allCheckbox.forEach(item=> {
 			item.addEventListener('change', function () {

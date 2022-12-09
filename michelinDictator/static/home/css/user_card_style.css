@@ -108,25 +108,7 @@ label .checkbox .check::after {
 .db {
     grid-area: db;
 }
-.wrapper {
-    display: grid;
-    overflow: auto;
-    position: relative;
-    align-items: center;
-    align-content: center;
-    padding: 10px; /* Поля вокруг текста */
-    background-color: #fff;
-    margin: auto;
-    border-radius: 8px;
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, .1);
-    grid-template-columns: repeat(5, 1fr);
-    grid-auto-rows: minmax(100px, auto);
-    grid-template-areas:
-    "hd hd hd   hd   hd   hd"
-    "sd sd main main main main"
-    "ft ft ft   ft   ft   db";
-    width: 90%;
-}
+
 .left_side {
     grid-area: ls;
     font-weight: bold;
@@ -350,10 +332,31 @@ video {
 .wf_hd {
     grid-area: cnt;
 }
+.wrapper {
+    display: grid;
+    overflow: auto;
+    position: relative;
+    align-items: center;
+    align-content: center;
+    padding: 10px; /* Поля вокруг текста */
+    background-color: #fff;
+    margin: auto;
+    border-radius: 8px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, .1);
+    grid-template-columns: repeat(5, 1fr);
+    grid-auto-rows: minmax(100px, auto);
+    grid-template-areas:
+    "hd hd hd   hd   hd   hd"
+    "sd sd main main main main"
+    "ft ft ft   ft   ft   db";
+    width: 90%;
+}
 .wrapper_form {
     display: grid;
     overflow: auto;
     position: relative;
+    align-items: center;
+    align-content: center;
     border-radius: 8px;
     background-color: #fff;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, .1);
@@ -362,9 +365,11 @@ video {
     grid-template-areas:
     "hd"
     "cnt";
-    width: 35%;
+    width: 580px;
     margin: 15px auto;
-    padding-left: 4%;
+    padding-left: 2%;
+    padding-right: 2%;
+
 }
 .centered {
     margin: 15px 10% 15px auto;
