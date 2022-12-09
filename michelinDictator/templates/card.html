@@ -1,16 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<head>
+
     {% load static %}
     <link rel="stylesheet" href="{% static 'home/css/card_style.css' %}">
     <style>
         /* ------------------------------- */
         .alert {
             padding: 20px;
-            width: 80%;
+            margin: 15px auto;
+            width: 89%;
             background-color: #f44336;
             color: white;
+            text
         }
         
         .closebtn {
@@ -28,10 +30,11 @@
         }
         /* ------------------------------- */
         </style>
-</head>
+<h1>{{ request.user.allow_video }}</h1>
+<h1>{{ request.user.allow_auto_transition }}</h1>
 <!------------------------------------->
 <div class="alert">
-    <span class="closebtn" onclick="this.parentElement.style.display='none'; set_t();">&times;</span> 
+    <span style="" class="closebtn" onclick="this.parentElement.style.display='none'; set_t();">&times;</span>
     Через <span class="clock">5</span> секунд начнется Запись
 </div>
 <!------------------------------------->

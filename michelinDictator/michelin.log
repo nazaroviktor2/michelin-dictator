@@ -67,3 +67,18 @@
 2022-12-08 08:20:24,804 INFO:user with id: max create a card with id: 26
 2022-12-08 08:20:48,996 INFO:user with id: max create a card with id: 27
 2022-12-08 08:23:00,690 INFO:user with id: max create a card with id: 28
+2022-12-08 12:20:03,958 INFO:user with id: nazaroff create a card with id: 79
+2022-12-08 13:26:55,192 INFO:user with id: nazaroff create a card with id: 80
+2022-12-08 13:27:40,350 INFO:user with id: nazaroff create a card with id: 81
+2022-12-08 13:27:50,466 INFO:user with id: nazaroff create a card with id: 82
+2022-12-08 13:28:05,988 INFO:user with id: nazaroff create a card with id: 83
+2022-12-08 14:02:09,380 INFO:user with id: nazaroff create a card with id: 84
+2022-12-08 14:02:53,702 INFO:user with id: nazaroff create a card with id: 85
+2022-12-08 14:03:36,050 INFO:user with id: nazaroff create a card with id: 86
+2022-12-08 14:04:15,462 INFO:user with id:2 added audio for card with id:86 number of overwrites:1 file_path: /home/nazaroff/My_project/git/michelin-dictator/michelinDictator/media/card_86/audios/2_08-12-2022_14-04-15_audio.wav
+2022-12-08 14:04:15,463 INFO:user with id:2 added audio for card with id:86 number of overwrites:0 file_path: /home/nazaroff/My_project/git/michelin-dictator/michelinDictator/media/card_86/video/2_08-12-2022_14-04-15_video.mp4
+2022-12-08 14:11:28,114 INFO:user with id:2 added audio for card with id:84 number of overwrites:0 file_path: /home/nazaroff/My_project/git/michelin-dictator/michelinDictator/media/card_84/video/2_08-12-2022_14-11-28_video.mp4
+2022-12-08 14:14:22,970 INFO:user with id: 2 complained about the card with id: 84 report id: 12
+2022-12-08 14:17:37,563 INFO:user with id: nazaroff create a card with id: 87
+2022-12-08 14:19:20,210 INFO:user with id:2 added audio for card with id:84 number of overwrites:1 file_path: /home/nazaroff/My_project/git/michelin-dictator/michelinDictator/media/card_84/audios/2_08-12-2022_14-19-20_audio.wav
+2022-12-08 14:19:20,214 INFO:user with id:2 added audio for card with id:84 number of overwrites:0 file_path: /home/nazaroff/My_project/git/michelin-dictator/michelinDictator/media/card_84/video/2_08-12-2022_14-19-20_video.mp4
