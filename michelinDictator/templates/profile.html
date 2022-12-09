@@ -27,6 +27,12 @@
 	<h1>Карточек озвучено: {{ count_audio }}</h1>
 	<h1>Карточек создано: {{ count_card }}</h1>
 	<h1>Жалоб на карточки: {{ count_report }}</h1>
+	<input type="checkbox" id="accent" name="accent" checked>
+	<label for="accent">Записывать видео</label>
+	<input type="checkbox" id="highlight" name="highlight" checked>
+	<label for="highlight">Авто переход</label>
+	<br>
+	<input type="submit" value="Сохранить">
 </div>
 
     {% endif %}
