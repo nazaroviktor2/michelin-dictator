@@ -13,6 +13,8 @@ class Card(models.Model):
     text = models.TextField()
     instruction = models.TextField(blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    duration_min = models.DurationField(default=datetime.timedelta())
+    duration_max = models.DurationField(default=datetime.timedelta())
 
     def __str__(self):
         return "id {0}: {1}".format(self.id, self.name)

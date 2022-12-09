@@ -17,6 +17,7 @@ from card.forms import AddCardForm
 from card.models import Card, Audio, Video, Report
 from card.permissions import IsEditorOrStaffAndAuth, IsOwnerOrStaff
 from card.scripts.bold_func import stars_to_highlight
+from card.scripts.reading_speed import reading_speed
 from card.serializers import CardSerializer, AudioSerializer
 from michelinDictator.settings import MEDIA_ROOT
 
@@ -145,14 +146,18 @@ def card_page(request):
 
 
 def add_card(request):
+
     if request.method == "POST":
+        print()
         form = AddCardForm(request.POST)
 
         card = form.save(commit=False)
         card.user = request.user
         text = request.POST.get("text")
         instruction = request.POST.get("instruction")
-
+        time_speed = request.POST.get("time_speed")
+        error = request.POST.get("error")
+        time_min, time_max = reading_speed(text,average_error=error,average_speed=time_speed)
         if request.POST.get("accent"):
             text = plus_to_accent(text)
             instruction = plus_to_accent(instruction)
@@ -163,6 +168,8 @@ def add_card(request):
 
         card.text = text
         card.instruction = instruction
+        card.duration_min = time_min
+        card.duration_max = time_max
 
         if form.is_valid():
             card.save()
