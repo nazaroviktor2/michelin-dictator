@@ -5,7 +5,6 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'home/css/card_style.css' %}">
     <style>
-        /* ------------------------------- */
         .alert {
             padding: 20px;
             width: 80%;
@@ -26,15 +25,12 @@
         .closebtn:hover {
             color: black;
         }
-        /* ------------------------------- */
         </style>
 </head>
-<!------------------------------------->
 <div class="alert">
     <span class="closebtn" onclick="this.parentElement.style.display='none'; set_t();">&times;</span> 
     Через <span class="clock">5</span> секунд начнется Запись
 </div>
-<!------------------------------------->
 <div class="wrapper">
     <div class="header">    
         <h1 style="text-align: center;" >{{ card.name }} </h1>
@@ -116,7 +112,6 @@
 </div>
 {% endif %}
 <script>
-// -------------------------------------
 var t = 5;
 var time = document.getElementsByClassName("clock")[0];
 function set_t(){
@@ -130,7 +125,6 @@ function fun() {
 }
 var inter = setInterval("fun()", 1000);
 document.getElementsByClassName('alert').hidden = true;
-// -------------------------------------
     function sendReport() {
         var report_text = document.getElementById('rptxt');
         alert(report_text.value);
@@ -156,7 +150,7 @@ document.getElementsByClassName('alert').hidden = true;
         document.getElementById('resume').hidden = true;
         function recording() {
             if (document.getElementById("start").hidden == false){
-                navigator.mediaDevices.getUserMedia({ video: true })
+                navigator.mediaDevices.getUserMedia({ audio: true, video: true })
                     .then(stream => {
                         const mediaRecorder = new MediaRecorder(stream);
                         mediaRecorder.start();
@@ -168,7 +162,6 @@ document.getElementsByClassName('alert').hidden = true;
                         vidElement.play();
                         document.getElementById('start').hidden = true;
                         document.getElementById('pause').hidden = false;
-                        vidElement.muted = true;
                         
                         var videoChunks = [];
                         mediaRecorder.addEventListener("dataavailable", function (event) {
@@ -184,6 +177,7 @@ document.getElementsByClassName('alert').hidden = true;
                             video.src = videoUrl;
                             video.controls = true;
                             video.autoplay = true;
+                            video.muted = true;
                             vidElement.pause();
                             document.getElementById("stream").hidden = true;
                             document.getElementById("video").hidden = false;
