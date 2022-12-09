@@ -28,18 +28,19 @@
         .closebtn:hover {
             color: black;
         }
-        /* ------------------------------- */
         </style>
 <h1>{{ request.user.allow_video }}</h1>
 <h1>{{ request.user.allow_auto_transition }}</h1>
+
 <h1>{{ card.duration_min }}</h1>
 <h1>{{ card.duration_max }}</h1>
 <!------------------------------------->
+
 <div class="alert">
     <span style="" class="closebtn" onclick="this.parentElement.style.display='none'; set_t();">&times;</span>
     Через <span class="clock">5</span> секунд начнется Запись
 </div>
-<!------------------------------------->
+
 <div class="wrapper">
     <div class="header">    
         <h1 style="text-align: center;" >{{ card.name }} </h1>
@@ -121,7 +122,6 @@
 </div>
 {% endif %}
 <script>
-// -------------------------------------
 var t = 5;
 var time = document.getElementsByClassName("clock")[0];
 function set_t(){
@@ -295,5 +295,4 @@ document.getElementsByClassName('alert').hidden = true;
             };
 
 </script>
-
-   {% endblock %}
+{% endblock %}
