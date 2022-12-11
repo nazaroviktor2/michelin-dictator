@@ -18,7 +18,7 @@ from django.urls import path
 from rest_framework.routers import SimpleRouter
 
 from card.views import CardViewSet, AudioViewSet, home_page, card_page, add_card, my_cards, user_card, my_audios, \
-    not_found_page
+    not_found_page, add_card_file
 from users.views import RegisterUser, LoginUser, logout_user, user_profile
 
 from django.conf import settings
@@ -35,6 +35,7 @@ urlpatterns = [
                   path("logout/", logout_user, name="logout"),
                   path("", home_page, name='home'),
                   path("add_card/", add_card, name='add_card'),
+                  path("add_card_file/", add_card_file, name='add_card_file'),
                   path("my_cards/", my_cards, name='my_cards'),
                   path("my_audio/", my_audios, name='my_audio'),
                   path("my_cards/card/", user_card, name='user_card'),

@@ -17,8 +17,10 @@ from card.forms import AddCardForm
 from card.models import Card, Audio, Video, Report
 from card.permissions import IsEditorOrStaffAndAuth, IsOwnerOrStaff
 from card.scripts.bold_func import stars_to_highlight
+from card.scripts.from_csv import from_csv
+from card.scripts.reading_speed import reading_speed
 from card.serializers import CardSerializer, AudioSerializer
-from michelinDictator.settings import MEDIA_ROOT
+from michelinDictator.settings import MEDIA_ROOT, SEPARATOR_CSV
 
 # Create your views here.
 CARD_ON_PAGE = 5
@@ -145,14 +147,21 @@ def card_page(request):
 
 
 def add_card(request):
+
     if request.method == "POST":
         form = AddCardForm(request.POST)
-
         card = form.save(commit=False)
         card.user = request.user
         text = request.POST.get("text")
         instruction = request.POST.get("instruction")
-
+        time_speed = request.POST.get("time_speed")
+        error = request.POST.get("error")
+        hours, minute, second = map(int,error.split(":"))
+        time_min, time_max = reading_speed(text,
+                                           average_error=datetime.timedelta(hours=hours,minutes=minute,seconds=second),
+                                           average_speed=int(time_speed))
+        print(time_min)
+        print(time_max)
         if request.POST.get("accent"):
             text = plus_to_accent(text)
             instruction = plus_to_accent(instruction)
@@ -163,6 +172,8 @@ def add_card(request):
 
         card.text = text
         card.instruction = instruction
+        card.duration_min = time_min
+        card.duration_max = time_max
 
         if form.is_valid():
             card.save()
@@ -172,6 +183,20 @@ def add_card(request):
             return render(request, "successful.html", {"text": "карта для озвучивания создана"})
     return render(request, "add_card.html")
 
+def add_card_file(request):
+    if  request.method == "POST":
+        print(request.POST)
+        file = request.FILES.get("file")
+        print(file)
+        if str(file).endswith(".json"):
+            print("json")
+        elif str(file).endswith(".csv"):
+            print("csv")
+            cards = from_csv(file, SEPARATOR_CSV)
+            print(cards)
+
+        print(request.FILES.get("file"))
+    return render(request, "add_card_from_file.html")
 
 def my_cards(request):
     if  request.method == "POST":
