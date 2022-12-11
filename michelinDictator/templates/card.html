@@ -1,33 +1,31 @@
 {% extends 'base.html' %}
 {% block content %}
-
-
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'home/css/card_style.css' %}">
-    <style>
-        .alert {
-            padding: 20px;
-            margin: 15px auto;
-            width: 89%;
-            background-color: #f44336;
-            color: white;
-            text
-        }
-        
-        .closebtn {
-            color: white;
-            font-weight: bold;
-            float: right;
-            font-size: 22px;
-            line-height: 20px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        
-        .closebtn:hover {
-            color: black;
-        }
-        </style>
+{% load static %}
+<link rel="stylesheet" href="{% static 'home/css/card_style.css' %}">
+<style>
+    .alert {
+        padding: 20px;
+        margin: 15px auto;
+        width: 89%;
+        background-color: #f44336;
+        color: white;
+        text
+    }
+    
+    .closebtn {
+        color: white;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    
+    .closebtn:hover {
+        color: black;
+    }
+</style>
 </head>
 <h1>{{ request.user.allow_video }}</h1>
 <h1>{{ request.user.allow_auto_transition }}</h1>
@@ -86,9 +84,8 @@
                     <td><div id="stop"><button class="btn">stop</button></div></td>
                     <td><div id="sub"><button onclick="uploadBlob()" class="btn">отправить</button></div></td>
                 </table>
+            </div>
         </div>
-        </div>
-
     </div>
     <div class="video_translator">
         <div id="video">
@@ -105,7 +102,7 @@
             <div class="modal-content animate">
                 <div class="imgcontainer">
                     <span onclick="document.getElementById('rpID').style.display='none'" class="close"
-                        title="Закрыть Modal">&times;
+                        title="Закрыть окно">&times;
                     </span>
                 </div>
                 <div class="container">
@@ -119,19 +116,19 @@
 </div>
 {% endif %}
 <script>
-var t = 5;
-var time = document.getElementsByClassName("clock")[0];
-function set_t(){
-    t = -1
-}
-function fun() {
-    if (t > 0){
-        t--;
-        time.innerHTML = t;
+    var t = 5;
+    var time = document.getElementsByClassName("clock")[0];
+    function set_t(){
+        t = -1
     }
-}
-var inter = setInterval("fun()", 1000);
-document.getElementsByClassName('alert').hidden = true;
+    function fun() {
+        if (t > 0){
+            t--;
+            time.innerHTML = t;
+        }
+    }
+    var inter = setInterval("fun()", 1000);
+    document.getElementsByClassName('alert').hidden = true;
     function sendReport() {
         var report_text = document.getElementById('rptxt');
         alert(report_text.value);

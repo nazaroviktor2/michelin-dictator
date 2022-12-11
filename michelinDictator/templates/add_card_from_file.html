@@ -1,18 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load static %}
 <style>
     .container {
         width: 98%;
         text-align: center;
     }
     #layer1 {
-        width: 70%;
+        width: 40%;
         padding: 10px;
         background-color: #fff;
         margin: auto;
         margin-top: 2%;
         border-radius: 8px;
         box-shadow: 4px 4px 10px rgba(0, 0, 0, .1);
+        padding: 20px;
+        font-size: large;
+        text-align: center;
        }
     .btn{
         background-color: #ffffff;
@@ -31,30 +35,125 @@
         background-color: #fd0202;
         color: #fff;
     }
+    .quest_button{
+        background: url(../static/home/images/help.png) 50% 50% no-repeat;
+        background-size: contain;
+        width: 35px;
+        height: 35px;
+        border-color: #fff;
+        border-style: solid;
+        float: right;
+    }
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.4);
+        padding-top: 60px;
+    }
+    
+    .modal-content {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, .5);
+        margin: 5% auto 15% auto;
+        border: 1px solid #fff;
+        width: 40%;
+        height: 54%;
+        position: static;
+    }
+    .animate {
+        -webkit-animation: animatezoom 0.6s;
+        animation: animatezoom 0.6s
+    }
+    .close {
+        position: absolute;
+        right: 25px;
+        top: 0;
+        color: #000;
+        font-size: 35px;
+        font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+        color: red;
+        cursor: pointer;
+    }
+    
+    .container {
+        align-items: center;
+        text-align: center;
+    }
+    .rparea {
+        font-size: 20px;
+        resize: none;
+        width: 80%;
+    }
+    @media screen and (max-width: 300px) {
+        span.psw {
+            display: block;
+            float: none;
+        }
+    
+        .cancelbtn {
+            width: 100%;
+        }
+    }
 </style>
 
 {% if request.user.is_authenticated %}
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
 
-  <div>
-    <label for="file">Выберите файл для загрузки</label>
-    <input type="file" id="file" name="file"
-          accept=".csv, .json">
-  </div>
-    <div>
-<input type="checkbox" id="accent" name="accent" checked>
-    <label for="accent">Раставить ударение</label>
-    <label for="time_speed">Среднее скорость чтения(слов в минуту)</label>
-				<input type="number" name="time_speed" class="cnt" id="time_speed" min="1" max="2000" value="130">
-				<label for="error">Диапозон ошибок(+-секунд)</label>
-				<input type="time" name="error" class="cnt" step="1"  id="error" value="00:00:10">
+<div id="layer1">
+    <button onclick="document.getElementById('rpID').style.display='block'" class="quest_button" title="Подсказка"></button>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h1>Создание карты из файла</h1>
+        <div style="padding: 10px;">
+            <label for="file">Выберите файл для загрузки &nbsp;</label>
+            <input type="file" id="file" name="file" accept=".csv, .json">
+        </div>
+        <div style="padding: 5px;">
+            <label for="time_speed">Среднее скорость чтения(слов в минуту) &nbsp;</label>
+            <input type="number" name="time_speed" class="cnt" id="time_speed" min="1" max="2000" value="130">
+        </div>
+        <div style="padding: 5px;">
+            <label for="error">Диапозон ошибок(+-секунд) &nbsp;</label>
+            <input type="time" name="error" class="cnt" step="1"  id="error" value="00:00:10">
+        </div>
+        <div style="padding: 5px;">
+            <input type="checkbox" id="accent" name="accent" checked>
+            <label for="accent">Раставить ударение</label>
+        </div>
+        <div>
+            <button class="btn">Отправить</button>
+        </div>
+    </form>
+</div>
+<div class="question_button">
+    <div id="rpID" class="modal">
+        <div>
+            <div class="modal-content animate">
+                <div class="imgcontainer">
+                    <span onclick="document.getElementById('rpID').style.display='none'" class="close"
+                        title="Закрыть окно">&times;
+                    </span>
+                </div>
+                <div class="container">
+                    <h1>Поддерживаемые файлы</h1>
+                    <p>.csv || . json</p>
+                </div>
+            </div>
+        </div>
     </div>
-  <div>
-    <button>Отправить</button>
-  </div>
-</form>
+</div>
+
 {% else %}
 
 
@@ -64,6 +163,15 @@
         <button onclick="document.location='{% url 'home' %}'" class="btn">OK</button>
     </div>
 </div>
+
+<script>
+    var modal = document.getElementById('rpID');
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
 
 {% endif %}
 {% endblock %}
