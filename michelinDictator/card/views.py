@@ -160,8 +160,6 @@ def add_card(request):
         time_min, time_max = reading_speed(text,
                                            average_error=datetime.timedelta(hours=hours,minutes=minute,seconds=second),
                                            average_speed=int(time_speed))
-        print(time_min)
-        print(time_max)
         if request.POST.get("accent"):
             text = plus_to_accent(text)
             instruction = plus_to_accent(instruction)
@@ -180,22 +178,54 @@ def add_card(request):
             my_logger.info(
                 "user with id: {0} create a card with id: {1}".format(request.user, card.id))
 
-            return render(request, "successful.html", {"text": "карта для озвучивания создана"})
+            return render(request, "successful.html", {"text": "Карта для озвучивания создана"})
     return render(request, "add_card.html")
 
 def add_card_file(request):
     if  request.method == "POST":
-        print(request.POST)
+
         file = request.FILES.get("file")
-        print(file)
         if str(file).endswith(".json"):
             print("json")
         elif str(file).endswith(".csv"):
-            print("csv")
-            cards = from_csv(file, SEPARATOR_CSV)
-            print(cards)
+
+            accent = request.POST.get("accent")
+            error = request.POST.get("error")
+            hours, minute, second = map(int, error.split(":"))
+            time_speed = request.POST.get("time_speed")
+            cards_file = from_csv(file, SEPARATOR_CSV)
+            for card_file in cards_file:
+                if len(card_file) !=3 :
+                    my_logger.info(
+                        "user with id: {0} unsuccessfully tried to create a card".format(request.user))
+                    continue
+
+                name, text, instruction = card_file
+                if accent:
+                    text = plus_to_accent(text)
+                    name = plus_to_accent(name)
+                    instruction = plus_to_accent(instruction)
+
+                form = AddCardForm({"name":name,"text":text,"instruction":instruction})
+                card = form.save(commit=False)
+                time_min, time_max = reading_speed(text,
+                                                   average_error=datetime.timedelta(hours=hours, minutes=minute,
+                                                                                    seconds=second),
+                                                   average_speed=int(time_speed))
+
+                card.duration_min = time_min
+                card.duration_max = time_max
+                card.user = request.user
+                if form.is_valid():
+                    card.save()
+                    my_logger.info(
+                        "user with id: {0} create a card with id: {1}".format(request.user, card.id))
+                else:
+                    my_logger.info(
+                        "user with id: {0} unsuccessfully tried to create a card".format(request.user))
 
         print(request.FILES.get("file"))
+        return render(request, "successful.html", {"text": "Карты для озвучивания созданы"})
     return render(request, "add_card_from_file.html")
 
 def my_cards(request):

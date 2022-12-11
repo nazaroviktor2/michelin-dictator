@@ -2,15 +2,17 @@ import csv
 
 
 def from_csv(file, separator):
-    file_content = ''
-    print(separator, type(separator))
-    for i,chunk in enumerate(file.chunks()):
-        print(i,chunk.decode())
-    reader = csv.reader([chunk.decode() for chunk in file.chunks()], dialect=csv.excel_tab, delimiter="\t")
+    arr = []
+    for i, chunk in enumerate(file.chunks()):
+        rows = chunk.decode().split("\n")
+        for row in rows:
+            if row:
+                arr.append(row.split(separator))
+    return arr
+    # reader = csv.reader([chunk.decode() for chunk in file.chunks()])
     # print(reader)
     # for i in reader:
     #     print(i)
-    #     file_content += ''.join(i)
     # if file_content:
     #     return file_content.split(separator)
     # return None

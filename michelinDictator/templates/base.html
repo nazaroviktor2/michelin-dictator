@@ -33,7 +33,7 @@
                     <button onclick="document.location='{% url 'my_audio' %}'"  style="width:auto;float:left;" class="buttonhome">Мои озвучки</button>
                     {% if request.user.is_editor or request.user.is_staff  %}
 
-                    <button  onclick="document.location='{% url 'my_cards' %}'"  style="width:auto;float:left;" class="buttonhome">Мои карточки</button>
+                        <button  onclick="document.location='{% url 'my_cards' %}'"  style="width:auto;float:left;" class="buttonhome">Мои карточки</button>
                                 <button onclick="document.location='{% url 'add_card' %}'"  style="width:auto;float:left;" class="buttonhome">Добавить карточку</button>
 
                     {% endif %}
