@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .container {
+        width: 98%;
+        text-align: center;
+    }
+    #layer1 {
+        width: 70%;
+        padding: 10px;
+        background-color: #fff;
+        margin: auto;
+        margin-top: 2%;
+        border-radius: 8px;
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, .1);
+       }
+    .btn{
+        background-color: #ffffff;
+        color: #333;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        border-radius: 8px;
+        border: 1px solid #d9d9d9;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+    .btn:hover {
+        background-color: #fd0202;
+        color: #fff;
+    }
+</style>
+
+{% if request.user.is_authenticated %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+  <div>
+    <label for="file">Выберите файл для загрузки</label>
+    <input type="file" id="file" name="file"
+          accept=".csv, .json">
+  </div>
+    <div>
+<input type="checkbox" id="accent" name="accent" checked>
+    <label for="accent">Раставить ударение</label>
+    <label for="time_speed">Среднее скорость чтения(слов в минуту)</label>
+				<input type="number" name="time_speed" class="cnt" id="time_speed" min="1" max="2000" value="130">
+				<label for="error">Диапозон ошибок(+-секунд)</label>
+				<input type="time" name="error" class="cnt" step="1"  id="error" value="00:00:10">
+    </div>
+  <div>
+    <button>Отправить</button>
+  </div>
+</form>
+{% else %}
+
+
+<div id="layer1" >
+    <div class="container">
+        <h1>Вы не авторизовались</h1>
+        <button onclick="document.location='{% url 'home' %}'" class="btn">OK</button>
+    </div>
+</div>
+
+{% endif %}
+{% endblock %}

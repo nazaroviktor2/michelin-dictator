@@ -187,6 +187,8 @@ LOGGING = {
     }
 }
 
+SEPARATOR_CSV = "\t"
+
 # LOGGING_CONFIG = False
 # import logging
 #
