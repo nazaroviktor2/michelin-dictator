@@ -1,21 +1,8 @@
 {% extends 'base.html' %}
 
-    {% load static %}
-	{% block content %}
-    <link rel="stylesheet" href="{% static 'home/css/add_card.css' %}">
-
-
-<style>
-	.add_button {
-		background-image: url(../images/lft_button.png) 50% 50% no-repeat;
-		background-color: #fff;
-		background-size: contain;
-		width: 35px;
-		height: 35px;
-		border-style: solid;
-	}
-	
-</style>
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'home/css/add_card.css' %}">
 {% if request.user.is_authenticated %}
 {% if request.user.is_editor or request.user.is_staff %}
 <div id="layer1" >

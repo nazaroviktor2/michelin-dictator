@@ -51,12 +51,11 @@ input[type=text]{
     color: #fff;
 }
 .add_button {
-    background: url(../images/add_button.png) 50% 50% no-repeat;
+    background: url(../images/file-document-plus.png) 50% 50% no-repeat;
     background-size: contain;
     width: 35px;
     height: 35px;
     border-color: #fff;
     border-style: solid;
     float: right;
-    
 }
