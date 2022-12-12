@@ -67,3 +67,5 @@
 2022-12-11 12:06:58,072 INFO:user with id: nazaroff create a card with id: 151
 2022-12-11 16:57:54,310 INFO:user with id: max create a card with id: 33
 2022-12-11 16:59:17,622 INFO:user with id: 2 complained about the card with id: 33 report id: 10
+2022-12-11 21:37:10,266 INFO:user with id:3 added audio for card with id:7 number of overwrites:1 file_path: /home/prikhodko/Рабочий стол/michelin-dictator/michelinDictator/media/card_7/audios/3_11-12-2022_21-37-10_audio.wav
+2022-12-11 21:37:24,731 INFO:user with id:3 added audio for card with id:8 number of overwrites:1 file_path: /home/prikhodko/Рабочий стол/michelin-dictator/michelinDictator/media/card_8/audios/3_11-12-2022_21-37-24_audio.wav

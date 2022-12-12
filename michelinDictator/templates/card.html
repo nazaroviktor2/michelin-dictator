@@ -32,8 +32,8 @@
 
 <h1>{{ card.duration_min }}</h1>
 <h1>{{ card.duration_max }}</h1>
-<div class="alert">
-    <span style="" class="closebtn" onclick="this.parentElement.style.display='none'; set_t();">&times;</span>
+<div class="alert" id="main">
+    <span class="closebtn" onclick="this.parentElement.style.display='none'; set_t();">&times;</span>
     Через <span class="clock">5</span> секунд начнется Запись
 </div>
 <div class="wrapper">
@@ -82,7 +82,7 @@
                     <td><div id="pause"><button class="btn" style="background-color: #fd0202; color: #fff;">pause</button></div></td>
                     <td><div id="resume"><button class="btn">resume</button></div></td>
                     <td><div id="stop"><button class="btn">stop</button></div></td>
-                    <td><div id="sub"><button onclick="uploadBlob()" class="btn">отправить</button></div></td>
+                    <td><div id="sub"><button onclick="check()" class="btn">отправить</button></div></td>
                 </table>
             </div>
         </div>
@@ -116,176 +116,204 @@
 </div>
 {% endif %}
 <script>
-    var t = 5;
-    var time = document.getElementsByClassName("clock")[0];
-    function set_t(){
-        t = -1
+var t = 5;
+var time = document.getElementsByClassName("clock")[0];
+function set_t(){
+    t = -1
+};
+function fun() {
+    if (t > 0){
+        t--;
+        time.innerHTML = t;
+    }else if (t == 0){
+        recording();
+    };
+};
+if ("{{ request.user.allow_auto_transition }}" == "True"){
+    if (t > 0){
+        var inter = setInterval("fun()", 1000);
+    };
+}else{
+    document.getElementById('main').style.display = 'none'; 
+    t = 0;
+};
+function sendReport() {
+    var report_text = document.getElementById('rptxt');
+    alert(report_text.value);
+    fetch('{{ request.get_full_path }}', {
+        method: "POST",
+        body: JSON.stringify({text: report_text.value}),
+        headers: { "X-CSRFToken": '{{ csrf_token }}',"Name":"Report"},
+    })
+    .then(response => {
+    window.location.href = '{{ request.get_full_path }}'})
+    .catch(err => alert(err));
+};
+var modal = document.getElementById('rpID');
+window.onclick = function (event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
     }
-    function fun() {
-        if (t > 0){
-            t--;
-            time.innerHTML = t;
-        }
-    }
-    var inter = setInterval("fun()", 1000);
-    document.getElementsByClassName('alert').hidden = true;
-    function sendReport() {
-        var report_text = document.getElementById('rptxt');
-        alert(report_text.value);
-        fetch('{{ request.get_full_path }}', {
-                   method: "POST",
-                   body: JSON.stringify({text: report_text.value}),
-                   headers: { "X-CSRFToken": '{{ csrf_token }}',"Name":"Report"},
-               })
-                 .then(response => {
-                 window.location.href = '{{ request.get_full_path }}'})
-               .catch(err => alert(err));
-        };
-    var modal = document.getElementById('rpID');
-    window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-    setTimeout(function() { if (t == 0){ recording(); }}, 5000);
-        document.getElementById("stream").hidden = true;
-        var vidElement=null;
-        document.getElementById('pause').hidden = true;
-        document.getElementById('resume').hidden = true;
-        function recording() {
-            if (document.getElementById("start").hidden == false){
-                navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-                    .then(stream => {
-                        const mediaRecorder = new MediaRecorder(stream);
-                        mediaRecorder.start();
-                        document.getElementById("stream").hidden = false;
-                        document.getElementById("video").hidden = true;
-                        vidElement=document.getElementById("vid");
-                        vidElement.srcObject=stream;
-                        vidElement.muted = true;
-                        vidElement.play();
-                        document.getElementById('start').hidden = true;
-                        document.getElementById('pause').hidden = false;
-                        
-                        var videoChunks = [];
-                        mediaRecorder.addEventListener("dataavailable", function (event) {
-                            videoChunks.push(event.data);
-                        });
-
-                        mediaRecorder.addEventListener("stop", function () {
-                            const videoBlob = new Blob(videoChunks, {
-                                type: 'video/mp4'
-                            });
-                            const videoUrl = URL.createObjectURL(videoBlob);
-                            var video = document.createElement('video');
-                            video.src = videoUrl;
-                            video.controls = true;
-                            video.autoplay = true;
-                            video.muted = true;
-                            vidElement.pause();
-                            document.getElementById("stream").hidden = true;
-                            document.getElementById("video").hidden = false;
-                            document.querySelector('#video').replaceChildren(video);
-                            videoChunks = [];
-                            document.querySelector('#send').addEventListener('click', function () {
-                                fetch('{{ request.get_full_path }}', {
-                                    method: "POST",
-                                    body: audioUrl
-                                })
-                                .then(response => alert('Blob Uploaded'));
-                            });
-                        });
-                        document.querySelector('#pause').addEventListener('click', function () {
-                            mediaRecorder.pause();
-                            document.getElementById('pause').hidden = true;
-                            document.getElementById('resume').hidden = false;
-                        });
-                        document.querySelector('#resume').addEventListener('click', function () {
-                            mediaRecorder.resume();
-                            document.getElementById('pause').hidden = false;
-                            document.getElementById('resume').hidden = true;
-                        });
-                        document.querySelector('#stop').addEventListener('click', function () {
-                            mediaRecorder.stop();
-                            document.getElementById('pause').hidden = true;
-                            document.getElementById('resume').hidden = true;
-                            document.getElementById('start').hidden = false;
-                        });
+}
+document.getElementById("stream").hidden = true;
+var vidElement=null;
+document.getElementById('pause').hidden = true;
+document.getElementById('resume').hidden = true;
+function recording() {
+    if (t <= 0){
+        document.getElementById('main').style.display = 'none';
+    };
+    if (document.getElementById("start").hidden == false){
+        if ("{{ request.user.allow_video }}" == "True"){
+            navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+            .then(stream => {
+                const mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.start();
+                document.getElementById("stream").hidden = false;
+                document.getElementById("video").hidden = true;
+                vidElement=document.getElementById("vid");
+                vidElement.srcObject=stream;
+                vidElement.muted = true;
+                vidElement.play();
+                
+                var videoChunks = [];
+                mediaRecorder.addEventListener("dataavailable", function (event) {
+                    videoChunks.push(event.data);
                 });
-                navigator.mediaDevices.getUserMedia({ audio: true })
-                    .then(stream => {
-                        const mediaRecorder = new MediaRecorder(stream);
-                        mediaRecorder.start();
-                        var audioChunks = [];
-                        mediaRecorder.addEventListener("dataavailable", function (event) {
-                            audioChunks.push(event.data);
-                        });
 
-                        mediaRecorder.addEventListener("stop", function () {
-                            const audioBlob = new Blob(audioChunks, {
-                                type: 'audio/wav'
-                            });
-                            const audioUrl = URL.createObjectURL(audioBlob);
-                            var audio = document.createElement('audio');
-                            audio.src = audioUrl;
-                            audio.controls = true;
-                            audio.autoplay = true;
-                            document.querySelector('#audio').replaceChildren(audio);
-                            videoChunks = [];
-                        });
-                        document.querySelector('#pause').addEventListener('click', function () {
-                            mediaRecorder.pause();
-                        });
-                        document.querySelector('#resume').addEventListener('click', function () {
-                            mediaRecorder.resume();
-                        });
-                        document.querySelector('#stop').addEventListener('click', function () {
-                            mediaRecorder.stop();
-                        });
+                mediaRecorder.addEventListener("stop", function () {
+                    const videoBlob = new Blob(videoChunks, {
+                        type: 'video/mp4'
+                    });
+                    const videoUrl = URL.createObjectURL(videoBlob);
+                    var video = document.createElement('video');
+                    video.src = videoUrl;
+                    video.controls = true;
+                    video.autoplay = true;
+                    video.muted = true;
+                    vidElement.pause();
+                    document.getElementById("stream").hidden = true;
+                    document.getElementById("video").hidden = false;
+                    document.querySelector('#video').replaceChildren(video);
+                    videoChunks = [];
+                    document.querySelector('#send').addEventListener('click', function () {
+                        fetch('{{ request.get_full_path }}', {
+                            method: "POST",
+                            body: audioUrl
+                        })
+                        .then(response => alert('Blob Uploaded'));
+                    });
                 });
-            };
-        };
-        var rng = document.getElementById('seek');
-        var text = document.getElementById('output_client_text');
-        var text_rules = document.getElementById('output_client_rules');
-        rng.addEventListener("input",
-            function () {
-                text.style.fontSize = rng.value + 'px'
-                text_rules.style.fontSize = rng.value + 'px'
+                document.querySelector('#pause').addEventListener('click', function () {
+                    mediaRecorder.pause();
+                });
+                document.querySelector('#resume').addEventListener('click', function () {
+                    mediaRecorder.resume();
+                });
+                document.querySelector('#stop').addEventListener('click', function () {
+                    mediaRecorder.stop();
+                });
             });
-        function uploadBlob() {
-                 myAudio = document.getElementById('audio').firstElementChild;
-                myVideo = document.getElementById('video').firstElementChild;
+        };
+        navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+            const mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.start();
+            var audioChunks = [];
+            document.getElementById('start').hidden = true;
+            document.getElementById('pause').hidden = false;
+            mediaRecorder.addEventListener("dataavailable", function (event) {
+                audioChunks.push(event.data);
+            });
 
-        fetch(myAudio.src)
-        .then(res => res.blob())
-
-        .then(blob => {
-                fetch('{{ request.get_full_path }}', {
-                    method: "POST",
-                    body: blob,
-                    headers: { "X-CSRFToken": '{{ csrf_token }}',"Name":"audio", "Audio-Time":myAudio.duration},
-                })
-
-                .catch(err => alert(err));
+            mediaRecorder.addEventListener("stop", function () {
+                const audioBlob = new Blob(audioChunks, {
+                    type: 'audio/wav'
+                });
+                const audioUrl = URL.createObjectURL(audioBlob);
+                var audio = document.createElement('audio');
+                audio.src = audioUrl;
+                audio.controls = true;
+                audio.autoplay = true;
+                document.querySelector('#audio').replaceChildren(audio);
+                videoChunks = [];
+            });
+            document.querySelector('#pause').addEventListener('click', function () {
+                mediaRecorder.pause();
+                document.getElementById('pause').hidden = true;
+                document.getElementById('resume').hidden = false;
+            });
+            document.querySelector('#resume').addEventListener('click', function () {
+                mediaRecorder.resume();
+                document.getElementById('pause').hidden = false;
+                document.getElementById('resume').hidden = true;
+            });
+            document.querySelector('#stop').addEventListener('click', function () {
+                mediaRecorder.stop();
+                document.getElementById('pause').hidden = true;
+                document.getElementById('resume').hidden = true;
+                document.getElementById('start').hidden = false;
+            });
         });
+    };
+};
+var rng = document.getElementById('seek');
+var text = document.getElementById('output_client_text');
+var text_rules = document.getElementById('output_client_rules');
+rng.addEventListener("input",
+    function () {
+        text.style.fontSize = rng.value + 'px'
+        text_rules.style.fontSize = rng.value + 'px'
+});
+function toSeconds(string){
+    const timeArray = string.split(":");
+    return Number(timeArray[0]) * 3600 + Number(timeArray[1]) * 60 + Number(timeArray[2])
+}
+function check(){
+    myAudio = document.getElementById('audio').firstElementChild;
+    if (toSeconds("{{ card.duration_min }}") > myAudio.duration){
+        if (confirm("Запись слишком короткая. Отправить?")){
+            uploadBlob();
+        }
+    }else if (toSeconds("{{ card.duration_max }}") < myAudio.duration){
+        if (confirm("Запись слишком длинная. Отправить?")){
+            uploadBlob();
+        }
+    }else{
+        uploadBlob();
+    }
+}
+function uploadBlob() {
+    myAudio = document.getElementById('audio').firstElementChild;
+    myVideo = document.getElementById('video').firstElementChild;
 
+    fetch(myAudio.src)
+    .then(res => res.blob())
+
+    .then(blob => {
+        fetch('{{ request.get_full_path }}', {
+            method: "POST",
+            body: blob,
+            headers: { "X-CSRFToken": '{{ csrf_token }}',"Name":"audio", "Audio-Time":myAudio.duration},
+        }).then(response => {alert("Запись успешно добавлена")
+        window.location.href = '{{ request.get_full_path }}'})
+        .catch(err => alert(err));
+    });
+    if ("{{ request.user.allow_video }}" == "True"){
         fetch(myVideo.src)
         .then(res => res.blob())
 
         .then(blob => {
-                fetch('{{ request.get_full_path }}', {
-                    method: "POST",
-                    body: blob,
-                    headers: { "X-CSRFToken": '{{ csrf_token }}',"Name":"Video"},
-                })
-                  .then(response => {alert("Запись успешно добавлена")
-                  window.location.href = '{{ request.get_full_path }}'})
-                .catch(err => alert(err));
+            fetch('{{ request.get_full_path }}', {
+                method: "POST",
+                body: blob,
+                headers: { "X-CSRFToken": '{{ csrf_token }}',"Name":"Video"},
+            })
+            .catch(err => alert(err));
         });
+    };
 
-
-            };
+};
 
 </script>
 {% endblock %}
