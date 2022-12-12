@@ -69,3 +69,10 @@
 2022-12-11 16:59:17,622 INFO:user with id: 2 complained about the card with id: 33 report id: 10
 2022-12-11 21:37:10,266 INFO:user with id:3 added audio for card with id:7 number of overwrites:1 file_path: /home/prikhodko/Рабочий стол/michelin-dictator/michelinDictator/media/card_7/audios/3_11-12-2022_21-37-10_audio.wav
 2022-12-11 21:37:24,731 INFO:user with id:3 added audio for card with id:8 number of overwrites:1 file_path: /home/prikhodko/Рабочий стол/michelin-dictator/michelinDictator/media/card_8/audios/3_11-12-2022_21-37-24_audio.wav
+2022-12-12 06:04:21,727 INFO:user with id:2 added audio for card with id:93 number of overwrites:1 file_path: /home/nazaroff/My_project/git/michelin-dictator/michelinDictator/media/card_93/audios/2_12-12-2022_06-04-21_audio.wav
+2022-12-12 06:06:38,536 INFO:user with id:2 added audio for card with id:98 number of overwrites:1 file_path: /home/nazaroff/My_project/git/michelin-dictator/michelinDictator/media/card_98/audios/2_12-12-2022_06-06-38_audio.wav
+2022-12-12 06:06:38,540 INFO:user with id:2 added audio for card with id:98 number of overwrites:0 file_path: /home/nazaroff/My_project/git/michelin-dictator/michelinDictator/media/card_98/video/2_12-12-2022_06-06-38_video.mp4
+2022-12-12 06:06:45,531 INFO:user with id:2 added audio for card with id:98 number of overwrites:0 file_path: /home/nazaroff/My_project/git/michelin-dictator/michelinDictator/media/card_98/video/2_12-12-2022_06-06-45_video.mp4
+2022-12-12 06:09:11,280 INFO:user with id:2 added audio for card with id:98 number of overwrites:1 file_path: /home/nazaroff/My_project/git/michelin-dictator/michelinDictator/media/card_98/audios/2_12-12-2022_06-09-11_audio.wav
+2022-12-12 06:13:55,232 INFO:user with id:2 added audio for card with id:98 number of overwrites:1 file_path: /home/nazaroff/My_project/git/michelin-dictator/michelinDictator/media/card_98/audios/2_12-12-2022_06-13-55_audio.wav
+2022-12-12 06:14:04,863 INFO:user with id:2 added audio for card with id:98 number of overwrites:1 file_path: /home/nazaroff/My_project/git/michelin-dictator/michelinDictator/media/card_98/audios/2_12-12-2022_06-14-04_audio.wav

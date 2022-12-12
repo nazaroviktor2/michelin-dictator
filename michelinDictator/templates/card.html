@@ -78,7 +78,7 @@
             </div>
             <div class="button-grid">
                 <table style="margin: auto;">
-                    <td><div id="start"><button class="btn" onclick="recording()">record</button></div></td>
+                    <td><div id="start"><button class="btn" onclick="set_t(); recording()">record</button></div></td>
                     <td><div id="pause"><button class="btn" style="background-color: #fd0202; color: #fff;">pause</button></div></td>
                     <td><div id="resume"><button class="btn">resume</button></div></td>
                     <td><div id="stop"><button class="btn">stop</button></div></td>
@@ -295,8 +295,8 @@ function uploadBlob() {
             method: "POST",
             body: blob,
             headers: { "X-CSRFToken": '{{ csrf_token }}',"Name":"audio", "Audio-Time":myAudio.duration},
-        }).then(response => {alert("Запись успешно добавлена")
-        window.location.href = '{{ request.get_full_path }}'})
+        }).then(response => {
+        window.location.href = '{% url 'card' %}?id={{ card.id }}&status=next'})
         .catch(err => alert(err));
     });
     if ("{{ request.user.allow_video }}" == "True"){
