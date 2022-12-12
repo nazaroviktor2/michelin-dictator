@@ -295,8 +295,8 @@ function uploadBlob() {
             method: "POST",
             body: blob,
             headers: { "X-CSRFToken": '{{ csrf_token }}',"Name":"audio", "Audio-Time":myAudio.duration},
-        }).then(response => {alert("Запись успешно добавлена")
-        window.location.href = '{{ request.get_full_path }}'})
+        }).then(response => {
+        window.location.href = '{% url 'card' %}?id={{ card.id }}&status=next'})
         .catch(err => alert(err));
     });
     if ("{{ request.user.allow_video }}" == "True"){

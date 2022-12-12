@@ -39,13 +39,48 @@
 		<h1>Карточек озвучено: {{ count_audio }}</h1>
 		<h1>Карточек создано: {{ count_card }}</h1>
 		<h1>Жалоб на карточки: {{ count_report }}</h1>
-		<input type="checkbox" id="accent" name="accent" checked>
-		<label for="accent">Записывать видео</label>
-		<input type="checkbox" id="highlight" name="highlight" checked>
-		<label for="highlight">Авто переход</label>
+		{% if  request.user.allow_video %}
+		<input type="checkbox" id="video" name="video" checked>
+		{% else %}
+		<input type="checkbox" id="video" name="video" >
+		{% endif %}
+		<label for="video">Записывать видео</label>
+
+		{% if  request.user.allow_auto_transition %}
+		<input type="checkbox" id="auto_transition" name="auto_transition" checked>
+		{% else %}
+		<input type="checkbox" id="auto_transition" name="auto_transition">
+		{% endif %}
+
+
+		<label for="auto_transition">Авто переход</label>
 		<br>
-		<button type="submit" class="btn">Сохранить</button>
+		<button class="btn" onclick="save()" >Сохранить</button>
 	</div>
+{% else %}
+
+<div id="layer1" >
+    <div class="container">
+        <h1>Вы не авторизовались</h1>
+        <button onclick="document.location='{% url 'home' %}'" class="btn">OK</button>
+    </div>
+</div>
 
 {% endif %}
+
+<script>
+
+function save() {
+    var auto_transition = document.getElementById('auto_transition');
+    var video = document.getElementById('video');
+    fetch('{{ request.get_full_path }}', {
+        method: "POST",
+        body: JSON.stringify({"video": video.checked, "auto_transition":auto_transition.checked}),
+        headers: { "X-CSRFToken": '{{ csrf_token }}',"Name":"Save"},
+    })
+    .then(response => {
+    window.location.href = '{{ request.get_full_path }}'})
+    .catch(err => alert(err));
+};
+</script>
 {% endblock %}
