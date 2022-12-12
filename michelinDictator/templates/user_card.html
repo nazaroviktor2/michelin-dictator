@@ -101,6 +101,14 @@
 <h1>Это не ваша карта</h1>
 {% endif %}
 <script>
+    var rng = document.getElementById('seek');
+    var text = document.getElementById('output_client_text');
+    var text_rules = document.getElementById('output_client_rules');
+    rng.addEventListener("input",
+        function () {
+            text.style.fontSize = rng.value + 'px'
+            text_rules.style.fontSize = rng.value + 'px'
+    });
     const selectAll = document.querySelector('.form-group.select-all input');
 		const allCheckbox = document.getElementsByName('audio');
 		let listBoolean = [];

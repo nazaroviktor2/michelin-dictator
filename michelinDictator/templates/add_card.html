@@ -7,7 +7,7 @@
 {% if request.user.is_editor or request.user.is_staff %}
 <div id="layer1" >
 	<div class="container">
-		<button onclick="document.location='{% url 'add_card_file' %}'" class="add_button" ></button>
+		<button onclick="document.location='{% url 'add_card_file' %}'" class="add_button" title="Добавить из файла" ></button>
 		<form name="add_card" method="post" >
 			{% csrf_token %}
 			<div class="content_name">

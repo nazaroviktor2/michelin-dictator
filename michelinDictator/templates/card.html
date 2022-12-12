@@ -41,15 +41,15 @@
         <h1 style="text-align: center;" >{{ card.name }} </h1>
     </div>
     <div class="lb">
-        <button class="left_button" onclick="document.location='{% url 'card' %}?id={{ card.id }}&status=last'"></button>
+        <button class="left_button" title="Предыдущая карта" onclick="document.location='{% url 'card' %}?id={{ card.id }}&status=last'"></button>
     </div>
     {% if request.user.is_authenticated %}
     <div class="rp">
-        <button onclick="document.getElementById('rpID').style.display='block'" class="report_button"></button>
+        <button onclick="document.getElementById('rpID').style.display='block'" class="report_button" title="Пожаловаться"></button>
     </div>
     {% endif %}
     <div class="rb">
-        <button class="right_button" onclick="document.location='{% url 'card' %}?id={{ card.id }}&status=next'"></button>
+        <button class="right_button" title="Следующая карта" onclick="document.location='{% url 'card' %}?id={{ card.id }}&status=next'"></button>
     </div>
     <div class="content_rules">
         <h2 style="text-align: center;">Инструкция</h2>
