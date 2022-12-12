@@ -62,6 +62,7 @@ def home_page(request):
     cards = Card.objects.all().order_by('id')
     page_num = request.GET.get('page', 1)
     paginator = Paginator(cards, CARD_ON_PAGE)
+
     try:
         page_obj = paginator.page(page_num)
     except PageNotAnInteger:
@@ -70,8 +71,8 @@ def home_page(request):
     except EmptyPage:
         # if the page is out of range, deliver the last page
         page_obj = paginator.page(paginator.num_pages)
-
-    return render(request, "index.html", {"cards": page_obj})
+    nums = "a" * page_obj.paginator.num_pages
+    return render(request, "index.html", {"cards": page_obj, "nums":nums})
 
 
 def card_page(request):
@@ -250,8 +251,9 @@ def my_cards(request):
         except EmptyPage:
             # if the page is out of range, deliver the last page
             page_obj = paginator.page(paginator.num_pages)
+        nums = "a" * page_obj.paginator.num_pages
 
-        return render(request, "my_cards.html", {"cards": page_obj})
+        return render(request, "my_cards.html", {"cards": page_obj, "nums":nums})
 
 
 def my_audios(request):
@@ -273,8 +275,8 @@ def my_audios(request):
         page_obj = paginator.page(paginator.num_pages)
 
     # return render(request, "index.html", {"cards": page_obj})
-
-    return render(request, "my_audios.html", {"cards": page_obj})
+    nums = "a" * page_obj.paginator.num_pages
+    return render(request, "my_audios.html", {"cards": page_obj, "nums":nums})
 
 
 def user_card(request):
