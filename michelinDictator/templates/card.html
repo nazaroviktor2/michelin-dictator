@@ -80,12 +80,11 @@
             </div>
             <div class="button-grid">
                 <table style="margin: auto;">
-                    <td><div id="start"><button class="btn" onclick="set_t(); set_n(); recording()">record</button></div></td>
-                    <td><div id="pause"><button class="btn" style="background-color: #fd0202; color: #fff;">pause</button></div></td>
-                    <td><div id="resume"><button class="btn">resume</button></div></td>
-                    <td><div id="stop"><button class="btn">stop</button></div></td>
-                    <td><div id="sub"><button onclick="check()" class="btn">отправить</button></div></td>
-                    <td><div><button onclick="Toasty()" class="btn">KIRILL FIX THIS</button></div></td>
+                    <td><div id="start"><button class="btn" onclick="set_t(); set_n(); recording()">Запись</button></div></td>
+                    <td><div id="pause"><button class="btn" style="background-color: #fd0202; color: #fff;">Пауза</button></div></td>
+                    <td><div id="resume"><button class="btn">Продолжить</button></div></td>
+                    <td><div id="stop"><button class="btn">Остановить</button></div></td>
+                    <td><div id="sub"><button onclick="print()" class="btn">Отправить</button></div></td>
                 </table>
             </div>
         </div>
@@ -126,25 +125,47 @@
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
         <div class="toast-body">
-            Hello, KIRILL FIX THIS!
+            <div id="toast-text"></div>
+            <button id="load" onclick="uploadBlob();">OK</button>
         </div>
     </div>
 </div>
 
 {% endif %}
 <script>
-    var option = {
-        animation: true,
-        delay:8000
-    };
-    function Toasty()
-    {
-        var tst = document.getElementById("EpicToast");
-
-        var tst_el  = new bootstrap.Toast( tst, option );
-
-        tst_el.show();
+function print(){
+document.getElementById("load").hidden = false;
+toast = document.getElementById("toast-text");
+btn = document.getElementById("load")
+toast.innerHTML = "";
+myAudio = document.getElementById('audio').firstElementChild;
+myVideo = document.getElementById('video').firstElementChild;
+if (myAudio.duration != Infinity && myVideo.duration != Infinity){
+    if (toSeconds("{{ card.duration_min }}") > myAudio.duration){
+        Toasty();
+        toast.innerHTML = "Запись слишком короткая. Отправить?";
+    }else if (toSeconds("{{ card.duration_max }}") < myAudio.duration){
+        Toasty();
+        toast.innerHTML = "Запись слишком длинная. Отправить?";
+    }else{
+        uploadBlob();
     }
+}else{
+    Toasty();
+    toast.innerHTML = "Данные еще загружаются";
+    document.getElementById("load").hidden = true;
+}
+}
+var option = {
+    animation: true,
+    delay:8000
+};
+function Toasty()
+{
+    var tst = document.getElementById("EpicToast");
+    var tst_el  = new bootstrap.Toast( tst, option );
+    tst_el.show();
+}
 var t = 5;
 var n = 0;
 var time = document.getElementsByClassName("clock")[0];
@@ -224,6 +245,7 @@ function recording() {
                     video.controls = true;
                     video.autoplay = true;
                     video.muted = true;
+                    video.preload = "auto";
                     vidElement.pause();
                     document.getElementById("stream").hidden = true;
                     document.getElementById("video").hidden = false;
@@ -268,6 +290,7 @@ function recording() {
                 audio.src = audioUrl;
                 audio.controls = true;
                 audio.autoplay = true;
+                audio.preload = "auto";
                 document.querySelector('#audio').replaceChildren(audio);
                 videoChunks = [];
             });
@@ -302,24 +325,28 @@ function toSeconds(string){
     const timeArray = string.split(":");
     return Number(timeArray[0]) * 3600 + Number(timeArray[1]) * 60 + Number(timeArray[2])
 }
-function check(){
-    myAudio = document.getElementById('audio').firstElementChild;
-    if (toSeconds("{{ card.duration_min }}") > myAudio.duration){
-        if (confirm("Запись слишком короткая. Отправить?")){
-            uploadBlob();
-        }
-    }else if (toSeconds("{{ card.duration_max }}") < myAudio.duration){
-        if (confirm("Запись слишком длинная. Отправить?")){
-            uploadBlob();
-        }
-    }else{
-        uploadBlob();
-    }
-}
+// function check(){
+//     myAudio = document.getElementById('audio').firstElementChild;
+//     myVideo = document.getElementById('video').firstElementChild;
+//     if (myAudio.duration != Infinity && myVideo.duration != Infinity){
+//         if (toSeconds("{{ card.duration_min }}") > myAudio.duration){
+//             if (confirm("Запись слишком короткая. Отправить?")){
+//                 uploadBlob();
+//             }
+//         }else if (toSeconds("{{ card.duration_max }}") < myAudio.duration){
+//             if (confirm("Запись слишком длинная. Отправить?")){
+//                 uploadBlob();
+//             }
+//         }else{
+//             uploadBlob();
+//         }
+//     }else{
+//         alert('Данные еще загружаются');
+//     }
+// }
 function uploadBlob() {
     myAudio = document.getElementById('audio').firstElementChild;
     myVideo = document.getElementById('video').firstElementChild;
-
     fetch(myAudio.src)
     .then(res => res.blob())
 
@@ -345,7 +372,6 @@ function uploadBlob() {
             .catch(err => alert(err));
         });
     };
-
 };
 
 </script>
