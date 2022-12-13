@@ -286,33 +286,35 @@ function check(){
 function uploadBlob() {
     myAudio = document.getElementById('audio').firstElementChild;
     myVideo = document.getElementById('video').firstElementChild;
-
-    fetch(myAudio.src)
-    .then(res => res.blob())
-
-    .then(blob => {
-        fetch('{{ request.get_full_path }}', {
-            method: "POST",
-            body: blob,
-            headers: { "X-CSRFToken": '{{ csrf_token }}',"Name":"audio", "Audio-Time":myAudio.duration},
-        }).then(response => {
-        window.location.href = '{% url 'card' %}?id={{ card.id }}&status=next'})
-        .catch(err => alert(err));
-    });
-    if ("{{ request.user.allow_video }}" == "True"){
-        fetch(myVideo.src)
+    if (myAudio.duration != Infinity && myVideo.duration != Infinity){
+        fetch(myAudio.src)
         .then(res => res.blob())
 
         .then(blob => {
             fetch('{{ request.get_full_path }}', {
                 method: "POST",
                 body: blob,
-                headers: { "X-CSRFToken": '{{ csrf_token }}',"Name":"Video"},
-            })
+                headers: { "X-CSRFToken": '{{ csrf_token }}',"Name":"audio", "Audio-Time":myAudio.duration},
+            }).then(response => {
+            window.location.href = '{% url 'card' %}?id={{ card.id }}&status=next'})
             .catch(err => alert(err));
         });
-    };
+        if ("{{ request.user.allow_video }}" == "True"){
+            fetch(myVideo.src)
+            .then(res => res.blob())
 
+            .then(blob => {
+                fetch('{{ request.get_full_path }}', {
+                    method: "POST",
+                    body: blob,
+                    headers: { "X-CSRFToken": '{{ csrf_token }}',"Name":"Video"},
+                })
+                .catch(err => alert(err));
+            });
+        };
+    }else{
+        alert('Вы прослушали свою запись?');
+    }
 };
 
 </script>
