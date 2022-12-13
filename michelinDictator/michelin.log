@@ -69,6 +69,7 @@
 2022-12-11 16:59:17,622 INFO:user with id: 2 complained about the card with id: 33 report id: 10
 2022-12-11 21:37:10,266 INFO:user with id:3 added audio for card with id:7 number of overwrites:1 file_path: /home/prikhodko/Рабочий стол/michelin-dictator/michelinDictator/media/card_7/audios/3_11-12-2022_21-37-10_audio.wav
 2022-12-11 21:37:24,731 INFO:user with id:3 added audio for card with id:8 number of overwrites:1 file_path: /home/prikhodko/Рабочий стол/michelin-dictator/michelinDictator/media/card_8/audios/3_11-12-2022_21-37-24_audio.wav
+<<<<<<< HEAD
 ыыыыыыыыыыыыыыы2022-12-12 07:43:32,284 INFO:user with id:3 added audio for card with id:8 number of overwrites:1 file_path: /home/prikhodko/Рабочий стол/michelin-dictator/michelinDictator/media/card_8/audios/3_12-12-2022_07-43-32_audio.wav
 2022-12-12 07:43:32,286 INFO:user with id:3 added audio for card with id:8 number of overwrites:0 file_path: /home/prikhodko/Рабочий стол/michelin-dictator/michelinDictator/media/card_8/video/3_12-12-2022_07-43-32_video.mp4
 2022-12-12 07:44:27,266 INFO:user with id:3 added audio for card with id:8 number of overwrites:1 file_path: /home/prikhodko/Рабочий стол/michelin-dictator/michelinDictator/media/card_8/audios/3_12-12-2022_07-44-27_audio.wav
@@ -111,3 +112,69 @@
 2022-12-12 08:16:14,236 INFO:user with id:3 added audio for card with id:8 number of overwrites:0 file_path: /home/prikhodko/Рабочий стол/michelin-dictator/michelinDictator/media/card_8/video/3_12-12-2022_08-16-14_video.mp4
 2022-12-12 10:04:40,512 INFO:user with id:3 added audio for card with id:8 number of overwrites:1 file_path: /home/prikhodko/Рабочий стол/michelin-dictator/michelinDictator/media/card_8/audios/3_12-12-2022_10-04-40_audio.wav
 2022-12-12 10:04:40,517 INFO:user with id:3 added audio for card with id:8 number of overwrites:0 file_path: /home/prikhodko/Рабочий стол/michelin-dictator/michelinDictator/media/card_8/video/3_12-12-2022_10-04-40_video.mp4
+=======
+ыыыыыыыыыыыыыыы2022-12-12 07:29:17,854 INFO:user with id: nazaroff create a card with id: 152
+2022-12-12 07:30:16,349 INFO:user with id: nazaroff create a card with id: 153
+2022-12-12 07:30:23,935 INFO:user with id:2 added audio for card with id:153 number of overwrites:1 file_path: /home/nazaroff/My_project/git/michelin-dictator/michelinDictator/media/card_153/audios/2_12-12-2022_07-30-23_audio.wav
+2022-12-12 07:30:42,154 INFO:user with id: nazaroff create a card with id: 154
+2022-12-12 07:37:47,519 INFO:user with id: nazaroff create a card with id: 155
+2022-12-12 07:37:47,521 INFO:user with id: nazaroff create a card with id: 156
+2022-12-12 07:37:47,523 INFO:user with id: nazaroff create a card with id: 157
+2022-12-12 07:37:47,525 INFO:user with id: nazaroff create a card with id: 158
+2022-12-12 07:37:47,526 INFO:user with id: nazaroff create a card with id: 159
+2022-12-12 07:37:47,528 INFO:user with id: nazaroff create a card with id: 160
+2022-12-12 07:37:47,530 INFO:user with id: nazaroff create a card with id: 161
+2022-12-12 07:37:47,532 INFO:user with id: nazaroff create a card with id: 162
+2022-12-12 07:37:47,534 INFO:user with id: nazaroff create a card with id: 163
+2022-12-12 07:37:47,535 INFO:user with id: nazaroff create a card with id: 164
+2022-12-12 07:37:47,537 INFO:user with id: nazaroff create a card with id: 165
+2022-12-12 07:37:47,538 INFO:user with id: nazaroff create a card with id: 166
+2022-12-12 07:37:47,540 INFO:user with id: nazaroff create a card with id: 167
+2022-12-12 07:37:47,541 INFO:user with id: nazaroff create a card with id: 168
+2022-12-12 07:37:47,543 INFO:user with id: nazaroff create a card with id: 169
+2022-12-12 07:37:47,545 INFO:user with id: nazaroff create a card with id: 170
+2022-12-12 07:37:47,547 INFO:user with id: nazaroff create a card with id: 171
+2022-12-12 07:37:47,548 INFO:user with id: nazaroff create a card with id: 172
+2022-12-12 07:37:47,550 INFO:user with id: nazaroff create a card with id: 173
+2022-12-12 07:37:47,551 INFO:user with id: nazaroff create a card with id: 174
+2022-12-12 07:37:47,552 INFO:user with id: nazaroff create a card with id: 175
+2022-12-12 07:37:47,554 INFO:user with id: nazaroff create a card with id: 176
+2022-12-12 07:37:47,555 INFO:user with id: nazaroff create a card with id: 177
+2022-12-12 07:37:47,557 INFO:user with id: nazaroff create a card with id: 178
+2022-12-12 07:37:47,559 INFO:user with id: nazaroff create a card with id: 179
+2022-12-12 07:37:47,561 INFO:user with id: nazaroff create a card with id: 180
+2022-12-12 07:37:47,563 INFO:user with id: nazaroff create a card with id: 181
+2022-12-12 07:37:47,565 INFO:user with id: nazaroff create a card with id: 182
+2022-12-12 07:37:47,567 INFO:user with id: nazaroff create a card with id: 183
+2022-12-12 07:37:47,568 INFO:user with id: nazaroff create a card with id: 184
+2022-12-12 07:37:47,569 INFO:user with id: nazaroff create a card with id: 185
+2022-12-12 07:37:47,571 INFO:user with id: nazaroff create a card with id: 186
+2022-12-12 07:37:47,573 INFO:user with id: nazaroff create a card with id: 187
+2022-12-12 07:37:47,574 INFO:user with id: nazaroff create a card with id: 188
+2022-12-12 07:37:47,576 INFO:user with id: nazaroff create a card with id: 189
+2022-12-12 07:37:47,578 INFO:user with id: nazaroff create a card with id: 190
+2022-12-12 07:37:47,580 INFO:user with id: nazaroff create a card with id: 191
+2022-12-12 07:37:47,582 INFO:user with id: nazaroff create a card with id: 192
+2022-12-12 07:37:47,584 INFO:user with id: nazaroff create a card with id: 193
+2022-12-12 07:37:47,585 INFO:user with id: nazaroff create a card with id: 194
+2022-12-12 07:37:47,587 INFO:user with id: nazaroff create a card with id: 195
+2022-12-12 07:37:47,588 INFO:user with id: nazaroff create a card with id: 196
+2022-12-12 07:37:47,589 INFO:user with id: nazaroff create a card with id: 197
+2022-12-12 07:37:47,591 INFO:user with id: nazaroff create a card with id: 198
+2022-12-12 07:37:47,593 INFO:user with id: nazaroff create a card with id: 199
+2022-12-12 07:37:47,594 INFO:user with id: nazaroff create a card with id: 200
+2022-12-12 07:37:47,596 INFO:user with id: nazaroff create a card with id: 201
+2022-12-12 07:37:47,598 INFO:user with id: nazaroff create a card with id: 202
+2022-12-12 07:37:47,600 INFO:user with id: nazaroff create a card with id: 203
+2022-12-12 07:37:47,601 INFO:user with id: nazaroff create a card with id: 204
+2022-12-12 07:37:47,603 INFO:user with id: nazaroff create a card with id: 205
+2022-12-12 07:37:47,604 INFO:user with id: nazaroff create a card with id: 206
+2022-12-12 07:37:47,606 INFO:user with id: nazaroff create a card with id: 207
+2022-12-12 07:37:47,607 INFO:user with id: nazaroff create a card with id: 208
+2022-12-12 07:43:29,804 INFO:user with id:2 added audio for card with id:152 number of overwrites:1 file_path: /home/nazaroff/My_project/git/michelin-dictator/michelinDictator/media/card_152/audios/2_12-12-2022_07-43-29_audio.wav
+2022-12-12 07:43:29,806 INFO:user with id:2 added audio for card with id:152 number of overwrites:0 file_path: /home/nazaroff/My_project/git/michelin-dictator/michelinDictator/media/card_152/video/2_12-12-2022_07-43-29_video.mp4
+2022-12-12 07:52:06,342 INFO:user with id:2 added audio for card with id:152 number of overwrites:1 file_path: /home/nazaroff/My_project/git/michelin-dictator/michelinDictator/media/card_152/audios/2_12-12-2022_07-52-06_audio.wav
+2022-12-12 07:52:06,343 INFO:user with id:2 added audio for card with id:152 number of overwrites:0 file_path: /home/nazaroff/My_project/git/michelin-dictator/michelinDictator/media/card_152/video/2_12-12-2022_07-52-06_video.mp4
+2022-12-12 07:52:13,927 INFO:user with id:2 added audio for card with id:152 number of overwrites:1 file_path: /home/nazaroff/My_project/git/michelin-dictator/michelinDictator/media/card_152/audios/2_12-12-2022_07-52-13_audio.wav
+2022-12-12 07:52:13,929 INFO:user with id:2 added audio for card with id:152 number of overwrites:0 file_path: /home/nazaroff/My_project/git/michelin-dictator/michelinDictator/media/card_152/video/2_12-12-2022_07-52-13_video.mp4
+>>>>>>> 53b39980f633a7a6a4a1fc3a7232f3f451b28620
