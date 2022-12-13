@@ -49,6 +49,7 @@
       font-size: 15pt;
     }
  </style>
+ {% if cards  %}
 
         {% for card in cards %}
 
@@ -104,6 +105,20 @@
         {% endif %}
 </ul>
 </nav>
+ {% else %}
+
+
+<div id="layer1" >
+    <div class="container">
+        <h1>Вы еще ничего не создали</h1>
+        <button onclick="document.location='{% url 'add_card' %}'" class="btn">OK</button>
+    </div>
+</div>
+
+
+
+{% endif %}
+
  <script>
          function deleteCard(id) {
 
