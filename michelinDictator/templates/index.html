@@ -44,7 +44,7 @@
     }
 
  </style>
-
+{% if cards %}
         {% for card in cards %}
     <div id="layer1" style="margin-top:2% "  >
      <div class="container">
@@ -103,4 +103,17 @@
         {% endif %}   
 </ul> 
 </nav>
+ {% else %}
+
+
+<div id="layer1" >
+    <div class="container">
+        <h1>Здесь пока ничего нет</h1>
+        <button onclick="document.location='{% url 'home' %}'" class="btn">OK</button>
+    </div>
+</div>
+
+
+
+{% endif %}
 {% endblock %}
