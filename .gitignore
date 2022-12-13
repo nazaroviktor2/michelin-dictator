@@ -5,3 +5,4 @@ __pycache__
 michelinDictator/media/*
 *.zip
 *.log
+michelin.log
