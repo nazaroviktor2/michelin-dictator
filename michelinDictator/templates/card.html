@@ -29,11 +29,6 @@
     }
 </style>
 </head>
-<!--<h1>{{ request.user.allow_video }}</h1>-->
-<!--<h1>{{ request.user.allow_auto_transition }}</h1>-->
-
-<!--<h1>{{ card.duration_min }}</h1>-->
-<!--<h1>{{ card.duration_max }}</h1>-->
 <div class="alert" id="main">
     <span class="closebtn" onclick="this.parentElement.style.display='none'; set_t();">&times;</span>
     Через <span class="clock">5</span> секунд начнется Запись
@@ -124,9 +119,9 @@
             <small class="text-muted">Now</small>
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
-        <div class="toast-body">
+        <div class="toast-body" style="margin:auto;">
             <div id="toast-text"></div>
-            <button id="load" onclick="uploadBlob();">OK</button>
+            <button id="load"  onclick="uploadBlob();">Да</button>
         </div>
     </div>
 </div>
@@ -143,10 +138,10 @@ myVideo = document.getElementById('video').firstElementChild;
 if (myAudio.duration != Infinity && myVideo.duration != Infinity){
     if (toSeconds("{{ card.duration_min }}") > myAudio.duration){
         Toasty();
-        toast.innerHTML = "Запись слишком короткая. Отправить?";
+        toast.innerHTML = "Запись слишком короткая. Всё равно отправить?";
     }else if (toSeconds("{{ card.duration_max }}") < myAudio.duration){
         Toasty();
-        toast.innerHTML = "Запись слишком длинная. Отправить?";
+        toast.innerHTML = "Запись слишком длинная. Всё равно отправить?";
     }else{
         uploadBlob();
     }
@@ -158,7 +153,7 @@ if (myAudio.duration != Infinity && myVideo.duration != Infinity){
 }
 var option = {
     animation: true,
-    delay:8000
+    delay:5000
 };
 function Toasty()
 {
