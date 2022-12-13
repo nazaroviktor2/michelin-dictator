@@ -41,7 +41,6 @@ def user_profile(request):
                 auto_transition =  (json.loads(request.body)).get("auto_transition")
                 request.user.allow_auto_transition = auto_transition
                 request.user.allow_video = video
-                print(request.user.id)
                 request.user.save()
         user_audio = Audio.objects.filter(user=request.user)
         count_audio = len(user_audio)
@@ -49,6 +48,11 @@ def user_profile(request):
         count_report = 0
         audios_time = [audio.duration for audio in user_audio]
         voicing_time = datetime.timedelta()
+        all_cards = len(Card.objects.all())
+        percent = 0
+        if all_cards != 0:
+
+            percent = int(round(count_audio/all_cards*100,1))
         for time in audios_time:
             voicing_time += time
         voicing_time -= datetime.timedelta(microseconds=voicing_time.microseconds)
@@ -56,7 +60,9 @@ def user_profile(request):
             count_report += len(Report.objects.filter(card=card_id))
         return render(request, "profile.html", {"count_audio": count_audio, "count_card": len(cards_id),
                                             "count_report": count_report,
-                                            "voicing_time":voicing_time})
+                                            "voicing_time":voicing_time,
+                                            "all_cards":all_cards,
+                                            "percent":percent})
     else:
         return render(request, "profile.html")
 
