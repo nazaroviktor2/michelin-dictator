@@ -107,7 +107,7 @@ def card_page(request):
                 duration = request.headers.get("Audio-Time")
                 if audio.exists():
                     audio.delete()
-                overwrites = 1
+                overwrites = request.headers.get("Overwrites")
                 audio_file = ContentFile(request.body, name="{0}_audio.wav".format(now))
                 audio = Audio.objects.create(file_path=audio_file, card=Card.objects.get(id=card_id), user=request.user,
                                                  duration=duration)
@@ -117,12 +117,12 @@ def card_page(request):
             elif name == "Video":
                 if video.exists():
                     video.delete()
-                overwrites = 0
+                overwrites = request.headers.get("Overwrites")
                 video_file = ContentFile(request.body, name="{0}_video.mp4".format(now))
                 video = Video.objects.create(file_path = video_file,card=Card.objects.get(id=card_id), user=request.user)
                 video.save()
                 my_logger.info(
-                        "user with id:{0} added audio for card with id:{1} number of overwrites:{2} file_path: {3}".format(
+                        "user with id:{0} added video for card with id:{1} number of overwrites:{2} file_path: {3}".format(
                             request.user.id, card_id, overwrites, video.file_path.path))
             elif name == "Report":
                 text = (json.loads(request.body)).get("text")

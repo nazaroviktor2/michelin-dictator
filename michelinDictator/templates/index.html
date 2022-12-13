@@ -1,16 +1,9 @@
  {% extends 'base.html' %}
-
  {% block content %}
  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
+<body>  
  <style>
-    .centered {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: black;
-    }
     .container {
         margin: auto;
         width: 98%;
@@ -26,6 +19,7 @@
         border-radius: 8px;
         box-shadow: 4px 4px 10px rgba(0, 0, 0, .1);
        }
+
 
     .btn{
         background-color: #ffffff; 
@@ -43,32 +37,36 @@
       }
     .btn:hover {
         background-color: #fd0202;
-        color: #fff;
+        color: #fff;  <div>
     }
     .cardtxt {
       font-size: 15pt;
     }
+
  </style>
- {% if cards  %}
-
+{% if cards %}
         {% for card in cards %}
+    <div id="layer1" style="margin-top:2% "  >
+     <div class="container">
+         <label ><b>{{ card.name }}</b></label>
+         <p class="cardtxt">{{ card.text|truncatechars:50 }}</p>
+         <div>
+            <p style="float: left;">{{ card.user }}</p>
 
-        <div id="layer1" >
-            <div class="container">
-                <label for="uname"><b>{{ card.name }}</b></label>
-                <p class="cardtxt">{{ card.text|truncatechars:50 }}</p>
-                <div>
-                   <p style="float: left;">{{ card.user }}</p>
-                   <button onclick="document.location='{% url 'user_card' %}?id={{ card.id }}'" class="btn" style="float: right;">Перейти</button>
-                   <button class="btn" style="float: right;" onclick="deleteCard({{ card.id }})">Удалить</button>
+            <button onclick="document.location='{% url 'home' %}card/?id={{ card.id }}'" class="btn" style="float: right;">Перейти</button>
+        </div>
 
-               </div>
-       
-            </div>
-           </div>        
+     </div>
+    </div>
+
+
+
+
+
+               
     {% endfor %}
 
-    <nav aria-label="Page navigation" style="margin-top: 1%;">
+<nav aria-label="Page navigation" style="margin-top: 1%;">
   <ul class="pagination justify-content-center">
       {% if cards.has_previous %}
       <li class="page-item">
@@ -79,9 +77,9 @@
       </li>
       <li class="page-item">
         <a href="?page={{ cards.previous_page_number }}" class="page-link">&lsaquo; Предыдущая</a>
-      </li>
+      </li>   
       {% endif %}
-
+      
       {% for n in cards.paginator.page_range %}
         {% if cards.number == n %}
           <li class="page-item active">
@@ -91,7 +89,7 @@
           <li class="page-item"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
         {% endif %}
       {% endfor %}
-
+      
       {% if cards.has_next %}
       <li class="page-item ">
         <a href="?page={{ cards.next_page_number }}" class="page-link">Следущая &rsaquo;</a>
@@ -102,39 +100,20 @@
             <span aria-hidden="true">&raquo;</span>
           </a>
         </li>
-        {% endif %}
-</ul>
+        {% endif %}   
+</ul> 
 </nav>
  {% else %}
 
 
 <div id="layer1" >
     <div class="container">
-        <h1>Вы еще ничего не создали</h1>
-        <button onclick="document.location='{% url 'add_card' %}'" class="btn">OK</button>
+        <h1>Здесь пока ничего нет</h1>
+        <button onclick="document.location='{% url 'home' %}'" class="btn">OK</button>
     </div>
 </div>
 
 
 
 {% endif %}
-
- <script>
-         function deleteCard(id) {
-
-
-        fetch('{{ request.get_full_path }}', {
-                   method: "POST",
-                   body:id,
-                   headers: { "X-CSRFToken": '{{ csrf_token }}',"Name":"Delete"},
-               })
-                 .then(response => {
-
-                 window.location.href = '{{ request.get_full_path }}'})
-               .catch(err => alert(err));
-
-
-        };
-
- </script>
 {% endblock %}
