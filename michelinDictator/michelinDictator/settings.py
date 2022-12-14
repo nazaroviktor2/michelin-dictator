@@ -190,7 +190,7 @@ LOGGING = {
 }
 
 SEPARATOR_CSV = "\t"
-
+DATA_UPLOAD_MAX_MEMORY_SIZE= None
 # LOGGING_CONFIG = False
 # import logging
 #
