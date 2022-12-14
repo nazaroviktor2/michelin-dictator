@@ -78,7 +78,7 @@
                     <td><div id="start"><button class="btn" onclick="set_t(); set_n(); recording()">Запись</button></div></td>
                     <td><div id="pause"><button class="btn" style="background-color: #fd0202; color: #fff;">Пауза</button></div></td>
                     <td><div id="resume"><button class="btn">Продолжить</button></div></td>
-                    <td><div id="stop"><button class="btn">Остановить</button></div></td>
+                    <td><div id="stop"><button onclick="set_t()" class="btn">Остановить</button></div></td>
                     <td><div id="sub"><button onclick="print()" class="btn">Отправить</button></div></td>
                 </table>
             </div>
@@ -130,39 +130,38 @@
 <script>
 var videoChunks = [];
 var audioChunks = [];
-function print(){
-document.getElementById("load").hidden = false;
-toast = document.getElementById("toast-text");
-btn = document.getElementById("load")
-toast.innerHTML = "";
-myAudio = document.getElementById('audio').firstElementChild;
-myVideo = document.getElementById('video').firstElementChild;
-if (myAudio.duration != Infinity && myVideo.duration != Infinity){
-    if (toSeconds("{{ card.duration_min }}") > myAudio.duration){
-        Toasty();
-        toast.innerHTML = "Запись слишком короткая. Всё равно отправить?";
-    }if (toSeconds("{{ card.duration_max }}") < myAudio.duration){
-        Toasty();
-        toast.innerHTML = "Запись слишком длинная. Всё равно отправить?";
-    }else{
-        uploadBlob();
-    }
-}else{
-    Toasty();
-    toast.innerHTML = "Данные еще загружаются";
-    document.getElementById("load").hidden = true;
-}
-}
-var option = {
-    animation: true,
-    delay:5000
-};
 function Toasty()
 {
     var tst = document.getElementById("EpicToast");
     var tst_el  = new bootstrap.Toast( tst, option );
     tst_el.show();
 }
+function print(){
+    document.getElementById("load").hidden = false;
+    toast = document.getElementById("toast-text");
+    toast.innerHTML = "";
+    myAudio = document.getElementById('audio').firstElementChild;
+    myVideo = document.getElementById('video').firstElementChild;
+    if (myAudio.duration != Infinity && myVideo.duration != Infinity){
+        if (toSeconds("{{ card.duration_min }}") > myAudio.duration){
+            Toasty();
+            toast.innerHTML = "Запись слишком короткая. Всё равно отправить?";
+        }else if (toSeconds("{{ card.duration_max }}") < myAudio.duration){
+            Toasty();
+            toast.innerHTML = "Запись слишком длинная. Всё равно отправить?";
+        }else{
+            uploadBlob();
+        }
+    }else{
+        Toasty();
+        toast.innerHTML = "Данные еще загружаются";
+        document.getElementById("load").hidden = true;
+    }
+}
+var option = {
+    animation: true,
+    delay:5000
+};
 var t = 5;
 var n = 0;
 var time = document.getElementsByClassName("clock")[0];
