@@ -41,7 +41,7 @@
 		<h1>Жалоб на карточки: {{ count_report }}</h1>
 		<h1>Карточек озвучено: {{ count_audio }}/{{ all_cards }}</h1>
 		<div class="progress" style="width: 55%; margin: auto;">
-			<div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: {{ percent }}%" aria-valuenow="{{ count_audio }}" aria-valuemin="0" aria-valuemax="{{ all_cards }}"></div>
+			<div class="progress-bar progress-bar-striped bg-danger progress-bar-animated" role="progressbar" style="width: {{ percent }}%" aria-valuenow="{{ count_audio }}" aria-valuemin="0" aria-valuemax="{{ all_cards }}"></div>
 		</div>
 		{% if  request.user.allow_video %}
 		<input type="checkbox" id="video" name="video" checked>

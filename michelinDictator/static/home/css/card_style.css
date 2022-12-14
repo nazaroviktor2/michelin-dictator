@@ -224,6 +224,20 @@ video {
     resize: none;
     width: 80%;
 }
+.container_rp{
+    align-items: center;
+    text-align: center;
+}
+.modal-content_rp{
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, .5);
+    margin: 5% auto 15% auto;
+    border: 1px solid #fff;
+    width: 40%;
+    height: 54%;
+    position: static;
+}
 @media screen and (max-width: 300px) {
     span.psw {
         display: block;

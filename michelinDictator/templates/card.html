@@ -96,13 +96,13 @@
 <div class="button-report">
     <div id="rpID" class="modal">
         <div>
-            <div class="modal-content animate">
+            <div class="modal-content_rp animate">
                 <div class="imgcontainer">
                     <span onclick="document.getElementById('rpID').style.display='none'" class="close"
                         title="Закрыть окно">&times;
                     </span>
                 </div>
-                <div class="container">
+                <div class="container_rp">
                     <h1>Что-то не так?</h1>
                     <textarea class="rparea" name="rptxt" id="rptxt" cols="50" rows="13"></textarea>
                 </div>
@@ -139,7 +139,7 @@ if (myAudio.duration != Infinity && myVideo.duration != Infinity){
     if (toSeconds("{{ card.duration_min }}") > myAudio.duration){
         Toasty();
         toast.innerHTML = "Запись слишком короткая. Всё равно отправить?";
-    }else if (toSeconds("{{ card.duration_max }}") < myAudio.duration){
+    }if (toSeconds("{{ card.duration_max }}") < myAudio.duration){
         Toasty();
         toast.innerHTML = "Запись слишком длинная. Всё равно отправить?";
     }else{
