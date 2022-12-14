@@ -48,4 +48,5 @@ urlpatterns = [
 urlpatterns += router.urls
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
+
 handler404 = not_found_page
