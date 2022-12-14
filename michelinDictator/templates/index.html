@@ -43,6 +43,23 @@
       font-size: 15pt;
     }
 
+    .page-item.active .page-link {
+      background-color: #fd0202;
+      border-color: #fd0202;
+      color: #fff;
+    }
+    .page-link{
+      color: #111;
+      background-color: #fff;
+      border-color: #fff;
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, .1);
+    }
+    .page-link:hover{
+      color: #111;
+      background-color: #fff;
+      border-color: #fff;
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, .4);
+    }
  </style>
 {% if cards %}
         {% for card in cards %}
@@ -65,8 +82,7 @@
 
                
     {% endfor %}
-
-<nav aria-label="Page navigation" style="margin-top: 1%;">
+<nav aria-label="Page navigation" style="margin-top: 1%; ">
   <ul class="pagination justify-content-center">
       {% if cards.has_previous %}
       <li class="page-item">
