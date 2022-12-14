@@ -204,7 +204,9 @@ span.psw {
     padding: 10px 10px 20px ;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, .1);
 }
-
+body{
+    background: #f6f6f6;   
+}
 body.light-theme {
     background: #f6f6f6;
 }
@@ -381,4 +383,8 @@ body.dark-theme .wrapper_form{
 
 body.light{
     background-color: #f6f6f6;
+}
+body.dark-theme .styled-table tbody{
+    background-color: #373737;
+    color: #fff;
 }

@@ -320,8 +320,13 @@ video {
     border-bottom: 1px solid #dddddd;
 }
 
-.styled-table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
+.styled-table tbody  {
+    background-color: #fff;
+    color: #111111;
+}
+body .dark-theme .styled-table tbody{
+    background-color: #373737;
+    color: #fff;
 }
 .styled-table tbody tr:last-of-type {
     border-bottom: 2px solid #fd0202;
@@ -373,4 +378,32 @@ video {
 }
 .centered {
     margin: 15px 10% 15px auto;
+}
+.parent {
+    background-color: #fff;
+    width: 90%;
+    height: 60px;
+    border-radius: 8px;
+    margin: auto;
+    margin-top: -8px;
+    padding: 10px 10px 20px ;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, .1);
+}
+.btn-toggle {
+    background: url(../images/weather-night.png) 50% 50% no-repeat;
+    background-size: contain;
+    width: 35px;
+    height: 35px;
+    border-color: #f6f6f6;
+    border-style: solid;
+    float: right;
+}
+body.dark-theme .btn-toggle {
+    background: url(../images/white-balance-sunny.png) 50% 50% no-repeat;
+    background-size: contain;
+    width: 35px;
+    height: 35px;
+    border-color: #111111;
+    border-style: solid;
+    float: right;
 }
