@@ -1,8 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-body {
-    font-family: Arial, Helvetica, sans-serif;
-
-}
 
 /* Поля ввода полной ширины */
 input[type=text],
@@ -201,6 +197,7 @@ span.psw {
 body {
     background-color: #f6f6f6;
     font-family: Arial, Helvetica, sans-serif;
+    background: #f6f6f6;
 }
 .parent {
     background-color: #fff;
@@ -210,6 +207,12 @@ body {
     margin: auto;
     padding: 10px 10px 20px ;
     box-shadow: 4px 4px 10px rgba(0, 0, 0, .1);
+}
+body{
+    background: #f6f6f6;
+}
+body.light-theme {
+    background: #f6f6f6;
 }
 body.dark-theme {
     background: #111111;
@@ -274,7 +277,7 @@ body.dark-theme .btn{
     cursor: pointer;
 }
 body.dark-theme .report_button {
-    background: url(../static/home/images/alert.png) 50% 50% no-repeat;
+    background: url(../images/alert.png) 50% 50% no-repeat;
     background-size: contain;
     width: 35px;
     height: 35px;
@@ -282,7 +285,7 @@ body.dark-theme .report_button {
     border-style: solid;
 }
 body.dark-theme .right_button {
-    background: url(../static/home/images/arrow-right-bold.png) 50% 50% no-repeat;
+    background: url(../images/arrow-right-bold.png) 50% 50% no-repeat;
     background-size: contain;
     width: 40px;
     height: 40px;
@@ -290,7 +293,7 @@ body.dark-theme .right_button {
     border-style: solid;
 }
 body.dark-theme .left_button {
-    background: url(../static/home/images/arrow-left-bold.png) 50% 50% no-repeat;
+    background: url(../images/arrow-left-bold.png) 50% 50% no-repeat;
     background-size: contain;
     width: 40px;
     height: 40px;
@@ -298,7 +301,7 @@ body.dark-theme .left_button {
     border-style: solid;
 }
 body.dark-theme .add_button {
-    background: url(../static/home/images/file-document-plus_white.png) 50% 50% no-repeat;
+    background: url(../images/file-document-plus_white.png) 50% 50% no-repeat;
     background-size: contain;
     width: 35px;
     height: 35px;
@@ -312,7 +315,7 @@ body.dark-theme .cnt{
     color: #fff;
 }
 body.dark-theme .quest_button{
-    background: url(../static/home/images/help_white.png) 50% 50% no-repeat;
+    background: url(../images/help_white.png) 50% 50% no-repeat;
     background-size: contain;
     width: 35px;
     height: 35px;
@@ -377,3 +380,11 @@ body.dark-theme .page-link:hover{
     border-color: #fd0202;
     box-shadow:0px 0px 10px 0px  rgba(255, 255, 255, 0.5);
   }
+body.dark-theme .wrapper_form{
+    background-color: #373737;
+    color: #fff;
+}
+
+body.light{
+    background-color: #f6f6f6;
+}

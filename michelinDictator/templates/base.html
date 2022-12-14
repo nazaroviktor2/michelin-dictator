@@ -13,7 +13,7 @@
             background-size: contain;
             width: 35px;
             height: 35px;
-            border-color: #fff;
+            border-color: #f6f6f6;
             border-style: solid;
             float: right;
         }
@@ -27,7 +27,7 @@
             float: right;
         }
     </style>
-    <body >
+    <body>
         <button class="btn-toggle"></button>
         <div>
             <div class="parent">
@@ -115,6 +115,10 @@
         // …тогда мы используем класс .dark-theme
         document.body.classList.add("dark-theme");
         }
+        if (currentTheme == "light") {
+            // …тогда мы используем класс .dark-theme
+            document.body.classList.add("light-theme");
+            }
 
         // Отслеживаем щелчок по кнопке
         btn.addEventListener("click", function() {
