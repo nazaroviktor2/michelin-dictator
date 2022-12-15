@@ -137,22 +137,6 @@ function Toasty()
     var tst_el  = new bootstrap.Toast( tst, option );
     tst_el.show();
 }
-function print(){
-    document.getElementById("load").hidden = false;
-    toast = document.getElementById("toast-text");
-    toast.innerHTML = "";
-    myAudio = document.getElementById('audio').firstElementChild;
-    myVideo = document.getElementById('video').firstElementChild;
-    if (toSeconds("{{ card.duration_min }}") > myAudio.duration){
-        Toasty();
-        toast.innerHTML = "Запись слишком короткая. Всё равно отправить?";
-    }else if (toSeconds("{{ card.duration_max }}") < myAudio.duration){
-        Toasty();
-        toast.innerHTML = "Запись слишком длинная. Всё равно отправить?";
-    }else{
-        uploadBlob();
-    }
-}
 var option = {
     animation: true,
     delay:5000
@@ -327,6 +311,23 @@ rng.addEventListener("input",
         text.style.fontSize = rng.value + 'px'
         text_rules.style.fontSize = rng.value + 'px'
 });
+function print(){
+    document.getElementById("load").hidden = false;
+    toast = document.getElementById("toast-text");
+    toast.innerHTML = "";
+    alert(toSeconds("{{ card.duration_max }}"))
+    alert("{{ card.duration_max }}")
+    alert(dur)
+    if (toSeconds("{{ card.duration_min }}") > dur){
+        Toasty();
+        toast.innerHTML = "Запись слишком короткая. Всё равно отправить?";
+    }else if (toSeconds("{{ card.duration_max }}") < dur){
+        Toasty();
+        toast.innerHTML = "Запись слишком длинная. Всё равно отправить?";
+    }else{
+        uploadBlob();
+    }
+}
 function toSeconds(string){
     const timeArray = string.split(":");
     return Number(timeArray[0]) * 3600 + Number(timeArray[1]) * 60 + Number(timeArray[2])
