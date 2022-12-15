@@ -54,6 +54,7 @@ def user_profile(request):
         if all_cards != 0:
 
             percent = int(round(count_audio/all_cards*100,1))
+            neccessary = int(440 - (440*(0.01*percent)))
         for time in audios_time:
             voicing_time += time
         voicing_time -= datetime.timedelta(microseconds=voicing_time.microseconds)
@@ -66,6 +67,7 @@ def user_profile(request):
                                             "all_cards":all_cards,
                                             "percent":percent,
                                             "percent2": percent2})
+
     else:
         return render(request, "profile.html")
 
