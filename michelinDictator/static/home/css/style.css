@@ -388,3 +388,16 @@ body.dark-theme .styled-table tbody{
     background-color: #373737;
     color: #fff;
 }
+body.dark-theme .btn_KIRILL{
+    color: #111111;
+    background-color: #fff;
+}
+body.dark-theme .number h2{
+    color: #fff;
+}
+body.dark-theme .number h2 span{
+    color: #fff;
+}
+body.dark-theme .number p{
+    color: rgba(255, 255, 255, 0.75);
+}

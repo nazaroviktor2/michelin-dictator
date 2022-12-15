@@ -324,10 +324,6 @@ video {
     background-color: #fff;
     color: #111111;
 }
-body .dark-theme .styled-table tbody{
-    background-color: #373737;
-    color: #fff;
-}
 .styled-table tbody tr:last-of-type {
     border-bottom: 2px solid #fd0202;
 }
