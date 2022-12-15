@@ -59,7 +59,7 @@ def user_profile(request):
         voicing_time -= datetime.timedelta(microseconds=voicing_time.microseconds)
         for card_id in cards_id:
             count_report += len(Report.objects.filter(card=card_id))
-        percent2 = 440 - (440*(0.01*percent))
+        percent2 = int(440 - (440*(0.01*percent)))
         return render(request, "profile.html", {"count_audio": count_audio, "count_card": len(cards_id),
                                             "count_report": count_report,
                                             "voicing_time":voicing_time,
