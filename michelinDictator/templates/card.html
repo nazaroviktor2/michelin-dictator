@@ -315,9 +315,6 @@ function print(){
     document.getElementById("load").hidden = false;
     toast = document.getElementById("toast-text");
     toast.innerHTML = "";
-    alert(toSeconds("{{ card.duration_max }}"))
-    alert("{{ card.duration_max }}")
-    alert(dur)
     if (toSeconds("{{ card.duration_min }}") > dur){
         Toasty();
         toast.innerHTML = "Запись слишком короткая. Всё равно отправить?";
