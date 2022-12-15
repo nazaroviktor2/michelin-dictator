@@ -172,7 +172,7 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'formatter': 'file',
-            'filename': 'michelin.log'
+            'filename': MEDIA_URL+'michelin.log'
         }
     },
     'loggers': {
