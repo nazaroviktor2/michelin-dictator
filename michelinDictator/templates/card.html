@@ -329,25 +329,6 @@ function toSeconds(string){
     const timeArray = string.split(":");
     return Number(timeArray[0]) * 3600 + Number(timeArray[1]) * 60 + Number(timeArray[2])
 }
-// function check(){
-//     myAudio = document.getElementById('audio').firstElementChild;
-//     myVideo = document.getElementById('video').firstElementChild;
-//     if (myAudio.duration != Infinity && myVideo.duration != Infinity){
-//         if (toSeconds("{{ card.duration_min }}") > myAudio.duration){
-//             if (confirm("Запись слишком короткая. Отправить?")){
-//                 uploadBlob();
-//             }
-//         }else if (toSeconds("{{ card.duration_max }}") < myAudio.duration){
-//             if (confirm("Запись слишком длинная. Отправить?")){
-//                 uploadBlob();
-//             }
-//         }else{
-//             uploadBlob();
-//         }
-//     }else{
-//         alert('Данные еще загружаются');
-//     }
-// }
 function uploadBlob() {
     myAudio = document.getElementById('audio').firstElementChild;
     myVideo = document.getElementById('video').firstElementChild;
