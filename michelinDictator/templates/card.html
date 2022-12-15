@@ -209,11 +209,15 @@ document.getElementById("stream").hidden = true;
 var vidElement=null;
 document.getElementById('pause').hidden = true;
 document.getElementById('resume').hidden = true;
+var dur = 0;
 function recording() {
     if (t <= 0){
         document.getElementById('main').style.display = 'none';
     };
     if (document.getElementById("start").hidden == false){
+        var start_timer = new Date().getTime();
+        var stop_timer = 0;
+        var range = 0;
         if ("{{ request.user.allow_video }}" == "True"){
             navigator.mediaDevices.getUserMedia({ audio: true, video: true })
             .then(stream => {
@@ -292,16 +296,20 @@ function recording() {
             });
             document.querySelector('#pause').addEventListener('click', function () {
                 mediaRecorder.pause();
+                stop_timer = new Date().getTime();
                 document.getElementById('pause').hidden = true;
                 document.getElementById('resume').hidden = false;
             });
             document.querySelector('#resume').addEventListener('click', function () {
                 mediaRecorder.resume();
+                range = new Date().getTime() - stop_timer;
                 document.getElementById('pause').hidden = false;
                 document.getElementById('resume').hidden = true;
             });
             document.querySelector('#stop').addEventListener('click', function () {
                 mediaRecorder.stop();
+                dur = Math.floor((new Date().getTime() - start_timer - range)/1000);
+                alert(dur);
                 document.getElementById('pause').hidden = true;
                 document.getElementById('resume').hidden = true;
                 document.getElementById('start').hidden = false;
@@ -321,25 +329,6 @@ function toSeconds(string){
     const timeArray = string.split(":");
     return Number(timeArray[0]) * 3600 + Number(timeArray[1]) * 60 + Number(timeArray[2])
 }
-// function check(){
-//     myAudio = document.getElementById('audio').firstElementChild;
-//     myVideo = document.getElementById('video').firstElementChild;
-//     if (myAudio.duration != Infinity && myVideo.duration != Infinity){
-//         if (toSeconds("{{ card.duration_min }}") > myAudio.duration){
-//             if (confirm("Запись слишком короткая. Отправить?")){
-//                 uploadBlob();
-//             }
-//         }else if (toSeconds("{{ card.duration_max }}") < myAudio.duration){
-//             if (confirm("Запись слишком длинная. Отправить?")){
-//                 uploadBlob();
-//             }
-//         }else{
-//             uploadBlob();
-//         }
-//     }else{
-//         alert('Данные еще загружаются');
-//     }
-// }
 function uploadBlob() {
     myAudio = document.getElementById('audio').firstElementChild;
     myVideo = document.getElementById('video').firstElementChild;
