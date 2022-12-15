@@ -392,12 +392,12 @@ body.dark-theme .btn_KIRILL{
     color: #111111;
     background-color: #fff;
 }
-body.light-theme .number h2{
-    color: #111;
+body.dark-theme .number h2{
+    color: #fff;
 }
-body.light-theme .number h2 span{
-    color: #111;
+body.dark-theme .number h2 span{
+    color: #fff;
 }
-body.light-theme .number p{
-    color: #373737;
+body.dark-theme .number p{
+    color: rgba(255, 255, 255, 0.75);
 }
