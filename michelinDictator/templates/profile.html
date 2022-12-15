@@ -158,8 +158,11 @@
 	<div id="layer1">
 		<h1>{{ request.user.username }}</h1>
 		<h1>Время озвучки: {{ voicing_time}}</h1>
+		{% if request.user.is_editor or request.user.is_staff %}
+
 		<h1>Карточек создано: {{ count_card }}</h1>
 		<h1>Жалоб на карточки: {{ count_report }}</h1>
+		{% endif %}
 		<h1>Карточек озвучено: {{ count_audio }}/{{ all_cards }}</h1>
 		{% comment %} <div class="progress" style="width: 55%; margin: auto;">
 			<div class="progress-bar progress-bar-striped bg-danger progress-bar-animated" role="progressbar" style="width: {{ percent }}%" aria-valuenow="{{ count_audio }}" aria-valuemin="0" aria-valuemax="{{ all_cards }}"></div>
@@ -185,11 +188,12 @@
 		<input type="checkbox" id="video" name="video" >
 		{% endif %}
 		<label for="video" style="font-size: 21px;">Записывать видео</label>
-
+		<br>
 		{% if  request.user.allow_auto_transition %}
+
 		<input type="checkbox" id="auto_transition" name="auto_transition" checked>
 		{% else %}
-		<br>
+
 		<input type="checkbox" id="auto_transition" name="auto_transition">
 		{% endif %}
 

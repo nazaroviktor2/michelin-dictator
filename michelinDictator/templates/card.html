@@ -66,7 +66,7 @@
             <div class="left_side"><p>A-<p></div>
             <div class="center_side"><input id="seek" type="range" name="seekbar" step="1" min="15" max="75"></div>
             <div class="right_side"><p>A+<p></div>
-        </div>
+        </div>  
         <div class="voice_conteiner">
             <div id="audio">
                 {% for audio in audios %}
@@ -130,6 +130,7 @@
 <script>
 var videoChunks = [];
 var audioChunks = [];
+var dur = 0;
 function Toasty()
 {
     var tst = document.getElementById("EpicToast");
@@ -209,7 +210,7 @@ document.getElementById("stream").hidden = true;
 var vidElement=null;
 document.getElementById('pause').hidden = true;
 document.getElementById('resume').hidden = true;
-var dur = 0;
+
 function recording() {
     if (t <= 0){
         document.getElementById('main').style.display = 'none';
@@ -218,6 +219,7 @@ function recording() {
         var start_timer = new Date().getTime();
         var stop_timer = 0;
         var range = 0;
+        dur = 0;
         if ("{{ request.user.allow_video }}" == "True"){
             navigator.mediaDevices.getUserMedia({ audio: true, video: true })
             .then(stream => {
@@ -309,7 +311,7 @@ function recording() {
             document.querySelector('#stop').addEventListener('click', function () {
                 mediaRecorder.stop();
                 dur = Math.floor((new Date().getTime() - start_timer - range)/1000);
-                alert(dur);
+
                 document.getElementById('pause').hidden = true;
                 document.getElementById('resume').hidden = true;
                 document.getElementById('start').hidden = false;
@@ -352,7 +354,7 @@ function uploadBlob() {
         fetch('{{ request.get_full_path }}', {
             method: "POST",
             body: audioBlob,
-            headers: { "X-CSRFToken": '{{ csrf_token }}',"Name":"audio", "Audio-Time":myAudio.duration, "Overwrites":n},
+            headers: { "X-CSRFToken": '{{ csrf_token }}',"Name":"audio", "Audio-Time":dur, "Overwrites":n},
         }).then(response => {
         window.location.href = '{% url 'card' %}?id={{ card.id }}&status=next'})
         .catch(err => alert(err));

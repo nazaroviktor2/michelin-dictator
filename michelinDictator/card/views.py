@@ -107,6 +107,7 @@ def card_page(request):
                 duration = request.headers.get("Audio-Time")
                 if audio.exists():
                     audio.delete()
+
                 overwrites = request.headers.get("Overwrites")
                 audio_file = ContentFile(request.body, name="{0}_audio.wav".format(now))
                 audio = Audio.objects.create(file_path=audio_file, card=Card.objects.get(id=card_id), user=request.user,
