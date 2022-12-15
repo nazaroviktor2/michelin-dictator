@@ -142,20 +142,14 @@ function print(){
     toast.innerHTML = "";
     myAudio = document.getElementById('audio').firstElementChild;
     myVideo = document.getElementById('video').firstElementChild;
-    if (myAudio.duration != Infinity && myVideo.duration != Infinity){
-        if (toSeconds("{{ card.duration_min }}") > myAudio.duration){
-            Toasty();
-            toast.innerHTML = "Запись слишком короткая. Всё равно отправить?";
-        }else if (toSeconds("{{ card.duration_max }}") < myAudio.duration){
-            Toasty();
-            toast.innerHTML = "Запись слишком длинная. Всё равно отправить?";
-        }else{
-            uploadBlob();
-        }
-    }else{
+    if (toSeconds("{{ card.duration_min }}") > myAudio.duration){
         Toasty();
-        toast.innerHTML = "Данные еще загружаются";
-        document.getElementById("load").hidden = true;
+        toast.innerHTML = "Запись слишком короткая. Всё равно отправить?";
+    }else if (toSeconds("{{ card.duration_max }}") < myAudio.duration){
+        Toasty();
+        toast.innerHTML = "Запись слишком длинная. Всё равно отправить?";
+    }else{
+        uploadBlob();
     }
 }
 var option = {
@@ -180,6 +174,12 @@ function fun() {
     };
 };
 if ("{{ request.user.allow_auto_transition }}" == "True"){
+    myAudio = document.getElementById('audio').firstElementChild;
+    myVideo = document.getElementById('video').firstElementChild;
+    if (myAudio != null && myVideo != null){
+        document.getElementById('main').style.display = 'none';
+        t = 0;
+    }
     if (t > 0){
         var inter = setInterval("fun()", 1000);
     };
