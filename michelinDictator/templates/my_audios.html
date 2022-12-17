@@ -49,6 +49,23 @@
     .cardtxt {
       font-size: 15pt;
     }
+    .page-item.active .page-link {
+      background-color: #fd0202;
+      border-color: #fd0202;
+      color: #fff;
+    }
+    .page-link{
+      color: #111;
+      background-color: #fff;
+      border-color: #fff;
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, .1);
+    }
+    .page-link:hover{
+      color: #111;
+      background-color: #fff;
+      border-color: #fff;
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, .4);
+    }
  </style>
  {% if cards %}
 
@@ -69,43 +86,43 @@
            </div>
     {% endfor %}
 
-<nav aria-label="Page navigation" style="margin-top: 1%;">
-  <ul class="pagination justify-content-center">
-      {% if cards.has_previous %}
-      <li class="page-item">
-        <a class="page-link" href="?page=1" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-          <span class="sr-only">В начало</span>
-        </a>
-      </li>
-      <li class="page-item">
-        <a href="?page={{ cards.previous_page_number }}" class="page-link">&lsaquo; Предыдущая</a>
-      </li>
-      {% endif %}
-
-      {% for n in cards.paginator.page_range %}
-        {% if cards.number == n %}
-          <li class="page-item active">
-            <span class="page-link">{{ n }}<span class="sr-only"></span></span>
+    <nav aria-label="Page navigation" style="margin-top: 1%; ">
+      <ul class="pagination justify-content-center">
+          {% if cards.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page=1" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">В начало</span>
+            </a>
           </li>
-        {% elif n > cards.number|add:'-3' and n < cards.number|add:'3' %}
-          <li class="page-item"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
-        {% endif %}
-      {% endfor %}
-
-      {% if cards.has_next %}
-      <li class="page-item ">
-        <a href="?page={{ cards.next_page_number }}" class="page-link">Следущая &rsaquo;</a>
-      </li>
-        <li class="page-item">
-          <a class="page-link" href="?page={{ cards.paginator.num_pages }}" aria-label="Next">
-            <span class="sr-only">В конец</span>
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-        {% endif %}
-</ul>
-</nav>
+          <li class="page-item">
+            <a href="?page={{ cards.previous_page_number }}" class="page-link">&lsaquo; Предыдущая</a>
+          </li>   
+          {% endif %}
+          
+          {% for n in cards.paginator.page_range %}
+            {% if cards.number == n %}
+              <li class="page-item active">
+                <span class="page-link">{{ n }}<span class="sr-only"></span></span>
+              </li>
+            {% elif n > cards.number|add:'-3' and n < cards.number|add:'3' %}
+              <li class="page-item"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+            {% endif %}
+          {% endfor %}
+          
+          {% if cards.has_next %}
+          <li class="page-item ">
+            <a href="?page={{ cards.next_page_number }}" class="page-link">Следущая &rsaquo;</a>
+          </li>
+            <li class="page-item">
+              <a class="page-link" href="?page={{ cards.paginator.num_pages }}" aria-label="Next">
+                <span class="sr-only">В конец</span>
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+            {% endif %}   
+      </ul> 
+    </nav>
 {% else %}
 
 
