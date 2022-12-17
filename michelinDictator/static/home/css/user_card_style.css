@@ -133,13 +133,13 @@ label .checkbox .check::after {
     "ls cs rs"
 }
 .output_client_rules{
-    font-size: 15px;
+    font-size: 25px;
     width: 95%;
     resize: vertical;
     overflow-y: scroll;
 }
 .output_client_text{
-    font-size: 15px;
+    font-size: 25px;
     width: 99%;
     resize: vertical;
     overflow-y: scroll;

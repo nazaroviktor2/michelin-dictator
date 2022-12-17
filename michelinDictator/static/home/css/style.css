@@ -414,3 +414,25 @@ body.dark-theme .btn_KIRILL{
     margin: 4px 2px;
     cursor: pointer;
 }
+body.dark-theme .text-muted{
+    color: #fff !important;
+}
+body.dark-theme .toast-header{
+    display: flex;
+    align-items: center;
+    padding: .5rem .75rem;
+    color: #fff;
+    background-color: rgba(237, 7, 7, 0.85);
+    background-clip: padding-box;
+    border-bottom: 1px solid rgba(0,0,0,.05);
+    border-top-left-radius: calc(.25rem - 1px);
+    border-top-right-radius: calc(.25rem - 1px);
+}
+body.dark-theme .toast-body{
+    word-wrap: break-word;
+    color: #fff;
+    background-color: gray;
+}
+body.dark-theme .btn-tostt{
+    border: 1px solid gray;
+}
