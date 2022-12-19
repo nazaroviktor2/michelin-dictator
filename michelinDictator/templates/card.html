@@ -27,17 +27,9 @@
     .closebtn:hover {
         color: black;
     }
-    #video
-    {
-        transform: rotateY(180deg);
-        -webkit-transform:rotateY(180deg); /* Safari and Chrome */
-        -moz-transform:rotateY(180deg); /* Firefox */
-    }
-    #stream
-    {
-        transform: rotateY(180deg);
-        -webkit-transform:rotateY(180deg); /* Safari and Chrome */
-        -moz-transform:rotateY(180deg); /* Firefox */
+    .button-grid{
+        display: inline;
+        padding: 20px;
     }
 </style>
 </head>
@@ -86,11 +78,11 @@
                 {% endfor %}
             </div>
             <div class="button-grid">
-                <div id="start"><button class="btn" onclick="set_t(); set_n(); recording()">Запись</button></div></td>
-                <div id="pause"><button class="btn_KIRILL">Пауза</button></div>
-                <div id="resume"><button class="btn">Продолжить</button></div>
-                <div id="stop"><button onclick="set_t()" class="btn">Остановить</button></div>
-                <div id="sub"><button onclick="print()" class="btn">Отправить</button></div>
+                <button class="btn" id="start" onclick="set_t(); set_n(); recording()">Запись</button>
+                <button class="btn_KIRILL" id="pause">Пауза</button>
+                <button class="btn" id="resume">Продолжить</button>
+                <button onclick="set_t()" class="btn" id="stop">Остановить</button>
+                <button onclick="print()" class="btn" id="sub">Отправить</button>
             </div>
         </div>
     </div>
@@ -121,7 +113,7 @@
         </div>
     </div>
 </div>
-<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11" hidden id="TOSTFULL">
     <div class="toast" id = "EpicToast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
             <img src="../static/home/images/tst-logo.png" alt="..." class="rounded me-2" width="30" height="20">
@@ -322,7 +314,7 @@ rng.addEventListener("input",
         text_rules.style.fontSize = rng.value + 'px'
 });
 function print(){
-    document.getElementById("load").hidden = false;
+    document.getElementById("TOSTFULL").hidden = false;
     toast = document.getElementById("toast-text");
     toast.innerHTML = "";
     if (toSeconds("{{ card.duration_min }}") > dur){
