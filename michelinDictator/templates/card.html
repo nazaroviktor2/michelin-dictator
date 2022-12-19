@@ -113,7 +113,7 @@
         </div>
     </div>
 </div>
-<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11" hidden id="TOSTFULL">
     <div class="toast" id = "EpicToast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
             <img src="../static/home/images/tst-logo.png" alt="..." class="rounded me-2" width="30" height="20">
@@ -314,7 +314,7 @@ rng.addEventListener("input",
         text_rules.style.fontSize = rng.value + 'px'
 });
 function print(){
-    document.getElementById("load").hidden = false;
+    document.getElementById("TOSTFULL").hidden = false;
     toast = document.getElementById("toast-text");
     toast.innerHTML = "";
     if (toSeconds("{{ card.duration_min }}") > dur){
