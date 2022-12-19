@@ -27,6 +27,10 @@
     .closebtn:hover {
         color: black;
     }
+    .button-grid{
+        display: inline;
+        padding: 20px;
+    }
 </style>
 </head>
 <div class="alert" id="main">
@@ -74,13 +78,11 @@
                 {% endfor %}
             </div>
             <div class="button-grid">
-                <table style="margin: auto;">
-                    <td><div id="start"><button class="btn" onclick="set_t(); set_n(); recording()">Запись</button></div></td>
-                    <td><div id="pause"><button class="btn_KIRILL">Пауза</button></div></td>
-                    <td><div id="resume"><button class="btn">Продолжить</button></div></td>
-                    <td><div id="stop"><button onclick="set_t()" class="btn">Остановить</button></div></td>
-                    <td><div id="sub"><button onclick="print()" class="btn">Отправить</button></div></td>
-                </table>
+                <button class="btn" id="start" onclick="set_t(); set_n(); recording()">Запись</button>
+                <button class="btn_KIRILL" id="pause">Пауза</button>
+                <button class="btn" id="resume">Продолжить</button>
+                <button onclick="set_t()" class="btn" id="stop">Остановить</button>
+                <button onclick="print()" class="btn" id="sub">Отправить</button>
             </div>
         </div>
     </div>

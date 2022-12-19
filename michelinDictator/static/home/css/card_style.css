@@ -46,6 +46,7 @@
     "vt vt ft   ft   ft   ft";
     width: 90%;
 }
+
 .left_side {
     grid-area: ls;
     font-weight: bold;
