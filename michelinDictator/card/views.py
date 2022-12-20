@@ -9,6 +9,7 @@ from django.core.files.base import ContentFile
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import FileResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.viewsets import ModelViewSet
 
@@ -82,17 +83,24 @@ def card_page(request):
         ids = Card.objects.filter(id__gt=card_id).values_list('id')
         if len(ids)!= 0:
             card_id = ids[0][0]
+            return redirect(reverse('card') + '?id={0}'.format(card_id))
         else:
-            # если таких карт нет
-            pass
+            ids = Card.objects.filter(id__lt=card_id).values_list('id').order_by('id')
+            if len(ids) != 0:
+                card_id = ids[0][0]
+                return redirect(reverse('card') + '?id={0}'.format(card_id))
     elif status == "last":
         ids = Card.objects.filter(id__lt=card_id).values_list('id').order_by('-id')
         if len(ids) != 0:
             card_id = ids[0][0]
-
+            return redirect(reverse('card')+ '?id={0}'.format(card_id))
         else:
             # если таких карт нет
-            pass
+            ids = Card.objects.filter(id__gt=card_id).values_list('id')
+            if len(ids) != 0:
+                card_id = ids.last()[0]
+                return redirect(reverse('card') + '?id={0}'.format(card_id))
+
     card = get_object_or_404(Card, id=card_id)
 
     if  card == Card.objects.none():

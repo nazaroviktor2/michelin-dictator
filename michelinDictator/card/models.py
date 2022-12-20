@@ -45,7 +45,7 @@ def auto_delete_card_on_delete(sender, instance, **kwargs):
 class Audio(models.Model):
     file_path = models.FileField(upload_to=card_directory_path_audio)
     card = models.ForeignKey(Card, on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     duration = models.DurationField(default=datetime.timedelta())
 
     def __str__(self):
@@ -66,7 +66,7 @@ def auto_delete_audio_on_delete(sender, instance, **kwargs):
 class Video(models.Model):
     file_path = models.FileField(upload_to=card_directory_path_video,blank=True)
     card = models.ForeignKey(Card, on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
         return "{0}:Card:{1} Dictator id:{2}".format(self.id,self.card.id, self.user.id)
